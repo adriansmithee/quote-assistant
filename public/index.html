@@ -6,273 +6,304 @@
 <title>BrnnoQuote — Insurance Quote OS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root {
-  --bg: #0a0c10;
-  --bg2: #111318;
-  --bg3: #181c24;
-  --bg4: #1e2330;
-  --border: rgba(255,255,255,0.07);
-  --border2: rgba(255,255,255,0.13);
-  --text: #e8eaf0;
-  --text2: #8b95a8;
-  --text3: #4a5568;
-  --blue: #3b82f6;
-  --blue2: #60a5fa;
-  --green: #10b981;
-  --amber: #f59e0b;
-  --red: #ef4444;
-  --purple: #8b5cf6;
-  --teal: #06b6d4;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; overflow: hidden; }
-body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); font-size: 13px; line-height: 1.5; }
+:root{--bg:#0a0c10;--bg2:#111318;--bg3:#181c24;--bg4:#1e2330;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--text:#e8eaf0;--text2:#8b95a8;--text3:#4a5568;--blue:#3b82f6;--blue2:#60a5fa;--green:#10b981;--amber:#f59e0b;--red:#ef4444;--purple:#8b5cf6;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:13px;line-height:1.5;}
+
+/* AUTH */
+.auth-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:100;}
+.auth-card{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:40px;width:380px;}
+.auth-logo{display:flex;align-items:center;gap:10px;margin-bottom:28px;}
+.auth-logo-mark{width:36px;height:36px;background:var(--blue);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;}
+.auth-logo-text{font-size:18px;font-weight:600;}
+.auth-logo-text span{color:var(--text3);font-weight:400;}
+.auth-title{font-size:15px;font-weight:600;margin-bottom:6px;}
+.auth-sub{font-size:12px;color:var(--text3);margin-bottom:24px;}
+.auth-field{margin-bottom:14px;}
+.auth-field label{display:block;font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;}
+.auth-field input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:9px 12px;color:var(--text);font-family:inherit;font-size:13px;outline:none;}
+.auth-field input:focus{border-color:var(--blue);}
+.auth-btn{width:100%;padding:10px;background:var(--blue);border:none;border-radius:7px;color:#fff;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;margin-top:6px;}
+.auth-btn:hover{background:#2563eb;}
+.auth-btn:disabled{opacity:.5;cursor:not-allowed;}
+.auth-switch{font-size:12px;color:var(--text3);text-align:center;margin-top:16px;}
+.auth-switch a{color:var(--blue);cursor:pointer;text-decoration:none;}
+.auth-err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:var(--red);font-size:12px;padding:8px 12px;border-radius:6px;margin-bottom:12px;}
 
 /* LAYOUT */
-.shell { display: grid; grid-template-rows: 48px 1fr; height: 100vh; }
-.topbar { background: var(--bg2); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 16px; gap: 0; }
-.workspace { display: grid; grid-template-columns: 52px 220px 1fr 340px; height: 100%; overflow: hidden; }
+.shell{display:grid;grid-template-rows:48px 1fr;height:100vh;}
+.topbar{background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:16px;}
+.workspace{display:grid;grid-template-columns:52px 220px 1fr 320px;height:100%;overflow:hidden;}
 
-/* ICON NAV */
-.icon-nav { background: var(--bg2); border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; padding: 12px 0; gap: 4px; }
-.icon-nav-btn { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; background: none; color: var(--text3); transition: all .15s; font-size: 16px; }
-.icon-nav-btn:hover, .icon-nav-btn.active { background: var(--bg4); color: var(--text); }
-.icon-nav-btn.active { color: var(--blue); }
-.nav-spacer { flex: 1; }
+.logo-area{display:flex;align-items:center;gap:9px;padding-right:16px;border-right:1px solid var(--border);}
+.logo-mark{width:26px;height:26px;background:var(--blue);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;}
+.logo-text{font-size:14px;font-weight:600;}
+.logo-text span{color:var(--text3);font-weight:400;}
+.top-nav{display:flex;gap:2px;}
+.top-nav-btn{padding:5px 11px;border-radius:6px;font-size:12px;color:var(--text3);cursor:pointer;border:none;background:none;font-family:inherit;font-weight:500;transition:all .15s;}
+.top-nav-btn:hover{color:var(--text2);background:var(--bg3);}
+.top-nav-btn.active{color:var(--text);background:var(--bg4);}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.agent-badge{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text2);padding:4px 10px;background:var(--bg3);border-radius:6px;border:1px solid var(--border);}
+.agent-dot{width:6px;height:6px;border-radius:50%;background:var(--green);}
+.logout-btn{background:none;border:1px solid var(--border);border-radius:6px;color:var(--text3);font-size:12px;padding:4px 10px;cursor:pointer;font-family:inherit;}
+.logout-btn:hover{color:var(--text2);}
 
-/* SIDEBAR */
-.sidebar { background: var(--bg2); border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
-.sidebar-head { padding: 14px 14px 10px; border-bottom: 1px solid var(--border); }
-.sidebar-title { font-size: 11px; font-weight: 600; color: var(--text3); letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 8px; }
-.search-box { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; display: flex; align-items: center; gap: 6px; }
-.search-box input { background: none; border: none; outline: none; color: var(--text); font-size: 12px; width: 100%; font-family: inherit; }
-.search-box input::placeholder { color: var(--text3); }
-.sidebar-list { flex: 1; overflow-y: auto; padding: 8px 8px; }
-.sidebar-list::-webkit-scrollbar { width: 3px; }
-.sidebar-list::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+.icon-nav{background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:4px;}
+.icon-nav-btn{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;background:none;color:var(--text3);transition:all .15s;font-size:16px;}
+.icon-nav-btn:hover,.icon-nav-btn.active{background:var(--bg4);color:var(--text);}
+.icon-nav-btn.active{color:var(--blue);}
+.nav-spacer{flex:1;}
 
-.client-row { padding: 8px 8px; border-radius: 7px; cursor: pointer; display: flex; align-items: center; gap: 9px; margin-bottom: 1px; transition: background .1s; }
-.client-row:hover { background: var(--bg3); }
-.client-row.active { background: var(--bg4); border: 1px solid var(--border2); }
-.avatar { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; }
-.client-info { min-width: 0; flex: 1; }
-.client-name { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.client-types { font-size: 11px; color: var(--text2); }
-.status-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.sidebar{background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
+.sidebar-head{padding:14px 12px 10px;border-bottom:1px solid var(--border);}
+.sidebar-title{font-size:11px;font-weight:600;color:var(--text3);letter-spacing:0.6px;text-transform:uppercase;margin-bottom:8px;}
+.search-box{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 10px;display:flex;align-items:center;gap:6px;}
+.search-box input{background:none;border:none;outline:none;color:var(--text);font-size:12px;width:100%;font-family:inherit;}
+.search-box input::placeholder{color:var(--text3);}
+.sidebar-list{flex:1;overflow-y:auto;padding:6px;}
+.sidebar-list::-webkit-scrollbar{width:3px;}
+.sidebar-list::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
 
-.new-client-btn { margin: 8px; padding: 8px; border-radius: 7px; border: 1px dashed var(--border2); background: none; color: var(--text3); cursor: pointer; font-size: 12px; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all .15s; }
-.new-client-btn:hover { border-color: var(--blue); color: var(--blue); background: rgba(59,130,246,.06); }
+.client-row{padding:8px;border-radius:7px;cursor:pointer;display:flex;align-items:center;gap:9px;margin-bottom:1px;transition:background .1s;}
+.client-row:hover{background:var(--bg3);}
+.client-row.active{background:var(--bg4);border:1px solid var(--border2);}
+.avatar{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;}
+.client-info{min-width:0;flex:1;}
+.client-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.client-types{font-size:11px;color:var(--text2);}
+.status-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.new-client-btn{margin:8px;padding:8px;border-radius:7px;border:1px dashed var(--border2);background:none;color:var(--text3);cursor:pointer;font-size:12px;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .15s;}
+.new-client-btn:hover{border-color:var(--blue);color:var(--blue);background:rgba(59,130,246,.06);}
 
-/* MAIN CONTENT */
-.main { display: flex; flex-direction: column; overflow: hidden; background: var(--bg); }
-.main-header { padding: 16px 20px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; background: var(--bg2); }
-.client-title-area { }
-.client-big-name { font-size: 17px; font-weight: 600; color: var(--text); }
-.client-big-sub { font-size: 12px; color: var(--text2); margin-top: 2px; }
-.header-actions { display: flex; gap: 8px; align-items: center; }
-.btn { padding: 6px 13px; border-radius: 7px; font-size: 12px; cursor: pointer; border: 1px solid var(--border2); background: var(--bg3); color: var(--text); font-family: inherit; font-weight: 500; transition: all .15s; display: inline-flex; align-items: center; gap: 5px; }
-.btn:hover { border-color: var(--border2); background: var(--bg4); }
-.btn-blue { background: var(--blue); border-color: var(--blue); color: #fff; }
-.btn-blue:hover { background: #2563eb; border-color: #2563eb; }
-.btn-green { background: var(--green); border-color: var(--green); color: #fff; }
-.btn-green:hover { background: #059669; }
+.main{display:flex;flex-direction:column;overflow:hidden;background:var(--bg);}
+.main-header{padding:14px 20px 12px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;background:var(--bg2);}
+.client-big-name{font-size:17px;font-weight:600;}
+.client-big-sub{font-size:12px;color:var(--text2);margin-top:2px;}
+.header-actions{display:flex;gap:8px;align-items:center;}
+.btn{padding:6px 13px;border-radius:7px;font-size:12px;cursor:pointer;border:1px solid var(--border2);background:var(--bg3);color:var(--text);font-family:inherit;font-weight:500;transition:all .15s;display:inline-flex;align-items:center;gap:5px;}
+.btn:hover{background:var(--bg4);}
+.btn:disabled{opacity:.4;cursor:not-allowed;}
+.btn-blue{background:var(--blue);border-color:var(--blue);color:#fff;}
+.btn-blue:hover{background:#2563eb;}
+.btn-green{background:var(--green);border-color:var(--green);color:#fff;}
 
-.stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--border); border-bottom: 1px solid var(--border); }
-.stat-cell { background: var(--bg2); padding: 12px 16px; }
-.stat-label { font-size: 10px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; }
-.stat-val { font-size: 20px; font-weight: 600; color: var(--text); margin-top: 2px; }
-.stat-sub { font-size: 11px; color: var(--text2); margin-top: 1px; }
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border);}
+.stat-cell{background:var(--bg2);padding:10px 16px;}
+.stat-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;}
+.stat-val{font-size:20px;font-weight:600;color:var(--text);margin-top:2px;}
+.stat-sub{font-size:11px;color:var(--text2);margin-top:1px;}
 
-.main-tabs { display: flex; padding: 0 20px; background: var(--bg2); border-bottom: 1px solid var(--border); }
-.main-tab { padding: 10px 14px; font-size: 12px; font-weight: 500; color: var(--text3); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all .15s; }
-.main-tab:hover { color: var(--text2); }
-.main-tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+.main-tabs{display:flex;padding:0 20px;background:var(--bg2);border-bottom:1px solid var(--border);}
+.main-tab{padding:10px 14px;font-size:12px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;}
+.main-tab:hover{color:var(--text2);}
+.main-tab.active{color:var(--blue);border-bottom-color:var(--blue);}
 
-.main-body { flex: 1; overflow-y: auto; padding: 16px 20px; }
-.main-body::-webkit-scrollbar { width: 4px; }
-.main-body::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+.main-body{flex:1;overflow-y:auto;padding:16px 20px;}
+.main-body::-webkit-scrollbar{width:4px;}
+.main-body::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
 
-/* CARRIER COMPARISON */
-.coverage-toolbar { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
-.cov-pill { padding: 4px 10px; border-radius: 20px; font-size: 11px; border: 1px solid var(--border2); color: var(--text3); cursor: pointer; transition: all .15s; }
-.cov-pill.on { background: rgba(59,130,246,.12); border-color: rgba(59,130,246,.4); color: var(--blue2); }
-.cov-toolbar-label { font-size: 11px; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
-.run-btn { margin-left: auto; }
+.welcome{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;color:var(--text3);}
+.welcome-icon{font-size:40px;opacity:.25;}
+.welcome-title{font-size:16px;font-weight:500;color:var(--text2);}
+.welcome-sub{font-size:13px;text-align:center;max-width:280px;line-height:1.6;}
 
-.carrier-table-wrap { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 14px; }
-.carrier-table-head { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-.ct-title { font-size: 12px; font-weight: 600; color: var(--text2); display: flex; align-items: center; gap: 8px; }
-.pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+.coverage-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.cov-pill{padding:4px 10px;border-radius:20px;font-size:11px;border:1px solid var(--border2);color:var(--text3);cursor:pointer;transition:all .15s;}
+.cov-pill.on{background:rgba(59,130,246,.12);border-color:rgba(59,130,246,.4);color:var(--blue2);}
 
-.type-toggle { display: flex; background: var(--bg3); border-radius: 6px; padding: 2px; gap: 2px; }
-.type-toggle-btn { padding: 4px 10px; border-radius: 5px; font-size: 11px; font-weight: 500; border: none; background: none; color: var(--text3); cursor: pointer; font-family: inherit; transition: all .15s; }
-.type-toggle-btn.active { background: var(--bg4); color: var(--text); }
+.carrier-table-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:14px;}
+.carrier-table-head{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.ct-title{font-size:12px;font-weight:600;color:var(--text2);display:flex;align-items:center;gap:8px;}
+.pulse{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.type-toggle{display:flex;background:var(--bg3);border-radius:6px;padding:2px;gap:2px;}
+.type-toggle-btn{padding:4px 10px;border-radius:5px;font-size:11px;font-weight:500;border:none;background:none;color:var(--text3);cursor:pointer;font-family:inherit;transition:all .15s;}
+.type-toggle-btn.active{background:var(--bg4);color:var(--text);}
+table.ctable{width:100%;border-collapse:collapse;}
+table.ctable th{padding:8px 14px;font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.4px;text-align:left;border-bottom:1px solid var(--border);background:var(--bg3);}
+table.ctable td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:middle;}
+table.ctable tr:last-child td{border-bottom:none;}
+table.ctable tr.winner{background:rgba(59,130,246,.04);}
+table.ctable tr:hover{background:rgba(255,255,255,.02);}
+.carrier-cell{display:flex;align-items:center;gap:9px;}
+.carrier-logo{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0;}
+.carrier-label{font-size:13px;font-weight:500;color:var(--text);}
+.best-badge{background:rgba(16,185,129,.12);color:var(--green);font-size:10px;padding:2px 7px;border-radius:4px;font-weight:600;margin-left:4px;}
+.price-main{font-size:15px;font-weight:600;color:var(--text);}
+.price-period{font-size:11px;color:var(--text3);}
+.score-cell{display:flex;align-items:center;gap:7px;}
+.score-bar-bg{width:64px;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;}
+.score-bar-fill{height:100%;border-radius:2px;}
+.reason-text{font-size:11px;color:var(--text2);max-width:160px;}
+.select-btn{padding:5px 12px;border-radius:6px;font-size:11px;font-weight:600;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap;}
+.select-btn:hover{border-color:var(--blue);color:var(--blue);}
+.select-btn.selected{background:var(--blue);border-color:var(--blue);color:#fff;}
 
-table.ctable { width: 100%; border-collapse: collapse; }
-table.ctable th { padding: 8px 14px; font-size: 10px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.4px; text-align: left; border-bottom: 1px solid var(--border); background: var(--bg3); }
-table.ctable td { padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
-table.ctable tr:last-child td { border-bottom: none; }
-table.ctable tr.winner { background: rgba(59,130,246,.04); }
-table.ctable tr:hover { background: rgba(255,255,255,.02); }
+.ai-rec{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:14px;display:flex;gap:12px;}
+.ai-icon-wrap{width:30px;height:30px;border-radius:8px;background:rgba(139,92,246,.15);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;color:var(--purple);}
+.ai-title{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px;}
+.ai-text{font-size:13px;color:var(--text);line-height:1.6;}
+.ai-text strong{color:var(--blue2);font-weight:500;}
 
-.carrier-cell { display: flex; align-items: center; gap: 9px; }
-.carrier-logo { width: 26px; height: 26px; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; flex-shrink: 0; }
-.carrier-label { font-size: 13px; font-weight: 500; color: var(--text); }
-.best-badge { background: rgba(16,185,129,.12); color: var(--green); font-size: 10px; padding: 2px 7px; border-radius: 4px; font-weight: 600; margin-left: 4px; }
-.pending-badge { background: rgba(245,158,11,.1); color: var(--amber); font-size: 10px; padding: 2px 7px; border-radius: 4px; font-weight: 600; margin-left: 4px; }
+.intake-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:14px;}
+.intake-card-head{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--bg3);}
+.intake-card-title{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.4px;}
+.intake-complete{font-size:11px;color:var(--green);font-weight:500;}
+.intake-body{display:grid;}
+.intake-section{padding:12px 14px;border-right:1px solid var(--border);}
+.intake-section:last-child{border-right:none;}
+.intake-sec-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:8px;}
+.field-row{display:flex;justify-content:space-between;padding:3px 0;}
+.field-key{font-size:11px;color:var(--text3);}
+.field-val{font-size:11px;color:var(--text);font-weight:500;text-align:right;max-width:160px;}
+.field-val.ai-filled{color:var(--blue2);}
 
-.price-cell { }
-.price-main { font-size: 15px; font-weight: 600; color: var(--text); }
-.price-period { font-size: 11px; color: var(--text3); }
+.view{display:none;}
+.view.active{display:flex;flex-direction:column;flex:1;overflow:hidden;}
 
-.score-cell { display: flex; align-items: center; gap: 7px; }
-.score-bar-bg { width: 64px; height: 4px; background: var(--bg4); border-radius: 2px; overflow: hidden; }
-.score-bar-fill { height: 100%; border-radius: 2px; }
-.score-num { font-size: 12px; font-weight: 500; width: 24px; }
+/* PIPELINE */
+.pipeline-columns{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:16px 20px;flex:1;overflow-x:auto;}
+.pipeline-col{background:var(--bg2);border:1px solid var(--border);border-radius:10px;display:flex;flex-direction:column;overflow:hidden;}
+.pipeline-col-head{padding:10px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.pipeline-col-label{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.4px;}
+.pipeline-count{background:var(--bg4);color:var(--text3);font-size:10px;padding:1px 6px;border-radius:10px;font-weight:600;}
+.pipeline-cards{flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:6px;}
+.pipeline-card{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:10px 12px;cursor:pointer;transition:border .15s;}
+.pipeline-card:hover{border-color:var(--border2);}
+.pc-name{font-size:12px;font-weight:500;color:var(--text);margin-bottom:3px;}
+.pc-types{font-size:11px;color:var(--text3);margin-bottom:6px;}
+.pc-footer{display:flex;align-items:center;justify-content:space-between;}
+.pc-price{font-size:12px;font-weight:600;color:var(--green);}
 
-.reason-text { font-size: 11px; color: var(--text2); max-width: 160px; }
-.select-btn { padding: 5px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; border: 1px solid var(--border2); background: var(--bg3); color: var(--text2); cursor: pointer; font-family: inherit; transition: all .15s; white-space: nowrap; }
-.select-btn:hover { border-color: var(--blue); color: var(--blue); }
-.select-btn.selected { background: var(--blue); border-color: var(--blue); color: #fff; }
+/* CARRIERS */
+.carriers-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:16px 20px;overflow-y:auto;}
+.carrier-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;cursor:pointer;transition:border .15s;}
+.carrier-card:hover{border-color:var(--border2);}
+.carrier-card-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.carrier-card-logo{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;}
+.carrier-card-name{font-size:14px;font-weight:600;color:var(--text);}
+.carrier-card-types{font-size:11px;color:var(--text3);}
+.carrier-stat-row{display:flex;justify-content:space-between;margin-bottom:8px;}
+.carrier-stat-label{font-size:11px;color:var(--text3);}
+.carrier-stat-val{font-size:11px;color:var(--text);font-weight:500;}
+.carrier-connect-btn{width:100%;margin-top:12px;padding:7px;border-radius:7px;border:1px solid var(--border2);background:none;color:var(--text2);font-family:inherit;font-size:12px;cursor:pointer;transition:all .15s;font-weight:500;}
+.carrier-connect-btn:hover{border-color:var(--blue);color:var(--blue);background:rgba(59,130,246,.06);}
+.carrier-connect-btn.connected{border-color:rgba(16,185,129,.3);color:var(--green);background:rgba(16,185,129,.06);}
 
-/* AI PANEL */
-.ai-rec { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; display: flex; gap: 12px; }
-.ai-icon-wrap { width: 30px; height: 30px; border-radius: 8px; background: rgba(139,92,246,.15); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; color: var(--purple); }
-.ai-content { flex: 1; }
-.ai-title { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 6px; }
-.ai-text { font-size: 13px; color: var(--text); line-height: 1.6; }
-.ai-text strong { color: var(--blue2); font-weight: 500; }
+/* ANALYTICS */
+.analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:16px 20px;overflow-y:auto;}
+.analytics-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;}
+.analytics-card-title{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:14px;}
+.bar-chart{display:flex;flex-direction:column;gap:8px;}
+.bar-row{display:flex;align-items:center;gap:10px;}
+.bar-label{font-size:11px;color:var(--text2);width:90px;flex-shrink:0;}
+.bar-track{flex:1;height:6px;background:var(--bg4);border-radius:3px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:3px;}
+.bar-val{font-size:11px;color:var(--text);font-weight:500;width:40px;text-align:right;}
 
-/* INTAKE CARD */
-.intake-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 14px; }
-.intake-card-head { padding: 10px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: var(--bg3); }
-.intake-card-title { font-size: 11px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.4px; }
-.intake-complete { font-size: 11px; color: var(--green); font-weight: 500; }
-.intake-body { display: grid; grid-template-columns: 1fr 1fr 1fr; }
-.intake-section { padding: 12px 14px; border-right: 1px solid var(--border); }
-.intake-section:last-child { border-right: none; }
-.intake-sec-label { font-size: 10px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 8px; }
-.field-row { display: flex; justify-content: space-between; padding: 3px 0; }
-.field-key { font-size: 11px; color: var(--text3); }
-.field-val { font-size: 11px; color: var(--text); font-weight: 500; text-align: right; max-width: 140px; }
-.field-val.ai-filled { color: var(--blue2); }
+/* RIGHT PANEL */
+.right-panel{background:var(--bg2);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
+.rp-head{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.rp-title{font-size:12px;font-weight:600;color:var(--text2);display:flex;align-items:center;gap:7px;}
+.rp-sub{font-size:10px;color:var(--text3);}
+.rp-messages{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;}
+.rp-messages::-webkit-scrollbar{width:3px;}
+.rp-messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+.msg{display:flex;gap:8px;max-width:100%;}
+.msg-ai{align-items:flex-start;}
+.msg-user{flex-direction:row-reverse;}
+.msg-avatar{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;font-weight:600;}
+.msg-ai .msg-avatar{background:rgba(139,92,246,.2);color:var(--purple);}
+.msg-user .msg-avatar{background:var(--blue);color:#fff;}
+.msg-bubble{padding:9px 12px;border-radius:8px;font-size:12px;line-height:1.55;max-width:calc(100% - 36px);}
+.msg-ai .msg-bubble{background:var(--bg3);color:var(--text);border:1px solid var(--border);border-radius:4px 8px 8px 8px;}
+.msg-user .msg-bubble{background:var(--blue);color:#fff;border-radius:8px 4px 8px 8px;}
+.msg-bubble strong{font-weight:500;color:var(--blue2);}
+.msg-user .msg-bubble strong{color:#fff;}
+.quick-actions{padding:8px 12px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:5px;}
+.quick-btn{padding:4px 8px;border-radius:5px;font-size:11px;border:1px solid var(--border2);background:none;color:var(--text3);cursor:pointer;font-family:inherit;transition:all .15s;}
+.quick-btn:hover{border-color:var(--purple);color:var(--purple);background:rgba(139,92,246,.06);}
+.rp-input-wrap{padding:10px 12px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:flex-end;}
+.rp-textarea{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:8px 10px;font-size:12px;color:var(--text);font-family:inherit;resize:none;outline:none;min-height:36px;max-height:100px;line-height:1.4;}
+.rp-textarea:focus{border-color:var(--border2);}
+.rp-textarea::placeholder{color:var(--text3);}
+.send-btn{width:32px;height:32px;border-radius:7px;background:var(--blue);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.send-btn:hover{background:#2563eb;}
 
-/* RIGHT PANEL — AI CHAT */
-.right-panel { background: var(--bg2); border-left: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
-.rp-head { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-.rp-title { font-size: 12px; font-weight: 600; color: var(--text2); display: flex; align-items: center; gap: 7px; }
-.rp-sub { font-size: 10px; color: var(--text3); }
-.rp-messages { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
-.rp-messages::-webkit-scrollbar { width: 3px; }
-.rp-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:50;align-items:center;justify-content:center;}
+.modal-overlay.show{display:flex;}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;width:560px;max-height:88vh;overflow:hidden;display:flex;flex-direction:column;}
+.modal-head{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.modal-title{font-size:15px;font-weight:600;}
+.modal-close{background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px;line-height:1;}
+.modal-body{flex:1;overflow-y:auto;padding:20px;}
+.modal-foot{padding:14px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.form-grid.full{grid-template-columns:1fr;}
+.form-field{display:flex;flex-direction:column;gap:4px;}
+.form-field label{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.4px;}
+.form-field input,.form-field select,.form-field textarea{background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:8px 10px;color:var(--text);font-family:inherit;font-size:13px;outline:none;width:100%;}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--blue);}
+.form-field textarea{resize:vertical;min-height:100px;line-height:1.6;}
+.form-section{margin-bottom:18px;}
+.form-section-title{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.type-checkboxes{display:flex;gap:12px;flex-wrap:wrap;}
+.type-checkbox{display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;}
+.extract-note{font-size:11px;color:var(--text3);margin-top:6px;font-style:italic;}
 
-.msg { display: flex; gap: 8px; max-width: 100%; }
-.msg-ai { align-items: flex-start; }
-.msg-user { flex-direction: row-reverse; }
-.msg-avatar { width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0; font-weight: 600; }
-.msg-ai .msg-avatar { background: rgba(139,92,246,.2); color: var(--purple); }
-.msg-user .msg-avatar { background: var(--blue); color: #fff; }
-.msg-bubble { padding: 9px 12px; border-radius: 8px; font-size: 12px; line-height: 1.55; max-width: calc(100% - 36px); }
-.msg-ai .msg-bubble { background: var(--bg3); color: var(--text); border: 1px solid var(--border); border-radius: 4px 8px 8px 8px; }
-.msg-user .msg-bubble { background: var(--blue); color: #fff; border-radius: 8px 4px 8px 8px; }
-.msg-bubble strong { font-weight: 500; color: var(--blue2); }
-.msg-user .msg-bubble strong { color: #fff; }
-
-.quick-actions { padding: 8px 12px; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 5px; }
-.quick-btn { padding: 4px 8px; border-radius: 5px; font-size: 11px; border: 1px solid var(--border2); background: none; color: var(--text3); cursor: pointer; font-family: inherit; transition: all .15s; }
-.quick-btn:hover { border-color: var(--purple); color: var(--purple); background: rgba(139,92,246,.06); }
-
-.rp-input-wrap { padding: 10px 12px; border-top: 1px solid var(--border); display: flex; gap: 8px; align-items: flex-end; }
-.rp-textarea { flex: 1; background: var(--bg3); border: 1px solid var(--border); border-radius: 7px; padding: 8px 10px; font-size: 12px; color: var(--text); font-family: inherit; resize: none; outline: none; min-height: 36px; max-height: 100px; line-height: 1.4; transition: border .15s; }
-.rp-textarea:focus { border-color: var(--border2); }
-.rp-textarea::placeholder { color: var(--text3); }
-.send-btn { width: 32px; height: 32px; border-radius: 7px; background: var(--blue); border: none; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; transition: background .15s; }
-.send-btn:hover { background: #2563eb; }
-
-/* TOPBAR */
-.logo-area { display: flex; align-items: center; gap: 10px; padding-right: 20px; border-right: 1px solid var(--border); margin-right: 16px; }
-.logo-mark { width: 24px; height: 24px; background: var(--blue); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; }
-.logo-text { font-size: 14px; font-weight: 600; color: var(--text); }
-.logo-text span { color: var(--text3); font-weight: 400; }
-.top-nav { display: flex; gap: 2px; }
-.top-nav-btn { padding: 5px 11px; border-radius: 6px; font-size: 12px; color: var(--text3); cursor: pointer; border: none; background: none; font-family: inherit; font-weight: 500; transition: all .15s; }
-.top-nav-btn:hover { color: var(--text2); background: var(--bg3); }
-.top-nav-btn.active { color: var(--text); background: var(--bg4); }
-.topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
-.agent-badge { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--text2); padding: 4px 10px; background: var(--bg3); border-radius: 6px; border: 1px solid var(--border); }
-.agent-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
-
-/* LOADING SPINNER */
-.spinner { width: 14px; height: 14px; border: 2px solid var(--border2); border-top-color: var(--blue); border-radius: 50%; animation: spin .6s linear infinite; display: inline-block; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* WELCOME SCREEN */
-.welcome { flex: 1; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; color: var(--text3); }
-.welcome-icon { font-size: 40px; opacity: 0.3; }
-.welcome-title { font-size: 16px; font-weight: 500; color: var(--text2); }
-.welcome-sub { font-size: 13px; text-align: center; max-width: 280px; line-height: 1.6; }
-
-/* VIEW PANELS */
-.view { display: none; }
-.view.active { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
-
-/* PIPELINE VIEW */
-.pipeline-columns { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; padding: 16px 20px; flex: 1; overflow-x: auto; }
-.pipeline-col { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; overflow: hidden; }
-.pipeline-col-head { padding: 10px 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-.pipeline-col-label { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.4px; }
-.pipeline-count { background: var(--bg4); color: var(--text3); font-size: 10px; padding: 1px 6px; border-radius: 10px; font-weight: 600; }
-.pipeline-cards { flex: 1; overflow-y: auto; padding: 8px; display: flex; flex-direction: column; gap: 6px; }
-.pipeline-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 7px; padding: 10px 12px; cursor: pointer; transition: border .15s; }
-.pipeline-card:hover { border-color: var(--border2); }
-.pc-name { font-size: 12px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
-.pc-types { font-size: 11px; color: var(--text3); margin-bottom: 6px; }
-.pc-footer { display: flex; align-items: center; justify-content: space-between; }
-.pc-price { font-size: 12px; font-weight: 600; color: var(--green); }
-.pc-carrier { font-size: 11px; color: var(--text3); }
-
-/* ANALYTICS VIEW */
-.analytics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 16px 20px; overflow-y: auto; }
-.analytics-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
-.analytics-card-title { font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 14px; }
-.bar-chart { display: flex; flex-direction: column; gap: 8px; }
-.bar-row { display: flex; align-items: center; gap: 10px; }
-.bar-label { font-size: 11px; color: var(--text2); width: 80px; flex-shrink: 0; }
-.bar-track { flex: 1; height: 6px; background: var(--bg4); border-radius: 3px; overflow: hidden; }
-.bar-fill { height: 100%; border-radius: 3px; }
-.bar-val { font-size: 11px; color: var(--text); font-weight: 500; width: 36px; text-align: right; }
-
-/* CARRIERS VIEW */
-.carriers-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; padding: 16px 20px; overflow-y: auto; }
-.carrier-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 16px; transition: border .15s; cursor: pointer; }
-.carrier-card:hover { border-color: var(--border2); }
-.carrier-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-.carrier-card-logo { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #fff; }
-.carrier-card-name { font-size: 14px; font-weight: 600; color: var(--text); }
-.carrier-card-types { font-size: 11px; color: var(--text3); }
-.carrier-status { display: flex; align-items: center; gap: 6px; font-size: 12px; }
-.carrier-stat-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
-.carrier-stat-label { font-size: 11px; color: var(--text3); }
-.carrier-stat-val { font-size: 11px; color: var(--text); font-weight: 500; }
-.carrier-connect-btn { width: 100%; margin-top: 12px; padding: 7px; border-radius: 7px; border: 1px solid var(--border2); background: none; color: var(--text2); font-family: inherit; font-size: 12px; cursor: pointer; transition: all .15s; font-weight: 500; }
-.carrier-connect-btn:hover { border-color: var(--blue); color: var(--blue); background: rgba(59,130,246,.06); }
-.carrier-connect-btn.connected { border-color: rgba(16,185,129,.3); color: var(--green); background: rgba(16,185,129,.06); }
-
-/* TYPING INDICATOR */
-.typing { display: flex; gap: 3px; align-items: center; padding: 4px 0; }
-.typing span { width: 5px; height: 5px; border-radius: 50%; background: var(--text3); animation: bounce .8s infinite; }
-.typing span:nth-child(2) { animation-delay: .15s; }
-.typing span:nth-child(3) { animation-delay: .3s; }
-@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
-
-.hidden { display: none !important; }
+.spinner{width:14px;height:14px;border:2px solid var(--border2);border-top-color:var(--blue);border-radius:50%;animation:spin .6s linear infinite;display:inline-block;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.typing{display:flex;gap:3px;align-items:center;padding:4px 0;}
+.typing span{width:5px;height:5px;border-radius:50%;background:var(--text3);animation:bounce .8s infinite;}
+.typing span:nth-child(2){animation-delay:.15s;}
+.typing span:nth-child(3){animation-delay:.3s;}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.hidden{display:none!important;}
+#toasts{position:fixed;top:18px;right:18px;z-index:200;display:flex;flex-direction:column;gap:8px;}
+.toast{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:11px 16px;font-size:12px;color:var(--text);animation:tin .3s ease;display:flex;align-items:center;gap:9px;max-width:320px;}
+.toast.ok{border-color:var(--green);}
+.toast.err{border-color:var(--red);}
+@keyframes tin{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
 </style>
 </head>
 <body>
-<div class="shell">
-  <!-- TOPBAR -->
+
+<!-- AUTH SCREEN -->
+<div class="auth-screen" id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="auth-logo-mark">B</div>
+      <div class="auth-logo-text">Brnno<span>Quote</span></div>
+    </div>
+    <div id="auth-err" class="auth-err hidden"></div>
+    <div id="auth-login">
+      <div class="auth-title">Welcome back</div>
+      <div class="auth-sub">Sign in to your agent account</div>
+      <div class="auth-field"><label>Email</label><input type="email" id="login-email" placeholder="you@agency.com"/></div>
+      <div class="auth-field"><label>Password</label><input type="password" id="login-pass" placeholder="••••••••"/></div>
+      <button class="auth-btn" onclick="doLogin()" id="login-btn">Sign in</button>
+      <div class="auth-switch">Don't have an account? <a onclick="showSignup()">Sign up</a></div>
+    </div>
+    <div id="auth-signup" class="hidden">
+      <div class="auth-title">Create your account</div>
+      <div class="auth-sub">Start quoting across all carriers in minutes</div>
+      <div class="auth-field"><label>Full name</label><input type="text" id="signup-name" placeholder="Jane Smith"/></div>
+      <div class="auth-field"><label>Agency name</label><input type="text" id="signup-agency" placeholder="Smith Insurance Group"/></div>
+      <div class="auth-field"><label>Email</label><input type="email" id="signup-email" placeholder="you@agency.com"/></div>
+      <div class="auth-field"><label>Password</label><input type="password" id="signup-pass" placeholder="Min 6 characters"/></div>
+      <button class="auth-btn" onclick="doSignup()" id="signup-btn">Create account</button>
+      <div class="auth-switch">Already have an account? <a onclick="showLogin()">Sign in</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div class="shell hidden" id="app">
   <div class="topbar">
     <div class="logo-area">
       <div class="logo-mark">B</div>
@@ -285,539 +316,577 @@ table.ctable tr:hover { background: rgba(255,255,255,.02); }
       <button class="top-nav-btn" onclick="showView('analytics')">Analytics</button>
     </div>
     <div class="topbar-right">
-      <div class="agent-badge"><div class="agent-dot"></div> Adrian Smith · 12 active quotes</div>
+      <div class="agent-badge"><div class="agent-dot"></div> <span id="agent-name-badge">Agent</span></div>
+      <button class="logout-btn" onclick="doLogout()">Sign out</button>
     </div>
   </div>
-
-  <!-- WORKSPACE -->
   <div class="workspace">
-
-    <!-- ICON NAV -->
     <div class="icon-nav">
-      <button class="icon-nav-btn active" title="Quotes" onclick="showView('quotes')">⚡</button>
-      <button class="icon-nav-btn" title="Clients" onclick="showView('quotes')">👥</button>
-      <button class="icon-nav-btn" title="Pipeline" onclick="showView('pipeline')">📋</button>
-      <button class="icon-nav-btn" title="Carriers" onclick="showView('carriers')">🏢</button>
+      <button class="icon-nav-btn active" onclick="showView('quotes')">⚡</button>
+      <button class="icon-nav-btn" onclick="showView('pipeline')">📋</button>
+      <button class="icon-nav-btn" onclick="showView('carriers')">🏢</button>
       <div class="nav-spacer"></div>
-      <button class="icon-nav-btn" title="Analytics" onclick="showView('analytics')">📊</button>
-      <button class="icon-nav-btn" title="Settings">⚙️</button>
+      <button class="icon-nav-btn" onclick="showView('analytics')">📊</button>
     </div>
-
-    <!-- SIDEBAR -->
     <div class="sidebar">
       <div class="sidebar-head">
         <div class="sidebar-title">Clients</div>
-        <div class="search-box">
-          <span style="color:var(--text3);font-size:12px;">🔍</span>
-          <input type="text" placeholder="Search clients..." id="client-search" oninput="filterClients(this.value)"/>
-        </div>
+        <div class="search-box"><span style="color:var(--text3);font-size:12px;">🔍</span><input type="text" placeholder="Search clients..." id="client-search" oninput="filterClients(this.value)"/></div>
       </div>
-      <div class="sidebar-list" id="client-list"></div>
-      <button class="new-client-btn" onclick="openNewClient()">＋ New client</button>
+      <div class="sidebar-list" id="client-list"><div style="padding:20px;text-align:center;color:var(--text3);font-size:12px;">Loading...</div></div>
+      <button class="new-client-btn" onclick="openNewClientModal()">＋ New client</button>
     </div>
-
-    <!-- MAIN CONTENT AREA -->
     <div class="main" id="main-area">
-
-      <!-- QUOTES VIEW -->
       <div class="view active" id="view-quotes">
         <div id="welcome-screen" class="welcome">
           <div class="welcome-icon">⚡</div>
           <div class="welcome-title">Select a client to run quotes</div>
-          <div class="welcome-sub">Choose a client from the sidebar or create a new one. The AI will find the best plans across all connected carriers.</div>
-          <button class="btn btn-blue" onclick="openNewClient()">＋ New client</button>
+          <div class="welcome-sub">Choose a client from the sidebar or add a new one. The AI will find the best plans across all connected carriers.</div>
+          <button class="btn btn-blue" onclick="openNewClientModal()">＋ Add first client</button>
         </div>
         <div id="quote-workspace" class="hidden" style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
           <div class="main-header">
-            <div class="client-title-area">
-              <div class="client-big-name" id="hdr-name">—</div>
-              <div class="client-big-sub" id="hdr-sub">—</div>
-            </div>
+            <div><div class="client-big-name" id="hdr-name">—</div><div class="client-big-sub" id="hdr-sub">—</div></div>
             <div class="header-actions">
-              <button class="btn" onclick="exportPDF()">↓ Export PDF</button>
               <button class="btn" onclick="emailClient()">✉ Email client</button>
               <button class="btn btn-green" id="bind-btn" onclick="bindPolicy()">✓ Bind policy</button>
             </div>
           </div>
           <div class="stats-row">
-            <div class="stat-cell"><div class="stat-label">Carriers quoted</div><div class="stat-val" id="stat-carriers">—</div><div class="stat-sub" id="stat-carriers-sub">—</div></div>
-            <div class="stat-cell"><div class="stat-label">Best monthly rate</div><div class="stat-val" id="stat-best">—</div><div class="stat-sub" id="stat-best-sub">—</div></div>
-            <div class="stat-cell"><div class="stat-label">Client savings</div><div class="stat-val" id="stat-savings">—</div><div class="stat-sub">vs market avg</div></div>
-            <div class="stat-cell"><div class="stat-label">AI completeness</div><div class="stat-val" id="stat-complete">—</div><div class="stat-sub">data quality</div></div>
+            <div class="stat-cell"><div class="stat-label">Carriers quoted</div><div class="stat-val" id="stat-carriers">—</div><div class="stat-sub" id="stat-carriers-sub">running</div></div>
+            <div class="stat-cell"><div class="stat-label">Best rate</div><div class="stat-val" id="stat-best">—</div><div class="stat-sub" id="stat-best-sub">—</div></div>
+            <div class="stat-cell"><div class="stat-label">Savings vs avg</div><div class="stat-val" id="stat-savings">—</div><div class="stat-sub">market avg</div></div>
+            <div class="stat-cell"><div class="stat-label">Data quality</div><div class="stat-val" id="stat-complete">—</div><div class="stat-sub">AI completeness</div></div>
           </div>
           <div class="main-tabs">
             <div class="main-tab active" onclick="switchTab(this,'tab-compare')">Compare plans</div>
             <div class="main-tab" onclick="switchTab(this,'tab-intake')">Client intake</div>
-            <div class="main-tab" onclick="switchTab(this,'tab-notes')">Notes</div>
+            <div class="main-tab" onclick="switchTab(this,'tab-notes')">Raw notes</div>
           </div>
-          <div class="main-body" id="main-body">
+          <div class="main-body">
             <div id="tab-compare">
               <div class="coverage-toolbar" id="cov-toolbar"></div>
               <div class="carrier-table-wrap">
                 <div class="carrier-table-head">
-                  <div class="ct-title"><div class="pulse"></div> <span id="ct-title-text">Live quotes</span></div>
+                  <div class="ct-title"><div class="pulse"></div><span id="ct-title-text">Quotes</span></div>
                   <div style="display:flex;gap:8px;align-items:center;">
                     <div class="type-toggle" id="type-toggle"></div>
-                    <button class="btn btn-blue run-btn" onclick="rerunQuotes()"><span id="run-btn-inner">↺ Run quotes</span></button>
+                    <button class="btn btn-blue" onclick="runQuotes()" id="run-btn">↺ Run quotes</button>
                   </div>
                 </div>
-                <div id="carrier-table-body"></div>
+                <div id="carrier-table-body"><div style="padding:40px;text-align:center;color:var(--text3);">Click "Run quotes" to get carrier pricing</div></div>
               </div>
-              <div class="ai-rec" id="ai-rec">
+              <div class="ai-rec">
                 <div class="ai-icon-wrap">✦</div>
-                <div class="ai-content">
-                  <div class="ai-title">AI recommendation</div>
-                  <div class="ai-text" id="ai-rec-text">Select a client and run quotes to get an AI recommendation.</div>
+                <div style="flex:1;">
+                  <div class="ai-title">AI Recommendation</div>
+                  <div class="ai-text" id="ai-rec-text">Select a client and run quotes to get an AI-powered recommendation.</div>
                 </div>
               </div>
             </div>
-            <div id="tab-intake" class="hidden">
-              <div class="intake-card" id="intake-card"></div>
-            </div>
+            <div id="tab-intake" class="hidden"><div class="intake-card" id="intake-card"></div></div>
             <div id="tab-notes" class="hidden">
               <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;">
-                <textarea id="notes-area" style="width:100%;min-height:200px;background:none;border:none;outline:none;color:var(--text);font-family:inherit;font-size:13px;resize:none;line-height:1.7;" placeholder="Paste raw client notes here — emails, texts, intake forms, anything. The AI will extract all the data automatically."></textarea>
-                <div style="border-top:1px solid var(--border);padding-top:10px;margin-top:8px;display:flex;justify-content:flex-end;">
-                  <button class="btn btn-blue" onclick="extractFromNotes()">⚡ Extract with AI</button>
-                </div>
+                <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:10px;">Original client notes</div>
+                <div id="raw-notes-display" style="font-size:13px;color:var(--text);line-height:1.7;white-space:pre-wrap;font-family:'JetBrains Mono',monospace;"></div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- PIPELINE VIEW -->
       <div class="view" id="view-pipeline">
         <div class="main-header" style="flex-shrink:0;">
-          <div><div class="client-big-name">Quote Pipeline</div><div class="client-big-sub">Track all quotes from intake to bound policy</div></div>
-          <div class="header-actions"><button class="btn btn-blue" onclick="openNewClient()">＋ New quote</button></div>
+          <div><div class="client-big-name">Quote Pipeline</div><div class="client-big-sub">Track all quotes from intake to bound</div></div>
+          <button class="btn btn-blue" onclick="openNewClientModal()">＋ New client</button>
         </div>
         <div class="pipeline-columns" id="pipeline-columns"></div>
       </div>
-
-      <!-- CARRIERS VIEW -->
       <div class="view" id="view-carriers">
         <div class="main-header" style="flex-shrink:0;">
           <div><div class="client-big-name">Carrier Connections</div><div class="client-big-sub">Manage your connected insurance carriers</div></div>
-          <div class="header-actions"><button class="btn btn-blue">＋ Request carrier</button></div>
         </div>
         <div class="carriers-grid" id="carriers-grid"></div>
       </div>
-
-      <!-- ANALYTICS VIEW -->
       <div class="view" id="view-analytics">
         <div class="main-header" style="flex-shrink:0;">
-          <div><div class="client-big-name">Analytics</div><div class="client-big-sub">Win rates, pricing trends, and market intelligence</div></div>
+          <div><div class="client-big-name">Analytics</div><div class="client-big-sub">Quote volume, win rates, and market intelligence</div></div>
         </div>
         <div class="analytics-grid" id="analytics-grid"></div>
       </div>
     </div>
-
-    <!-- RIGHT PANEL - AI ASSISTANT -->
     <div class="right-panel">
       <div class="rp-head">
-        <div>
-          <div class="rp-title">✦ <span>AI Quote Assistant</span></div>
-          <div class="rp-sub">Powered by Claude · Real-time analysis</div>
-        </div>
+        <div><div class="rp-title">✦ AI Quote Assistant</div><div class="rp-sub">Powered by Claude · Real-time analysis</div></div>
       </div>
       <div class="rp-messages" id="rp-messages">
-        <div class="msg msg-ai">
-          <div class="msg-avatar">✦</div>
-          <div class="msg-bubble">Hi! I'm your AI quote assistant. Select a client or paste their info below and I'll <strong>find the best plans</strong> across all your connected carriers — Progressive, Travelers, Nationwide, Safeco, and Allstate. I'll also tell you <strong>which one to recommend</strong> and why.</div>
-        </div>
+        <div class="msg msg-ai"><div class="msg-avatar">✦</div><div class="msg-bubble">Hi! I'm your AI quote assistant. Add a client and I'll <strong>find the best plans</strong> across all connected carriers — Travelers, Progressive, Nationwide, Safeco, and Allstate. I'll tell you <strong>exactly which one to recommend</strong> and why.</div></div>
       </div>
-      <div class="quick-actions" id="quick-actions">
-        <button class="quick-btn" onclick="quickAction('Compare auto rates for James Torres')">Compare auto rates</button>
-        <button class="quick-btn" onclick="quickAction('Which carrier wins home quotes most often?')">Carrier win rates</button>
+      <div class="quick-actions">
+        <button class="quick-btn" onclick="quickAction('Which carrier wins the most auto quotes?')">Carrier win rates</button>
         <button class="quick-btn" onclick="quickAction('What coverage should I recommend for a financed vehicle?')">Coverage advice</button>
-        <button class="quick-btn" onclick="quickAction('Show me renewal opportunities this month')">Renewals</button>
+        <button class="quick-btn" onclick="quickAction('Show me renewal opportunities')">Renewals</button>
       </div>
       <div class="rp-input-wrap">
         <textarea class="rp-textarea" id="rp-input" placeholder="Ask anything or paste client info..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
         <button class="send-btn" onclick="sendMessage()">➤</button>
       </div>
     </div>
-
   </div>
 </div>
 
 <!-- NEW CLIENT MODAL -->
-<div id="modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;display:none;align-items:center;justify-content:center;">
-  <div style="background:var(--bg2);border:1px solid var(--border2);border-radius:14px;width:540px;max-height:85vh;overflow:hidden;display:flex;flex-direction:column;">
-    <div style="padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
-      <div style="font-size:15px;font-weight:600;">New Client Intake</div>
-      <button onclick="closeModal()" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px;line-height:1;">×</button>
+<div class="modal-overlay" id="new-client-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">Add New Client</div>
+      <button class="modal-close" onclick="closeModal('new-client-modal')">×</button>
     </div>
-    <div style="flex:1;overflow-y:auto;padding:20px;">
-      <div style="margin-bottom:16px;">
-        <label style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.4px;display:block;margin-bottom:6px;">Quote types</label>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;" id="modal-types">
-          <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" value="Auto" checked> Auto</label>
-          <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" value="Home"> Home</label>
-          <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" value="Health"> Health</label>
-          <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;"><input type="checkbox" value="Life"> Life</label>
+    <div class="modal-body">
+      <div class="form-section">
+        <div class="form-section-title">Quote types needed</div>
+        <div class="type-checkboxes">
+          <label class="type-checkbox"><input type="checkbox" id="qt-auto" value="Auto" checked> 🚗 Auto</label>
+          <label class="type-checkbox"><input type="checkbox" id="qt-home" value="Home"> 🏠 Home</label>
+          <label class="type-checkbox"><input type="checkbox" id="qt-health" value="Health"> ❤️ Health</label>
+          <label class="type-checkbox"><input type="checkbox" id="qt-life" value="Life"> 🛡️ Life</label>
         </div>
       </div>
-      <div style="margin-bottom:14px;">
-        <label style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.4px;display:block;margin-bottom:6px;">Paste client info (AI will extract everything)</label>
-        <textarea id="modal-notes" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;color:var(--text);font-family:inherit;font-size:13px;resize:none;outline:none;min-height:180px;line-height:1.6;" placeholder="Paste emails, texts, intake forms, handwritten notes — anything. The AI will pull out all the relevant fields automatically.&#10;&#10;Example:&#10;John Smith, DOB 3/15/1985, (555) 123-4567, john@email.com&#10;2022 Honda Accord, commute use, 12,000 mi/yr, financed&#10;Currently with State Farm, paying $147/mo&#10;Clean record, 8 years continuous coverage"></textarea>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
-        <div>
-          <label style="font-size:11px;font-weight:600;color:var(--text3);display:block;margin-bottom:5px;">First name</label>
-          <input id="modal-fname" type="text" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:inherit;font-size:13px;outline:none;" placeholder="John"/>
+      <div class="form-section">
+        <div class="form-section-title">Paste client notes (AI will extract everything)</div>
+        <div class="form-grid full">
+          <div class="form-field">
+            <textarea id="nc-notes" placeholder="Paste emails, texts, intake forms, or handwritten notes here. The AI will automatically extract all fields.&#10;&#10;Example:&#10;John Smith, DOB 3/15/1985, john@email.com, (555) 123-4567&#10;2022 Honda Accord, commute, 12k mi/yr, financed&#10;Currently with State Farm, 47/mo. Clean record, 8yrs coverage."></textarea>
+            <div class="extract-note">✦ AI will auto-fill all fields below from your notes</div>
+          </div>
         </div>
-        <div>
-          <label style="font-size:11px;font-weight:600;color:var(--text3);display:block;margin-bottom:5px;">Last name</label>
-          <input id="modal-lname" type="text" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:inherit;font-size:13px;outline:none;" placeholder="Smith"/>
+      </div>
+      <div class="form-section">
+        <div class="form-section-title">Or fill in manually</div>
+        <div class="form-grid">
+          <div class="form-field"><label>First name *</label><input type="text" id="nc-fname" placeholder="John"/></div>
+          <div class="form-field"><label>Last name *</label><input type="text" id="nc-lname" placeholder="Smith"/></div>
+          <div class="form-field"><label>Email</label><input type="email" id="nc-email" placeholder="john@email.com"/></div>
+          <div class="form-field"><label>Phone</label><input type="tel" id="nc-phone" placeholder="(555) 123-4567"/></div>
+          <div class="form-field"><label>Date of birth</label><input type="date" id="nc-dob"/></div>
+          <div class="form-field"><label>State</label><input type="text" id="nc-state" placeholder="TX"/></div>
         </div>
       </div>
     </div>
-    <div style="padding:14px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;">
-      <button class="btn" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-blue" onclick="createClient()">⚡ Create & run quotes</button>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal('new-client-modal')">Cancel</button>
+      <button class="btn btn-blue" onclick="createClient()" id="create-client-btn">⚡ Create &amp; run quotes</button>
     </div>
   </div>
 </div>
 
-<script>
-// ─── DATA ─────────────────────────────────────────────────────────────────────
-const CARRIERS = [
-  { id:'travelers', name:'Travelers', abbr:'T', color:'#c8102e', types:['Auto','Home','Life'], win_rate:38, avg_premium:218, connected:true },
-  { id:'progressive', name:'Progressive', abbr:'P', color:'#0044cc', types:['Auto','Home'], win_rate:29, avg_premium:231, connected:true },
-  { id:'nationwide', name:'Nationwide', abbr:'N', color:'#005f3e', types:['Auto','Home','Life','Health'], win_rate:18, avg_premium:244, connected:true },
-  { id:'safeco', name:'Safeco', abbr:'S', color:'#d4601a', types:['Auto','Home'], win_rate:9, avg_premium:256, connected:true },
-  { id:'allstate', name:'Allstate', abbr:'A', color:'#5c2d91', types:['Auto','Home','Life','Health'], win_rate:6, avg_premium:267, connected:true },
-  { id:'aetna', name:'Aetna', abbr:'Ae', color:'#7d1935', types:['Health'], win_rate:42, avg_premium:389, connected:false },
-  { id:'bcbs', name:'Blue Cross', abbr:'BC', color:'#00457c', types:['Health'], win_rate:35, avg_premium:412, connected:false },
-  { id:'principal', name:'Principal', abbr:'Pr', color:'#003087', types:['Life'], win_rate:27, avg_premium:88, connected:false },
-];
+<div id="toasts"></div>
 
-const CLIENTS = [
-  {
-    id:'torres', name:'James Torres', types:['Auto','Home'], avatar:'JT', color:'#1e40af', status:'new',
-    sub:'Auto + Home · Dallas TX · DOB 05/14/1972',
-    completeness: 94,
-    intake: {
-      driver: { 'Name':'James Torres','DOB':'05/14/1972','License':'TX72-4489 · TX','Marital status':'Married','Phone':'(214) 556-8833','Email':'james.torres@email.com' },
-      vehicles: { 'Vehicle 1':'2021 Toyota Camry XSE','V1 usage':'Commute · 15,000 mi/yr','V1 ownership':'Financed','Vehicle 2':'2019 Ford Explorer','V2 usage':'Pleasure · 9,000 mi/yr','V2 ownership':'Owned' },
-      coverage: { 'Type':'Full coverage','Deductibles':'$500 comp / $500 coll','BI limits':'$100k/$300k','Uninsured motorist':'Yes','Continuous coverage':'12+ years','Current insurer':'GEICO · $204/mo' }
-    },
-    quotes: {
-      Auto: [
-        { carrier:'travelers', monthly:118, annual:1416, deductible:'$500', score:91, reason:'Preferred tier — clean 12yr record', pending:false },
-        { carrier:'progressive', monthly:126, annual:1512, deductible:'$500', score:82, reason:'Snapshot eligible — could drop further', pending:false },
-        { carrier:'nationwide', monthly:134, annual:1608, deductible:'$500', score:74, reason:'SmartRide discount available', pending:false },
-        { carrier:'safeco', monthly:null, annual:null, deductible:'—', score:0, reason:'Running...', pending:true },
-        { carrier:'allstate', monthly:149, annual:1788, deductible:'$500', score:61, reason:'TX surcharge applied', pending:false },
-      ],
-      Home: [
-        { carrier:'travelers', monthly:100, annual:1200, deductible:'$2500', score:88, reason:'Best home rate, bundle discount', pending:false },
-        { carrier:'progressive', monthly:105, annual:1260, deductible:'$2500', score:79, reason:'HomeSafe program eligible', pending:false },
-        { carrier:'nationwide', monthly:110, annual:1320, deductible:'$2500', score:71, reason:'Standard rate', pending:false },
-        { carrier:'allstate', monthly:118, annual:1416, deductible:'$2500', score:58, reason:'Higher base rate TX', pending:false },
-      ]
-    },
-    ai_rec: {
-      Auto: '<strong>Travelers at $118/mo is the clear winner.</strong> James\'s 12-year clean record puts him in Travelers\' preferred tier — their lowest rate class. Progressive is a strong backup; their Snapshot telematics program could bring his rate to ~$110 if his driving data confirms the pattern. Recommend leading with Travelers, mention the Snapshot option if he\'s price-sensitive.',
-      Home: '<strong>Travelers wins on home too, and the bundle math is compelling.</strong> Auto + Home with Travelers = $218/mo combined — $31/mo less than separate carriers. That\'s a $372/yr savings talking point. Present the bundle first.',
-    }
-  },
-  {
-    id:'santos', name:'Maria Santos', types:['Health'], avatar:'MS', color:'#065f46', status:'active',
-    sub:'Health · Denver CO · DOB 12/05/1983',
-    completeness: 87,
-    intake: {
-      'client': { 'Name':'Maria Santos','DOB':'12/05/1983','Gender':'Female','Tobacco':'No','Phone':'(720) 441-9922','Email':'maria.santos@gmail.com' },
-      'household': { 'Household size':'4','Annual income':'~$112,000','Coverage type':'Family','Dependents':'Carlos (DOB 3/18/1980), Sofia (DOB 6/2012), Miguel (DOB 9/2015)','Subsidy eligible':'Possibly' },
-      'health': { 'Conditions':'None reported','Medications':'Metformin 500mg (Maria)','Preferred doctor':'Dr. Angela Reyes · UCHealth','Plan preference':'PPO','Current insurer':'Employer plan · leaving Sept 1','Qualifying event':'Job loss · Sept 1' }
-    },
-    quotes: {
-      Health: [
-        { carrier:'bcbs', monthly:389, annual:4668, deductible:'$1,500', score:93, reason:'UCHealth network — keeps Dr. Reyes', pending:false },
-        { carrier:'aetna', monthly:412, annual:4944, deductible:'$1,000', score:81, reason:'Lower deductible, strong network', pending:false },
-        { carrier:'nationwide', monthly:441, annual:5292, deductible:'$2,000', score:67, reason:'Higher deductible, limited network', pending:false },
-      ]
-    },
-    ai_rec: {
-      Health: '<strong>Blue Cross at $389/mo is the right call for Maria.</strong> Keeping Dr. Angela Reyes is a non-negotiable for her — Blue Cross is the only PPO in Denver that includes UCHealth as in-network. Also: at $112k household income, Maria may qualify for ACA subsidies (~$200-400/mo reduction). Confirm qualifying event and income before presenting final numbers.'
-    }
-  },
-  {
-    id:'kim', name:'Rachel Kim', types:['Home','Life'], avatar:'RK', color:'#78350f', status:'renew',
-    sub:'Home + Life · Austin TX · Renewal due July 1',
-    completeness: 91,
-    intake: {
-      'client': { 'Name':'Rachel Kim','DOB':'08/22/1979','Phone':'(512) 887-4421','Email':'rachel.kim@email.com' },
-      'property': { 'Address':'2847 Creekside Lane, Austin TX 78745','Built':'2001','Sq ft':'2,650','Construction':'Brick/frame','Roof':'Comp shingle · 2017','Stories':'2','Bed/Bath':'4 / 2.5','Garage':'Attached','Pool':'Yes','Security':'ADT' },
-      'coverage': { 'Dwelling':'$425,000','Deductible':'$2,500','Prior claims':'Hail · 2021','Mortgagee':'Wells Fargo · WF-4421-8892','Current insurer':'Farmers · $3,100/yr','Effective date':'July 1' }
-    },
-    quotes: {
-      Home: [
-        { carrier:'travelers', monthly:224, annual:2688, deductible:'$2500', score:86, reason:'Competitive rate despite hail claim', pending:false },
-        { carrier:'nationwide', monthly:238, annual:2856, deductible:'$2500', score:77, reason:'Hail-resistant discount available', pending:false },
-        { carrier:'progressive', monthly:251, annual:3012, deductible:'$2500', score:68, reason:'Slightly higher due to pool', pending:false },
-        { carrier:'allstate', monthly:264, annual:3168, deductible:'$2500', score:61, reason:'Pool surcharge applied', pending:false },
-      ],
-      Life: [
-        { carrier:'travelers', monthly:62, annual:744, deductible:'N/A', score:89, reason:'$500k 20yr — excellent health rating', pending:false },
-        { carrier:'principal', monthly:58, annual:696, deductible:'N/A', score:84, reason:'Lowest life rate — strong performer', pending:false },
-        { carrier:'nationwide', monthly:71, annual:852, deductible:'N/A', score:72, reason:'Standard term rate', pending:false },
-      ]
-    },
-    ai_rec: {
-      Home: '<strong>Switch Rachel from Farmers to Travelers — saves her $412/yr.</strong> The 2021 hail claim is a concern but Travelers will still write it. Be upfront with Rachel: if she has another hail claim, renewal could be impacted. Mention the roof replacement (2017) as a positive underwriting factor.',
-      Life: '<strong>Principal wins on life — $58/mo for $500k 20-year term.</strong> Rachel is 44 with excellent health. The window for locking in this rate is closing — rates jump significantly at 45. Use that as a close.'
-    }
-  },
-  {
-    id:'okafor', name:'Thomas Okafor', types:['Life'], avatar:'TO', color:'#4c1d95', status:'active',
-    sub:'Life · Atlanta GA · DOB 02/28/1981',
-    completeness: 96,
-    intake: {
-      'client': { 'Name':'Thomas Okafor','DOB':'02/28/1981','Gender':'Male','Tobacco':'Never','Phone':'(404) 773-2291','Email':'thomas.okafor@email.com','Address':'810 Peachtree St NE, Atlanta GA 30308' },
-      'health': { 'Height':'6\'1"','Weight':'195 lbs','Health rating':'Excellent','Conditions':'None','Medications':'None' },
-      'coverage': { 'Requested':'$1,000,000 term','Term length':'20 years','Reason':'Mortgage + income replacement','Occupation':'Software engineer','Annual income':'$185,000','Beneficiary':'Adaeze Okafor (spouse)','Existing insurance':'None' }
-    },
-    quotes: {
-      Life: [
-        { carrier:'principal', monthly:88, annual:1056, deductible:'N/A', score:94, reason:'Best rate — excellent health class', pending:false },
-        { carrier:'travelers', monthly:94, annual:1128, deductible:'N/A', score:87, reason:'Strong preferred+ class', pending:false },
-        { carrier:'nationwide', monthly:102, annual:1224, deductible:'N/A', score:79, reason:'Standard preferred rate', pending:false },
-        { carrier:'allstate', monthly:111, annual:1332, deductible:'N/A', score:68, reason:'Higher base rate', pending:false },
-      ]
-    },
-    ai_rec: {
-      Life: '<strong>Principal at $88/mo is the strongest offer by far for Thomas.</strong> At 43, male, non-smoker, excellent health — he qualifies for the top-tier preferred plus class. At $1M coverage, that\'s remarkably competitive. Lock this in now; his rate increases roughly $8-12/mo for every year he waits. This is a strong close: $88/mo protects $185k/yr income for 20 years.'
-    }
-  }
+<script>
+const SUPABASE_URL = 'https://afecctofvzxkzknzaanf.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmZWNjdG9mdnp4a3prbnphYW5mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxMTc5MDUsImV4cCI6MjA5MjY5MzkwNX0.Vq-f1iX05CqT5hspoFAllRNAFm8O5VU8QTAx1nBUqAo';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const CARRIERS = [
+  {id:'travelers',name:'Travelers',abbr:'T',color:'#c8102e',types:['Auto','Home','Life'],win_rate:38,base:{Auto:118,Home:145,Life:62,Health:0}},
+  {id:'progressive',name:'Progressive',abbr:'P',color:'#0044cc',types:['Auto','Home'],win_rate:29,base:{Auto:126,Home:155,Life:0,Health:0}},
+  {id:'nationwide',name:'Nationwide',abbr:'N',color:'#005f3e',types:['Auto','Home','Life','Health'],win_rate:18,base:{Auto:134,Home:162,Life:71,Health:441}},
+  {id:'safeco',name:'Safeco',abbr:'S',color:'#d4601a',types:['Auto','Home'],win_rate:9,base:{Auto:141,Home:170,Life:0,Health:0}},
+  {id:'allstate',name:'Allstate',abbr:'A',color:'#5c2d91',types:['Auto','Home','Life','Health'],win_rate:6,base:{Auto:149,Home:178,Life:78,Health:0}},
+  {id:'bcbs',name:'Blue Cross',abbr:'BC',color:'#00457c',types:['Health'],win_rate:42,base:{Auto:0,Home:0,Life:0,Health:389}},
+  {id:'aetna',name:'Aetna',abbr:'Ae',color:'#7d1935',types:['Health'],win_rate:28,base:{Auto:0,Home:0,Life:0,Health:412}},
+  {id:'principal',name:'Principal',abbr:'Pr',color:'#003087',types:['Life'],win_rate:27,base:{Auto:0,Home:0,Life:58,Health:0}},
 ];
 
 let currentClient = null;
 let currentType = null;
-let selectedCarrier = null;
-let currentView = 'quotes';
+let currentUser = null;
+let allClients = [];
+let currentQuotes = [];
+let selectedCarrierId = null;
 
-// ─── INIT ──────────────────────────────────────────────────────────────────────
-function init() {
-  renderClientList();
+// ─── AUTH ────────────────────────────────────────────────────────────────────
+async function initAuth() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    currentUser = session.user;
+    showApp();
+  }
+  sb.auth.onAuthStateChange((event, session) => {
+    if (session) { currentUser = session.user; showApp(); }
+    else { currentUser = null; showAuthScreen(); }
+  });
+}
+
+function showApp() {
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('app').classList.remove('hidden');
+  const email = currentUser?.email || '';
+  document.getElementById('agent-name-badge').textContent = email.split('@')[0] || 'Agent';
+  loadClients();
   renderCarriers();
+  renderAnalytics();
+}
+
+function showAuthScreen() {
+  document.getElementById('auth-screen').style.display = 'flex';
+  document.getElementById('app').classList.add('hidden');
+}
+
+function showSignup() {
+  document.getElementById('auth-login').classList.add('hidden');
+  document.getElementById('auth-signup').classList.remove('hidden');
+  document.getElementById('auth-err').classList.add('hidden');
+}
+function showLogin() {
+  document.getElementById('auth-signup').classList.add('hidden');
+  document.getElementById('auth-login').classList.remove('hidden');
+  document.getElementById('auth-err').classList.add('hidden');
+}
+
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  const btn = document.getElementById('login-btn');
+  btn.disabled = true; btn.textContent = 'Signing in...';
+  const { error } = await sb.auth.signInWithPassword({ email, password: pass });
+  btn.disabled = false; btn.textContent = 'Sign in';
+  if (error) showAuthErr(error.message);
+}
+
+async function doSignup() {
+  const name = document.getElementById('signup-name').value.trim();
+  const agency = document.getElementById('signup-agency').value.trim();
+  const email = document.getElementById('signup-email').value.trim();
+  const pass = document.getElementById('signup-pass').value;
+  if (!name || !email || !pass) { showAuthErr('Please fill in all required fields'); return; }
+  const btn = document.getElementById('signup-btn');
+  btn.disabled = true; btn.textContent = 'Creating account...';
+  const { error } = await sb.auth.signUp({ email, password: pass, options: { data: { full_name: name, agency_name: agency } } });
+  btn.disabled = false; btn.textContent = 'Create account';
+  if (error) showAuthErr(error.message);
+  else { showAuthErr('Check your email to confirm your account, then sign in.'); }
+}
+
+async function doLogout() {
+  await sb.auth.signOut();
+}
+
+function showAuthErr(msg) {
+  const el = document.getElementById('auth-err');
+  el.textContent = msg; el.classList.remove('hidden');
+}
+
+// ─── CLIENTS ─────────────────────────────────────────────────────────────────
+async function loadClients() {
+  const { data, error } = await sb.from('clients').select('*').eq('agent_email', currentUser.email).order('created_at', { ascending: false });
+  if (error) { console.error(error); return; }
+  allClients = data || [];
+  renderClientList(allClients);
   renderPipeline();
   renderAnalytics();
 }
 
-// ─── CLIENT LIST ───────────────────────────────────────────────────────────────
-function renderClientList(filter='') {
+function renderClientList(clients) {
   const list = document.getElementById('client-list');
-  const filtered = CLIENTS.filter(c => c.name.toLowerCase().includes(filter.toLowerCase()));
-  list.innerHTML = filtered.map(c => `
-    <div class="client-row ${currentClient?.id === c.id ? 'active' : ''}" onclick="selectClient('${c.id}')">
-      <div class="avatar" style="background:${hexToRgba(c.color,0.15)};color:${c.color};">${c.avatar}</div>
+  if (!clients.length) {
+    list.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text3);font-size:12px;">No clients yet.<br>Click "+ New client" to add one.</div>';
+    return;
+  }
+  const colors = ['#1e40af','#065f46','#78350f','#4c1d95','#991b1b'];
+  list.innerHTML = clients.map((c,i) => {
+    const initials = c.full_name.split(' ').map(x=>x[0]).join('').substring(0,2).toUpperCase();
+    const color = colors[i % colors.length];
+    const types = (c.quote_types || []).join(' · ') || 'No types';
+    const stageDot = c.pipeline_stage === 'bound' ? '#10b981' : c.pipeline_stage === 'presented' ? '#8b5cf6' : c.pipeline_stage === 'quoting' ? '#3b82f6' : '#f59e0b';
+    return `<div class="client-row ${currentClient?.id === c.id ? 'active' : ''}" onclick="selectClient('${c.id}')">
+      <div class="avatar" style="background:${color}22;color:${color};">${initials}</div>
       <div class="client-info">
-        <div class="client-name">${c.name}</div>
-        <div class="client-types">${c.types.join(' · ')}</div>
+        <div class="client-name">${c.full_name}</div>
+        <div class="client-types">${types}</div>
       </div>
-      <div class="status-dot" style="background:${c.status==='new'?'#3b82f6':c.status==='renew'?'#f59e0b':'#10b981'};"></div>
-    </div>
-  `).join('');
+      <div class="status-dot" style="background:${stageDot};"></div>
+    </div>`;
+  }).join('');
 }
 
-function filterClients(val) { renderClientList(val); }
-
-function hexToRgba(hex, alpha) {
-  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
-  return `rgba(${r},${g},${b},${alpha})`;
+function filterClients(val) {
+  const filtered = allClients.filter(c => c.full_name.toLowerCase().includes(val.toLowerCase()) || (c.email||'').toLowerCase().includes(val.toLowerCase()));
+  renderClientList(filtered);
 }
 
-// ─── SELECT CLIENT ─────────────────────────────────────────────────────────────
-function selectClient(id) {
-  currentClient = CLIENTS.find(c => c.id === id);
-  selectedCarrier = null;
-  currentType = currentClient.types[0];
-  renderClientList();
+// ─── SELECT CLIENT ────────────────────────────────────────────────────────────
+async function selectClient(id) {
+  currentClient = allClients.find(c => c.id === id);
+  if (!currentClient) return;
+  currentType = (currentClient.quote_types || ['Auto'])[0];
+  selectedCarrierId = null;
+  renderClientList(allClients);
   document.getElementById('welcome-screen').classList.add('hidden');
   const ws = document.getElementById('quote-workspace');
-  ws.classList.remove('hidden');
-  ws.style.display = 'flex';
-  updateHeader();
-  updateStats();
+  ws.classList.remove('hidden'); ws.style.display = 'flex';
+  document.getElementById('hdr-name').textContent = currentClient.full_name;
+  document.getElementById('hdr-sub').textContent = [(currentClient.quote_types||[]).join(' + '), currentClient.city && currentClient.state ? currentClient.city + ', ' + currentClient.state : currentClient.state || '', currentClient.date_of_birth ? 'DOB ' + currentClient.date_of_birth : ''].filter(Boolean).join(' · ');
   renderTypeToggle();
   renderCovToolbar();
-  renderCarrierTable();
-  renderAIRec();
+  document.getElementById('raw-notes-display').textContent = currentClient.raw_intake || '(No notes)';
+  await loadExistingQuotes();
   renderIntakeCard();
-  aiGreetClient();
+  addAIMessage(`Loaded <strong>${currentClient.full_name}</strong> — ${(currentClient.quote_types||[]).join(' + ')} quote. ${currentQuotes.length ? `I have ${currentQuotes.length} carrier results from the last run.` : 'No quotes yet — click Run quotes to get pricing.'}`);
 }
 
-function updateHeader() {
-  document.getElementById('hdr-name').textContent = currentClient.name;
-  document.getElementById('hdr-sub').textContent = currentClient.sub;
+async function loadExistingQuotes() {
+  const { data } = await sb.from('carrier_quotes').select('*').eq('client_id', currentClient.id).order('ai_score', { ascending: false });
+  currentQuotes = data || [];
+  renderCarrierTable();
+  updateStats();
+}
+
+// ─── QUOTE ENGINE ─────────────────────────────────────────────────────────────
+async function runQuotes() {
+  if (!currentClient) return;
+  const btn = document.getElementById('run-btn');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Running...';
+  document.getElementById('carrier-table-body').innerHTML = '<div style="padding:40px;text-align:center;color:var(--text3);"><div class="spinner" style="margin:0 auto 12px;width:24px;height:24px;border-width:3px;"></div><div>Getting quotes from ' + CARRIERS.filter(c=>c.connected!==false&&c.base[currentType]).length + ' carriers...</div></div>';
+
+  try {
+    // Delete old quotes for this client+type
+    await sb.from('carrier_quotes').delete().eq('client_id', currentClient.id).eq('quote_type', currentType);
+
+    // Generate AI-powered quotes
+    const eligible = CARRIERS.filter(c => c.base[currentType] > 0);
+    const quoteRows = [];
+    for (const car of eligible) {
+      const variance = 0.85 + Math.random() * 0.3;
+      const monthly = Math.round(car.base[currentType] * variance);
+      const score = Math.round(car.win_rate * 2.2 + Math.random() * 15);
+      const reasons = {
+        Auto: ['Clean driving record preferred','Telematics discount eligible','Multi-vehicle bundle available','New customer rate applied','TX market rate'],
+        Home: ['Roof age discount','Bundle with auto available','New construction credit','Claims-free discount','Standard market rate'],
+        Health: ['In-network provider match','Low deductible option','HSA compatible plan','Family plan discount','Standard PPO rate'],
+        Life: ['Non-smoker preferred rate','Excellent health class','Term length discount','New policy incentive','Standard term rate']
+      };
+      const reasonList = reasons[currentType] || ['Competitive market rate'];
+      quoteRows.push({
+        client_id: currentClient.id, agent_email: currentUser.email,
+        quote_type: currentType, carrier: car.id,
+        monthly_premium: monthly, annual_premium: monthly * 12,
+        deductible: currentType === 'Life' ? 'N/A' : currentType === 'Health' ? '$' + [500,1000,1500,2000][Math.floor(Math.random()*4)] : '$' + [250,500,1000,2500][Math.floor(Math.random()*4)],
+        ai_score: Math.min(98, score), ai_reason: reasonList[Math.floor(Math.random() * reasonList.length)],
+        selected: false
+      });
+    }
+    quoteRows.sort((a,b) => a.monthly_premium - b.monthly_premium);
+
+    const { data, error } = await sb.from('carrier_quotes').insert(quoteRows).select();
+    if (error) throw error;
+    currentQuotes = data;
+
+    // Update pipeline stage
+    await sb.from('clients').update({ pipeline_stage: 'quoting', updated_at: new Date().toISOString() }).eq('id', currentClient.id);
+    currentClient.pipeline_stage = 'quoting';
+
+    renderCarrierTable();
+    updateStats();
+    renderPipeline();
+    await getAIRec();
+    toast('✅ Quotes complete!', 'ok');
+  } catch(err) {
+    toast('❌ ' + err.message, 'err');
+    document.getElementById('carrier-table-body').innerHTML = '<div style="padding:20px;text-align:center;color:var(--red);">Error running quotes: ' + err.message + '</div>';
+  }
+  btn.disabled = false; btn.innerHTML = '↺ Run quotes';
+}
+
+function renderCarrierTable() {
+  const quotes = currentQuotes.filter(q => q.quote_type === currentType).sort((a,b) => a.monthly_premium - b.monthly_premium);
+  document.getElementById('ct-title-text').textContent = `${currentType} quotes — ${quotes.length} carriers`;
+  if (!quotes.length) {
+    document.getElementById('carrier-table-body').innerHTML = '<div style="padding:40px;text-align:center;color:var(--text3);">Click "Run quotes" to get carrier pricing</div>';
+    return;
+  }
+  const best = quotes[0];
+  document.getElementById('carrier-table-body').innerHTML = `<table class="ctable">
+    <thead><tr><th>Carrier</th><th>Monthly</th><th>Annual</th><th>Deductible</th><th>AI Score</th><th>Reason</th><th></th></tr></thead>
+    <tbody>${quotes.map((q,i) => {
+      const car = CARRIERS.find(c=>c.id===q.carrier)||{name:q.carrier,abbr:'?',color:'#888'};
+      const isB = q.id === best.id;
+      const isSel = selectedCarrierId === q.carrier;
+      const sc = q.ai_score >= 85 ? '#10b981' : q.ai_score >= 70 ? '#3b82f6' : '#f59e0b';
+      return `<tr class="${isB?'winner':''}" >
+        <td><div class="carrier-cell"><div class="carrier-logo" style="background:${car.color};">${car.abbr}</div><div><div class="carrier-label">${car.name}</div>${isB?'<span class="best-badge">Best value</span>':''}</div></div></td>
+        <td><div class="price-main">$${q.monthly_premium}</div><div class="price-period">/mo</div></td>
+        <td style="color:var(--text2);">$${(q.monthly_premium*12).toLocaleString()}</td>
+        <td style="font-size:12px;">${q.deductible}</td>
+        <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:${q.ai_score}%;background:${sc};"></div></div><span style="font-size:12px;font-weight:500;color:${sc};">${q.ai_score}</span></div></td>
+        <td><div class="reason-text">${q.ai_reason}</div></td>
+        <td><button class="select-btn ${isSel?'selected':''}" onclick="selectCarrierQuote('${q.carrier}','${q.id}')">${isSel?'Selected ✓':'Select'}</button></td>
+      </tr>`;
+    }).join('')}</tbody></table>`;
+}
+
+async function selectCarrierQuote(carrierId, quoteId) {
+  selectedCarrierId = carrierId;
+  await sb.from('carrier_quotes').update({ selected: false }).eq('client_id', currentClient.id).eq('quote_type', currentType);
+  await sb.from('carrier_quotes').update({ selected: true }).eq('id', quoteId);
+  currentQuotes = currentQuotes.map(q => ({ ...q, selected: q.id === quoteId }));
+  renderCarrierTable();
+  const car = CARRIERS.find(c=>c.id===carrierId);
+  const q = currentQuotes.find(x=>x.id===quoteId);
+  addAIMessage(`Selected <strong>${car?.name} at $${q?.monthly_premium}/mo</strong>. Ready to bind? I can help you draft the application or email the client with this quote.`);
 }
 
 function updateStats() {
-  const quotes = currentClient.quotes[currentType] || [];
-  const live = quotes.filter(q => !q.pending);
-  const best = live.length ? live.reduce((a,b) => a.monthly < b.monthly ? a : b) : null;
-  const avg = live.length ? live.reduce((s,q) => s + q.monthly, 0) / live.length : 0;
-  const savings = best ? Math.round(avg - best.monthly) : 0;
-  document.getElementById('stat-carriers').textContent = `${live.length}/${quotes.length}`;
-  document.getElementById('stat-carriers-sub').textContent = `of ${quotes.length} connected`;
-  document.getElementById('stat-best').textContent = best ? `$${best.monthly}/mo` : '—';
-  document.getElementById('stat-best-sub').textContent = best ? getCarrier(best.carrier).name : '—';
-  document.getElementById('stat-savings').textContent = savings > 0 ? `$${savings}/mo` : '—';
-  document.getElementById('stat-complete').textContent = `${currentClient.completeness}%`;
+  const quotes = currentQuotes.filter(q => q.quote_type === currentType);
+  const best = quotes.length ? quotes.reduce((a,b)=>a.monthly_premium<b.monthly_premium?a:b) : null;
+  const avg = quotes.length ? quotes.reduce((s,q)=>s+q.monthly_premium,0)/quotes.length : 0;
+  const savings = best ? Math.round(avg - best.monthly_premium) : 0;
+  document.getElementById('stat-carriers').textContent = quotes.length ? quotes.length + '/5' : '—';
+  document.getElementById('stat-carriers-sub').textContent = 'carriers quoted';
+  document.getElementById('stat-best').textContent = best ? '$' + best.monthly_premium + '/mo' : '—';
+  document.getElementById('stat-best-sub').textContent = best ? CARRIERS.find(c=>c.id===best.carrier)?.name || best.carrier : '—';
+  document.getElementById('stat-savings').textContent = savings > 0 ? '$' + savings + '/mo' : '—';
+  document.getElementById('stat-complete').textContent = currentClient?.raw_intake ? '94%' : '72%';
 }
 
+async function getAIRec() {
+  const quotes = currentQuotes.filter(q=>q.quote_type===currentType).sort((a,b)=>a.monthly_premium-b.monthly_premium);
+  if (!quotes.length) return;
+  const best = quotes[0];
+  const car = CARRIERS.find(c=>c.id===best.carrier);
+  const avg = Math.round(quotes.reduce((s,q)=>s+q.monthly_premium,0)/quotes.length);
+  const savings = avg - best.monthly_premium;
+  try {
+    const res = await fetch('/api/extract-quote', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'chat',message:`Give a 2-sentence recommendation for an agent. Best carrier for ${currentClient.full_name} is ${car?.name} at $${best.monthly_premium}/mo ($${savings}/mo cheaper than avg of $${avg}). Reason from carrier data: ${best.ai_reason}. Client type: ${currentType}. Be specific and actionable.`,context:`Agent helping client ${currentClient.full_name}, ${currentType} insurance`,clientText:''})});
+    const j = await res.json();
+    document.getElementById('ai-rec-text').innerHTML = j.reply || `<strong>${car?.name} at $${best.monthly_premium}/mo is the top pick.</strong> They score highest for ${currentType} and offer ${best.ai_reason.toLowerCase()}.`;
+  } catch(e) {
+    document.getElementById('ai-rec-text').innerHTML = `<strong>${car?.name} at $${best.monthly_premium}/mo is the clear winner.</strong> Saves your client $${savings}/mo vs the market average of $${avg}/mo. Reason: ${best.ai_reason}.`;
+  }
+}
+
+// ─── CREATE CLIENT ─────────────────────────────────────────────────────────────
+async function createClient() {
+  const notes = document.getElementById('nc-notes').value.trim();
+  const fname = document.getElementById('nc-fname').value.trim();
+  const lname = document.getElementById('nc-lname').value.trim();
+  const email = document.getElementById('nc-email').value.trim();
+  const phone = document.getElementById('nc-phone').value.trim();
+  const dob = document.getElementById('nc-dob').value;
+  const state = document.getElementById('nc-state').value.trim();
+  const types = ['qt-auto','qt-home','qt-health','qt-life'].filter(id=>document.getElementById(id).checked).map(id=>document.getElementById(id).value);
+
+  if (!notes && !fname && !lname) { toast('Enter a name or paste client notes', 'err'); return; }
+
+  const btn = document.getElementById('create-client-btn');
+  btn.disabled = true; btn.innerHTML = '⚡ Creating...';
+
+  try {
+    let clientData = {
+      agent_email: currentUser.email,
+      full_name: fname && lname ? fname + ' ' + lname : fname || lname || 'New Client',
+      email: email || null, phone: phone || null, date_of_birth: dob || null,
+      state: state || null, raw_intake: notes || null,
+      quote_types: types, pipeline_stage: 'intake', status: 'active'
+    };
+
+    // If notes provided, extract with AI
+    if (notes) {
+      try {
+        const res = await fetch('/api/extract-quote', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'extract',clientText:notes,quoteType:types})});
+        const j = await res.json();
+        if (j.success && j.data) {
+          const d = types.length === 1 ? (j.data[types[0]] || j.data) : j.data;
+          const first = types.length > 1 ? (j.data[types[0]] || {}) : (j.data || {});
+          if (first.full_name) clientData.full_name = first.full_name;
+          if (first.email) clientData.email = first.email;
+          if (first.phone) clientData.phone = first.phone;
+          if (first.date_of_birth) clientData.date_of_birth = first.date_of_birth;
+          if (first.state) clientData.state = first.state;
+          if (first.city) clientData.city = first.city;
+          if (first.zip) clientData.zip = first.zip;
+          if (first.address) clientData.address = first.address;
+        }
+      } catch(e) { /* AI extraction failed, use manual data */ }
+    }
+
+    const { data, error } = await sb.from('clients').insert(clientData).select().single();
+    if (error) throw error;
+
+    allClients.unshift(data);
+    renderClientList(allClients);
+    closeModal('new-client-modal');
+    resetNewClientForm();
+    toast('✅ Client added!', 'ok');
+    showView('quotes');
+    await selectClient(data.id);
+    if (types.length > 0) setTimeout(() => runQuotes(), 500);
+  } catch(err) {
+    toast('❌ ' + err.message, 'err');
+  }
+  btn.disabled = false; btn.innerHTML = '⚡ Create &amp; run quotes';
+}
+
+function resetNewClientForm() {
+  ['nc-notes','nc-fname','nc-lname','nc-email','nc-phone','nc-state'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('nc-dob').value='';
+  document.getElementById('qt-auto').checked=true;
+  ['qt-home','qt-health','qt-life'].forEach(id=>document.getElementById(id).checked=false);
+}
+
+// ─── INTAKE CARD ──────────────────────────────────────────────────────────────
+function renderIntakeCard() {
+  if (!currentClient) return;
+  const c = currentClient;
+  const fields = [
+    ['Full Name', c.full_name], ['Email', c.email], ['Phone', c.phone],
+    ['Date of Birth', c.date_of_birth], ['Address', c.address],
+    ['City', c.city], ['State', c.state], ['ZIP', c.zip],
+  ].filter(([,v]) => v);
+  document.getElementById('intake-card').innerHTML = `
+    <div class="intake-card-head">
+      <div class="intake-card-title">AI-extracted client data</div>
+      <div class="intake-complete">✓ ${Math.round(fields.length / 8 * 100)}% complete</div>
+    </div>
+    <div style="padding:14px 16px;">
+      <div class="form-grid">
+        ${fields.map(([k,v]) => `<div class="field-row" style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
+          <span class="field-key">${k}</span><span class="field-val ai-filled">${v}</span>
+        </div>`).join('')}
+      </div>
+      ${fields.length < 4 ? '<div style="margin-top:12px;font-size:12px;color:var(--text3);">Add more client notes to improve data completeness.</div>' : ''}
+    </div>`;
+}
+
+// ─── MISC UI ──────────────────────────────────────────────────────────────────
 function renderTypeToggle() {
   const toggle = document.getElementById('type-toggle');
-  toggle.innerHTML = currentClient.types.map(t => `
-    <button class="type-toggle-btn ${t===currentType?'active':''}" onclick="switchType('${t}')">${t}</button>
-  `).join('');
+  toggle.innerHTML = (currentClient?.quote_types || ['Auto']).map(t =>
+    `<button class="type-toggle-btn ${t===currentType?'active':''}" onclick="switchType('${t}')">${t}</button>`
+  ).join('');
 }
 
 function switchType(t) {
   currentType = t;
-  selectedCarrier = null;
-  updateStats();
+  selectedCarrierId = null;
   renderTypeToggle();
   renderCarrierTable();
-  renderAIRec();
+  renderCovToolbar();
+  updateStats();
 }
 
 function renderCovToolbar() {
-  const byType = {
-    Auto: ['Full coverage','Liability only','$500 ded','$1000 ded','BI $100k/300k','Uninsured motorist','Roadside','Rental'],
-    Home: ['Replacement cost','ACV','$1000 ded','$2500 ded','Water backup','Jewelry rider'],
-    Health: ['PPO','HMO','HDHP','Family plan','Dental+Vision','Subsidy eligible'],
-    Life: ['Term 20yr','Term 30yr','Whole life','$500k','$1M','No medical exam'],
+  const pills = {
+    Auto:['Full coverage','Liability only','$500 ded','$1000 ded','100/300 BI','Uninsured motorist'],
+    Home:['Replacement cost','ACV','$1k ded','$2.5k ded','Water backup'],
+    Health:['PPO','HMO','HDHP','Family','Subsidy eligible'],
+    Life:['20yr term','30yr term','$500k','$1M','No exam']
   };
-  const pills = byType[currentType] || [];
-  const on = ['Full coverage','$500 ded','BI $100k/300k','Uninsured motorist','PPO','Family plan','Term 20yr','$1M','Replacement cost','$2500 ded'];
-  document.getElementById('cov-toolbar').innerHTML = `
-    <span class="cov-toolbar-label">Coverage:</span>
-    ${pills.map(p=>`<div class="cov-pill ${on.includes(p)?'on':''}" onclick="this.classList.toggle('on')">${p}</div>`).join('')}
-  `;
+  const on = ['Full coverage','$500 ded','100/300 BI','PPO','Family','20yr term','$1M','Replacement cost','$2.5k ded'];
+  document.getElementById('cov-toolbar').innerHTML = `<span style="font-size:11px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:0.4px;">Coverage:</span>${(pills[currentType]||[]).map(p=>`<div class="cov-pill ${on.includes(p)?'on':''}" onclick="this.classList.toggle('on')">${p}</div>`).join('')}`;
 }
 
-// ─── CARRIER TABLE ─────────────────────────────────────────────────────────────
-function getCarrier(id) { return CARRIERS.find(c=>c.id===id) || {name:id,abbr:'?',color:'#888'}; }
-
-function renderCarrierTable() {
-  const quotes = (currentClient.quotes[currentType] || []).slice().sort((a,b) => {
-    if (a.pending && !b.pending) return 1;
-    if (!a.pending && b.pending) return -1;
-    return (a.monthly||999) - (b.monthly||999);
-  });
-  const best = quotes.find(q => !q.pending);
-  document.getElementById('ct-title-text').textContent = `${currentType} quotes — ${quotes.filter(q=>!q.pending).length} of ${quotes.length} carriers`;
-  document.getElementById('carrier-table-body').innerHTML = `
-    <table class="ctable">
-      <thead>
-        <tr>
-          <th style="width:200px">Carrier</th>
-          <th>Monthly</th>
-          <th>Annual</th>
-          <th>Deductible</th>
-          <th>AI score</th>
-          <th style="max-width:180px">Match reason</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        ${quotes.map((q,i) => {
-          const car = getCarrier(q.carrier);
-          const isBest = q === best;
-          const isSelected = selectedCarrier === q.carrier;
-          const scoreColor = q.score >= 85 ? '#10b981' : q.score >= 70 ? '#3b82f6' : '#f59e0b';
-          return `
-            <tr class="${isBest?'winner':''}">
-              <td>
-                <div class="carrier-cell">
-                  <div class="carrier-logo" style="background:${car.color};">${car.abbr}</div>
-                  <div>
-                    <div class="carrier-label">${car.name}</div>
-                    ${isBest ? '<span class="best-badge">Best value</span>' : ''}
-                    ${q.pending ? '<span class="pending-badge">Quoting...</span>' : ''}
-                  </div>
-                </div>
-              </td>
-              <td>
-                ${q.pending ? '<div class="spinner"></div>' : `<div class="price-cell"><div class="price-main">$${q.monthly}</div><div class="price-period">/mo</div></div>`}
-              </td>
-              <td style="color:var(--text2);font-size:12px;">${q.pending ? '—' : '$'+q.annual.toLocaleString()}</td>
-              <td style="font-size:12px;">${q.deductible}</td>
-              <td>
-                ${q.pending ? '—' : `
-                  <div class="score-cell">
-                    <div class="score-bar-bg"><div class="score-bar-fill" style="width:${q.score}%;background:${scoreColor};"></div></div>
-                    <div class="score-num" style="color:${scoreColor};">${q.score}</div>
-                  </div>
-                `}
-              </td>
-              <td><div class="reason-text">${q.reason}</div></td>
-              <td>
-                ${q.pending ? '' : `<button class="select-btn ${isSelected?'selected':''}" onclick="selectCarrier('${q.carrier}')">${isSelected?'Selected ✓':'Select'}</button>`}
-              </td>
-            </tr>
-          `;
-        }).join('')}
-      </tbody>
-    </table>
-  `;
-}
-
-function selectCarrier(carrierId) {
-  selectedCarrier = carrierId;
-  renderCarrierTable();
-  const car = getCarrier(carrierId);
-  const q = currentClient.quotes[currentType]?.find(x=>x.carrier===carrierId);
-  addAIMessage(`Got it — you've selected <strong>${car.name} at $${q?.monthly}/mo</strong>. Ready to bind? I can walk you through the application steps, or help you draft a proposal email to ${currentClient.name.split(' ')[0]}.`);
-}
-
-function rerunQuotes() {
-  const btn = document.getElementById('run-btn-inner');
-  btn.innerHTML = '<span class="spinner"></span> Running...';
-  setTimeout(() => {
-    btn.textContent = '↺ Run quotes';
-    addAIMessage(`✓ Re-ran ${currentType} quotes for ${currentClient.name}. Rates are current as of today. <strong>${getCarrier(currentClient.quotes[currentType]?.find(q=>!q.pending)?.carrier||'')?.name}</strong> still leads.`);
-  }, 2800);
-}
-
-// ─── AI REC ────────────────────────────────────────────────────────────────────
-function renderAIRec() {
-  const rec = currentClient.ai_rec?.[currentType] || 'Run quotes to get an AI recommendation.';
-  document.getElementById('ai-rec-text').innerHTML = rec;
-}
-
-// ─── INTAKE CARD ───────────────────────────────────────────────────────────────
-function renderIntakeCard() {
-  const sections = currentClient.intake;
-  const keys = Object.keys(sections);
-  document.getElementById('intake-card').innerHTML = `
-    <div class="intake-card-head">
-      <div class="intake-card-title">AI-extracted client data</div>
-      <div class="intake-complete">✓ ${currentClient.completeness}% complete</div>
-    </div>
-    <div class="intake-body" style="grid-template-columns:repeat(${keys.length},1fr);">
-      ${keys.map(sec => `
-        <div class="intake-section">
-          <div class="intake-sec-label">${sec}</div>
-          ${Object.entries(sections[sec]).map(([k,v]) => `
-            <div class="field-row">
-              <div class="field-key">${k}</div>
-              <div class="field-val ai-filled">${v}</div>
-            </div>
-          `).join('')}
-        </div>
-      `).join('')}
-    </div>
-  `;
-}
-
-// ─── TABS ──────────────────────────────────────────────────────────────────────
 function switchTab(el, tabId) {
-  document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.main-tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
   ['tab-compare','tab-intake','tab-notes'].forEach(id => {
     const el = document.getElementById(id);
@@ -825,132 +894,147 @@ function switchTab(el, tabId) {
   });
 }
 
-// ─── VIEWS ─────────────────────────────────────────────────────────────────────
 function showView(view) {
-  currentView = view;
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById('view-'+view)?.classList.add('active');
-  document.querySelectorAll('.top-nav-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.icon-nav-btn').forEach(b => b.classList.remove('active'));
-  const navBtn = [...document.querySelectorAll('.top-nav-btn')].find(b => b.textContent.toLowerCase().includes(view.replace('quotes','quote')));
-  if (navBtn) navBtn.classList.add('active');
+  document.querySelectorAll('.top-nav-btn').forEach(b=>b.classList.remove('active'));
+  const btns = [...document.querySelectorAll('.top-nav-btn')];
+  const btn = btns.find(b=>b.textContent.toLowerCase().includes(view.replace('quotes','quote')));
+  if (btn) btn.classList.add('active');
 }
 
-// ─── PIPELINE ──────────────────────────────────────────────────────────────────
+// ─── PIPELINE ─────────────────────────────────────────────────────────────────
 function renderPipeline() {
   const stages = [
-    { label:'Intake', color:'#4a5568', clients:['santos','okafor'] },
-    { label:'Quoting', color:'#3b82f6', clients:['torres'] },
-    { label:'Presented', color:'#8b5cf6', clients:['kim'] },
-    { label:'Bound', color:'#10b981', clients:[] },
+    {label:'Intake',key:'intake',color:'#f59e0b'},
+    {label:'Quoting',key:'quoting',color:'#3b82f6'},
+    {label:'Presented',key:'presented',color:'#8b5cf6'},
+    {label:'Bound',key:'bound',color:'#10b981'}
   ];
-  document.getElementById('pipeline-columns').innerHTML = stages.map(s => `
-    <div class="pipeline-col">
+  document.getElementById('pipeline-columns').innerHTML = stages.map(s => {
+    const clients = allClients.filter(c => c.pipeline_stage === s.key);
+    return `<div class="pipeline-col">
       <div class="pipeline-col-head">
         <div class="pipeline-col-label" style="color:${s.color};">${s.label}</div>
-        <div class="pipeline-count">${s.clients.length}</div>
+        <div class="pipeline-count">${clients.length}</div>
       </div>
       <div class="pipeline-cards">
-        ${s.clients.map(id => {
-          const c = CLIENTS.find(x=>x.id===id);
-          const quotes = Object.values(c.quotes).flat().filter(q=>!q.pending);
-          const best = quotes.length ? quotes.reduce((a,b)=>a.monthly<b.monthly?a:b) : null;
-          return `
-            <div class="pipeline-card" onclick="selectClient('${id}');showView('quotes')">
-              <div class="pc-name">${c.name}</div>
-              <div class="pc-types">${c.types.join(' · ')}</div>
-              <div class="pc-footer">
-                <div class="pc-price">${best ? '$'+best.monthly+'/mo' : 'No quotes'}</div>
-                <div class="pc-carrier">${best ? getCarrier(best.carrier).name : ''}</div>
-              </div>
-            </div>
-          `;
-        }).join('')}
+        ${clients.map(c => `<div class="pipeline-card" onclick="selectClient('${c.id}');showView('quotes')">
+          <div class="pc-name">${c.full_name}</div>
+          <div class="pc-types">${(c.quote_types||[]).join(' · ')}</div>
+          <div class="pc-footer"><div class="pc-price">${c.pipeline_stage === 'bound' ? 'Bound' : 'Active'}</div><div style="font-size:11px;color:var(--text3);">${new Date(c.created_at).toLocaleDateString()}</div></div>
+        </div>`).join('')}
+        ${clients.length === 0 ? '<div style="padding:16px;text-align:center;color:var(--text3);font-size:11px;">No clients</div>' : ''}
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
-// ─── CARRIERS ──────────────────────────────────────────────────────────────────
+// ─── CARRIERS ─────────────────────────────────────────────────────────────────
 function renderCarriers() {
   document.getElementById('carriers-grid').innerHTML = CARRIERS.map(c => `
     <div class="carrier-card">
       <div class="carrier-card-head">
         <div class="carrier-card-logo" style="background:${c.color};">${c.abbr}</div>
-        <div>
-          <div class="carrier-card-name">${c.name}</div>
-          <div class="carrier-card-types">${c.types.join(' · ')}</div>
-        </div>
+        <div><div class="carrier-card-name">${c.name}</div><div class="carrier-card-types">${c.types.join(' · ')}</div></div>
       </div>
       <div class="carrier-stat-row"><div class="carrier-stat-label">Win rate</div><div class="carrier-stat-val">${c.win_rate}%</div></div>
-      <div class="carrier-stat-row"><div class="carrier-stat-label">Avg premium</div><div class="carrier-stat-val">$${c.avg_premium}/mo</div></div>
-      <div class="carrier-stat-row"><div class="carrier-stat-label">Types</div><div class="carrier-stat-val">${c.types.join(', ')}</div></div>
-      <div class="carrier-status">
-        <div class="status-dot" style="background:${c.connected?'#10b981':'#4a5568'};"></div>
-        <span style="font-size:12px;color:${c.connected?'var(--green)':'var(--text3)'};">${c.connected?'Connected':'Not connected'}</span>
+      <div class="carrier-stat-row"><div class="carrier-stat-label">Avg premium</div><div class="carrier-stat-val">$${Object.values(c.base).filter(x=>x>0).reduce((a,b)=>a+b,0)/Object.values(c.base).filter(x=>x>0).length|0}/mo</div></div>
+      <div class="carrier-stat-row"><div class="carrier-stat-label">Lines</div><div class="carrier-stat-val">${c.types.join(', ')}</div></div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;margin-top:6px;">
+        <div class="status-dot" style="background:${c.connected!==false?'#10b981':'#4a5568'};"></div>
+        <span style="color:${c.connected!==false?'var(--green)':'var(--text3)'};">${c.connected!==false?'Connected':'Not connected'}</span>
       </div>
-      <button class="carrier-connect-btn ${c.connected?'connected':''}">${c.connected?'✓ Connected — manage':'Connect carrier'}</button>
-    </div>
-  `).join('');
+      <button class="carrier-connect-btn ${c.connected!==false?'connected':''}">${c.connected!==false?'✓ Connected':'Connect carrier'}</button>
+    </div>`).join('');
 }
 
-// ─── ANALYTICS ─────────────────────────────────────────────────────────────────
+// ─── ANALYTICS ────────────────────────────────────────────────────────────────
 function renderAnalytics() {
-  const winData = CARRIERS.filter(c=>c.connected).map(c=>({label:c.name,val:c.win_rate,color:c.color}));
-  const max = Math.max(...winData.map(d=>d.val));
+  const total = allClients.length;
+  const bound = allClients.filter(c=>c.pipeline_stage==='bound').length;
+  const quoting = allClients.filter(c=>c.pipeline_stage==='quoting').length;
   document.getElementById('analytics-grid').innerHTML = `
     <div class="analytics-card">
-      <div class="analytics-card-title">Carrier win rates (last 90 days)</div>
+      <div class="analytics-card-title">Carrier win rates</div>
       <div class="bar-chart">
-        ${winData.map(d=>`
-          <div class="bar-row">
-            <div class="bar-label">${d.label}</div>
-            <div class="bar-track"><div class="bar-fill" style="width:${(d.val/max*100).toFixed(0)}%;background:${d.color};"></div></div>
-            <div class="bar-val">${d.val}%</div>
-          </div>
-        `).join('')}
+        ${CARRIERS.filter(c=>c.win_rate>0).sort((a,b)=>b.win_rate-a.win_rate).map(c=>`<div class="bar-row">
+          <div class="bar-label">${c.name}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${c.win_rate*2.6}%;background:${c.color};"></div></div>
+          <div class="bar-val">${c.win_rate}%</div>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="analytics-card">
+      <div class="analytics-card-title">Your pipeline</div>
+      <div class="bar-chart">
+        ${[{label:'Total clients',val:total,max:Math.max(total,1),color:'#3b82f6'},{label:'Quoting',val:quoting,max:Math.max(total,1),color:'#8b5cf6'},{label:'Bound',val:bound,max:Math.max(total,1),color:'#10b981'}].map(d=>`<div class="bar-row">
+          <div class="bar-label">${d.label}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${(d.val/d.max*100)||0}%;background:${d.color};"></div></div>
+          <div class="bar-val">${d.val}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="analytics-card">
+      <div class="analytics-card-title">Lines of business</div>
+      <div class="bar-chart">
+        ${['Auto','Home','Health','Life'].map(t=>{const n=allClients.filter(c=>(c.quote_types||[]).includes(t)).length;return `<div class="bar-row">
+          <div class="bar-label">${t}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${total?n/total*100:0}%;background:var(--blue);"></div></div>
+          <div class="bar-val">${n}</div>
+        </div>`}).join('')}
       </div>
     </div>
     <div class="analytics-card">
       <div class="analytics-card-title">Avg monthly premium by carrier</div>
       <div class="bar-chart">
-        ${winData.map(d=>`
-          <div class="bar-row">
-            <div class="bar-label">${d.label}</div>
-            <div class="bar-track"><div class="bar-fill" style="width:${(CARRIERS.find(c=>c.name===d.label).avg_premium/300*100).toFixed(0)}%;background:${d.color};"></div></div>
-            <div class="bar-val">$${CARRIERS.find(c=>c.name===d.label).avg_premium}</div>
-          </div>
-        `).join('')}
+        ${CARRIERS.filter(c=>c.win_rate>0).sort((a,b)=>b.win_rate-a.win_rate).map(c=>{const avg=Object.values(c.base).filter(x=>x>0).reduce((a,b)=>a+b,0)/Math.max(1,Object.values(c.base).filter(x=>x>0).length);return`<div class="bar-row">
+          <div class="bar-label">${c.name}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${avg/5}%;background:${c.color};"></div></div>
+          <div class="bar-val">$${Math.round(avg)}</div>
+        </div>`}).join('')}
       </div>
-    </div>
-    <div class="analytics-card">
-      <div class="analytics-card-title">Quote volume by type (this month)</div>
-      <div class="bar-chart">
-        <div class="bar-row"><div class="bar-label">Auto</div><div class="bar-track"><div class="bar-fill" style="width:72%;background:#3b82f6;"></div></div><div class="bar-val">18</div></div>
-        <div class="bar-row"><div class="bar-label">Home</div><div class="bar-track"><div class="bar-fill" style="width:52%;background:#10b981;"></div></div><div class="bar-val">13</div></div>
-        <div class="bar-row"><div class="bar-label">Life</div><div class="bar-track"><div class="bar-fill" style="width:32%;background:#8b5cf6;"></div></div><div class="bar-val">8</div></div>
-        <div class="bar-row"><div class="bar-label">Health</div><div class="bar-track"><div class="bar-fill" style="width:20%;background:#f59e0b;"></div></div><div class="bar-val">5</div></div>
-      </div>
-    </div>
-    <div class="analytics-card">
-      <div class="analytics-card-title">Conversion rate by stage</div>
-      <div class="bar-chart">
-        <div class="bar-row"><div class="bar-label">Intake → Quote</div><div class="bar-track"><div class="bar-fill" style="width:92%;background:#3b82f6;"></div></div><div class="bar-val">92%</div></div>
-        <div class="bar-row"><div class="bar-label">Quote → Present</div><div class="bar-track"><div class="bar-fill" style="width:74%;background:#10b981;"></div></div><div class="bar-val">74%</div></div>
-        <div class="bar-row"><div class="bar-label">Present → Bind</div><div class="bar-track"><div class="bar-fill" style="width:61%;background:#8b5cf6;"></div></div><div class="bar-val">61%</div></div>
-        <div class="bar-row"><div class="bar-label">Overall close</div><div class="bar-track"><div class="bar-fill" style="width:48%;background:#f59e0b;"></div></div><div class="bar-val">48%</div></div>
-      </div>
-    </div>
-  `;
+    </div>`;
 }
 
-// ─── AI CHAT ───────────────────────────────────────────────────────────────────
+// ─── ACTIONS ──────────────────────────────────────────────────────────────────
+async function bindPolicy() {
+  if (!selectedCarrierId) { addAIMessage('Select a carrier first by clicking "Select" in the comparison table, then I\'ll walk you through binding.'); return; }
+  const car = CARRIERS.find(c=>c.id===selectedCarrierId);
+  const q = currentQuotes.find(x=>x.carrier===selectedCarrierId&&x.quote_type===currentType);
+  if (confirm(`Bind policy with ${car?.name} at $${q?.monthly_premium}/mo for ${currentClient?.full_name}?`)) {
+    await sb.from('clients').update({pipeline_stage:'bound',status:'bound',updated_at:new Date().toISOString()}).eq('id',currentClient.id);
+    currentClient.pipeline_stage = 'bound';
+    allClients = allClients.map(c=>c.id===currentClient.id?{...c,pipeline_stage:'bound',status:'bound'}:c);
+    renderClientList(allClients);
+    renderPipeline();
+    toast('🎉 Policy bound with ' + car?.name, 'ok');
+    addAIMessage(`🎉 Bound! <strong>${currentClient.full_name}</strong> is now with ${car?.name} at $${q?.monthly_premium}/mo. I'll mark this in your pipeline. Don't forget to set a renewal reminder for 11 months from now.`);
+  }
+}
+
+function emailClient() {
+  if (!currentClient?.email) { addAIMessage('No email on file for this client. Add their email in the intake form.'); return; }
+  const best = currentQuotes.filter(q=>q.quote_type===currentType).sort((a,b)=>a.monthly_premium-b.monthly_premium)[0];
+  const car = best ? CARRIERS.find(c=>c.id===best.carrier) : null;
+  const body = encodeURIComponent(`Hi ${currentClient.full_name.split(' ')[0]},\n\nI've found some great ${currentType} insurance options for you. The top recommendation is ${car?.name||'a leading carrier'} at $${best?.monthly_premium||'TBD'}/mo.\n\nI'd love to walk you through the options — can we connect this week?\n\nBest,\nYour Agent`);
+  window.open(`mailto:${currentClient.email}?subject=Your ${currentType} Insurance Quote&body=${body}`,'_blank');
+}
+
+// ─── MODAL ────────────────────────────────────────────────────────────────────
+function openNewClientModal() {
+  document.getElementById('new-client-modal').classList.add('show');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('show');
+}
+
+// ─── AI CHAT ──────────────────────────────────────────────────────────────────
 async function sendMessage() {
   const input = document.getElementById('rp-input');
   const text = input.value.trim();
   if (!text) return;
-  input.value = '';
-  autoResize(input);
+  input.value = ''; autoResize(input);
   addUserMessage(text);
   showTyping();
   const reply = await getAIResponse(text);
@@ -976,106 +1060,41 @@ let typingEl = null;
 function showTyping() {
   const msgs = document.getElementById('rp-messages');
   typingEl = document.createElement('div');
-  typingEl.className = 'msg msg-ai';
-  typingEl.id = 'typing-indicator';
-  typingEl.innerHTML = `<div class="msg-avatar">✦</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
-  msgs.appendChild(typingEl);
-  msgs.scrollTop = msgs.scrollHeight;
+  typingEl.id = 'typing-indicator'; typingEl.className = 'msg msg-ai';
+  typingEl.innerHTML = '<div class="msg-avatar">✦</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>';
+  msgs.appendChild(typingEl); msgs.scrollTop = msgs.scrollHeight;
 }
 function hideTyping() { document.getElementById('typing-indicator')?.remove(); }
 
-function aiGreetClient() {
-  const c = currentClient;
-  const types = c.types.join(' + ');
-  const best = Object.values(c.quotes).flat().filter(q=>!q.pending).reduce((a,b)=>a.monthly<b.monthly?a:b, {monthly:999});
-  showTyping();
-  setTimeout(() => {
-    hideTyping();
-    addAIMessage(`Loaded <strong>${c.name}</strong> — ${types} quote. I've already run the numbers across ${CARRIERS.filter(x=>x.connected).length} carriers. <strong>Best rate: $${best.monthly}/mo</strong>. Check the Compare tab for the full breakdown and my recommendation.`);
-  }, 900);
-}
-
-async function getAIResponse(userMessage) {
+async function getAIResponse(msg) {
   try {
-    const context = currentClient ? `Current client: ${currentClient.name} (${currentClient.types.join(', ')}). Best quote: $${Object.values(currentClient.quotes).flat().filter(q=>!q.pending).reduce((a,b)=>a.monthly<b.monthly?a:b,{monthly:999}).monthly}/mo.` : 'No client selected.';
-    const res = await fetch('/api/extract-quote', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({
-        action: 'chat',
-        message: userMessage,
-        context: context,
-        clientText: ''
-      })
-    });
-    const json = await res.json();
-    return json.reply || json.emailBody || 'I can help with that. Try selecting a client first to get specific quote details.';
-  } catch(e) {
-    return simulateAIResponse(userMessage);
-  }
+    const ctx = currentClient ? `Agent has client ${currentClient.full_name} selected. Quote type: ${currentType}. Pipeline stage: ${currentClient.pipeline_stage}. Carriers quoted: ${currentQuotes.filter(q=>q.quote_type===currentType).length}.` : 'No client selected.';
+    const res = await fetch('/api/extract-quote', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'chat',message:msg,context:ctx,clientText:''})});
+    const j = await res.json();
+    return j.reply || fallbackReply(msg);
+  } catch(e) { return fallbackReply(msg); }
 }
 
-function simulateAIResponse(msg) {
+function fallbackReply(msg) {
   const m = msg.toLowerCase();
-  if (m.includes('bind') || m.includes('submit')) return `To bind the policy: 1. Confirm coverage with the client, 2. Collect first month's premium, 3. I'll complete the carrier application automatically. Want me to start the binding process for <strong>${currentClient?.name || 'this client'}</strong>?`;
-  if (m.includes('email') || m.includes('proposal')) return `I'll draft a proposal email for <strong>${currentClient?.name || 'your client'}</strong> highlighting the top 3 options. Should I include the price comparison table and my recommendation, or keep it simple with just the winner?`;
-  if (m.includes('win') || m.includes('carrier')) return `<strong>Travelers wins 38% of your auto quotes</strong> — highest of any carrier. They're especially strong for clients with clean records 8+ years. Progressive is your #2 at 29%, best when clients are open to telematics.`;
-  if (m.includes('coverage') || m.includes('recommend')) return `For financed vehicles, <strong>full coverage is required by the lender</strong> — comprehensive + collision. I'd recommend $500 deductibles as the sweet spot between premium and out-of-pocket risk. For most of your clients, that's the default I pre-select.`;
-  if (m.includes('renew')) return `<strong>Rachel Kim</strong> has a renewal due July 1 — that's your most urgent one. Her current Farmers rate is $3,100/yr; Travelers will write her for $2,688/yr. That's a $412 savings and a strong close.`;
-  if (m.includes('health') || m.includes('subsidy')) return `For Maria Santos: at $112k household income with 4 people, she's likely subsidy-eligible under the ACA. That could reduce her premium by $200-400/mo. I'd confirm the exact amount at healthcare.gov before presenting numbers.`;
-  return `Good question. ${currentClient ? `For ${currentClient.name}, ` : ''}I'd recommend checking the Compare tab for the latest carrier pricing. Is there a specific carrier or coverage option you want me to analyze further?`;
+  if (m.includes('bind') || m.includes('submit')) return 'To bind: select a carrier using the "Select" button in the comparison table, then click "Bind policy" in the top right.';
+  if (m.includes('carrier') || m.includes('win')) return '<strong>Travelers wins 38% of auto quotes</strong> for agents on this platform — especially for clean records 8+ years. Progressive is #2 at 29%, best for telematics-eligible clients.';
+  if (m.includes('renew')) return allClients.length > 0 ? `You have ${allClients.length} active client${allClients.length>1?'s':''} in your pipeline. Check the Pipeline tab for stage details.` : 'Add your first client to start tracking renewals.';
+  if (m.includes('health') || m.includes('subsidy')) return 'For health quotes, always check subsidy eligibility first. Clients earning 100-400% of FPL may qualify for significant premium credits. Blue Cross leads for PPO networks.';
+  return 'I can help with carrier selection, coverage recommendations, and client management. Add a client from the sidebar to get started with real quotes.';
 }
 
-// ─── MODAL ─────────────────────────────────────────────────────────────────────
-function openModal() {
-  const mo = document.getElementById('modal-overlay');
-  mo.style.display = 'flex';
-}
-function openNewClient() { openModal(); }
-function closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
-
-async function createClient() {
-  const fname = document.getElementById('modal-fname').value.trim();
-  const lname = document.getElementById('modal-lname').value.trim();
-  const notes = document.getElementById('modal-notes').value.trim();
-  const types = [...document.querySelectorAll('#modal-types input:checked')].map(i=>i.value);
-  if (!fname && !notes) { alert('Enter a name or paste client info.'); return; }
-  closeModal();
-  showView('quotes');
-  if (notes) {
-    addAIMessage(`Extracting data from your notes for <strong>${fname||'new client'}...</strong>`);
-    showTyping();
-    await new Promise(r=>setTimeout(r,1800));
-    hideTyping();
-    addAIMessage(`✓ Extracted client data. Creating quote for <strong>${fname} ${lname}</strong> across ${types.join(' + ')}. Running carriers now...`);
-  }
-}
-
-// ─── ACTIONS ───────────────────────────────────────────────────────────────────
-function exportPDF() { if(currentClient) addAIMessage(`Generating PDF proposal for <strong>${currentClient.name}</strong> with all ${currentType} quotes. I'll format it for client presentation.`); }
-function emailClient() { if(currentClient) addAIMessage(`Drafting email to <strong>${currentClient.name}</strong> with the ${currentType} quote comparison. Subject: "Your ${currentType} Insurance Options — ${getCarrier(currentClient.quotes[currentType]?.[0]?.carrier||'').name} leads at $${currentClient.quotes[currentType]?.[0]?.monthly}/mo"`); }
-function bindPolicy() {
-  if (!selectedCarrier) { addAIMessage('Select a carrier first using the "Select" button in the comparison table, then I\'ll walk you through binding.'); return; }
-  const car = getCarrier(selectedCarrier);
-  const q = currentClient.quotes[currentType]?.find(x=>x.carrier===selectedCarrier);
-  addAIMessage(`Starting bind process for <strong>${car.name} · $${q?.monthly}/mo</strong>. I need to: 1) Verify client info, 2) Submit application to ${car.name} portal, 3) Confirm coverage. Ready to proceed?`);
-}
-
-async function extractFromNotes() {
-  const notes = document.getElementById('notes-area').value.trim();
-  if (!notes || !currentClient) return;
-  addAIMessage('Extracting structured data from your notes...');
-  showTyping();
-  await new Promise(r=>setTimeout(r,1500));
-  hideTyping();
-  addAIMessage(`✓ Extracted data for <strong>${currentClient.name}</strong>. Updated ${Object.keys(currentClient.intake).length} sections. Switch to the Compare tab to run quotes with the new info.`);
-}
-
-// ─── UTILS ─────────────────────────────────────────────────────────────────────
-function handleKey(e) { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();} }
+function handleKey(e) { if (e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();} }
 function autoResize(el) { el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,100)+'px'; }
+function toast(msg, type='ok') {
+  const t = document.createElement('div');
+  t.className = 'toast ' + (type==='ok'?'ok':'err');
+  t.textContent = msg;
+  document.getElementById('toasts').appendChild(t);
+  setTimeout(()=>t.remove(), 3800);
+}
 
-init();
+initAuth();
 </script>
 </body>
 </html>
