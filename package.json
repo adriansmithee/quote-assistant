@@ -1,0 +1,7 @@
+{
+  "name": "ai-quote-assistant",
+  "version": "2.0.0",
+  "description": "AI-powered insurance quote assistant for independent agents",
+  "scripts": { "dev": "netlify dev" },
+  "devDependencies": { "netlify-cli": "^17.0.0" }
+}
