@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>QuoteAI - Insurance Quote Assistant</title>
+<title>QuoteAI — Agent Quote Assistant</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root{--bg:#09101f;--bg2:#0f1928;--bg3:#162236;--border:#1d2e44;--border2:#2a4060;--accent:#3b82f6;--accent2:#06b6d4;--green:#10b981;--yellow:#f59e0b;--red:#ef4444;--text:#dde6f0;--text2:#8fa8c0;--text3:#4d6a84;--text4:#2d4560;--home:#f59e0b;--auto:#8b5cf6;--health:#10b981;--life:#ec4899;--r:10px;--r2:14px;}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
 body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(59,130,246,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,.03) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0;}
 .app{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:20px 20px 80px;}
 header{display:flex;align-items:center;justify-content:space-between;padding:16px 0 28px;border-bottom:1px solid var(--border);margin-bottom:28px;}
@@ -17,7 +17,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
 .logo-icon{width:42px;height:42px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 0 24px rgba(59,130,246,.35);}
 .logo-name{font-size:1.5rem;font-weight:700;letter-spacing:-0.5px;}
 .logo-name em{color:var(--accent);font-style:normal;}
-.logo-sub{font-size:.67rem;color:var(--text3);letter-spacing:1.2px;text-transform:uppercase;}
+.logo-sub{font-size:.67rem;color:var(--text3);letter-spacing:1.2px;text-transform:uppercase;margin-top:1px;}
 .header-right{display:flex;align-items:center;gap:12px;}
 .agent-input{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:7px 12px;color:var(--text);font-family:'Sora',sans-serif;font-size:.78rem;outline:none;width:180px;}
 .agent-input::placeholder{color:var(--text3);}
@@ -27,7 +27,8 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
 .type-selector{margin-bottom:24px;}
 .type-label{font-size:.68rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:10px;}
 .type-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
-.type-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r);padding:14px 12px;cursor:pointer;transition:all .2s;text-align:center;}
+.type-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r);padding:14px 12px;cursor:pointer;transition:all .2s;text-align:center;user-select:none;}
+.type-card:hover{border-color:var(--border2);transform:translateY(-1px);}
 .type-card.selected-home{border-color:var(--home);background:rgba(245,158,11,.07);}
 .type-card.selected-auto{border-color:var(--auto);background:rgba(139,92,246,.07);}
 .type-card.selected-health{border-color:var(--health);background:rgba(16,185,129,.07);}
@@ -44,6 +45,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
 .type-card.selected-health .type-check{background:var(--health);border-color:var(--health);color:#000;}
 .type-card.selected-life .type-check{background:var(--life);border-color:var(--life);color:#fff;}
 .layout{display:grid;grid-template-columns:420px 1fr;gap:20px;align-items:start;}
+@media(max-width:900px){.layout{grid-template-columns:1fr;}}
 .panel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;}
 .panel-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
 .panel-title{font-size:.72rem;font-weight:600;letter-spacing:.9px;text-transform:uppercase;color:var(--text2);display:flex;align-items:center;gap:8px;}
@@ -52,11 +54,11 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
 .dot-ind.done{background:var(--green);box-shadow:0 0 8px var(--green);}
 .left-panel{position:sticky;top:20px;}
 .example-strip{display:flex;gap:6px;padding:10px 14px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
-.eg-btn{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:.7rem;color:var(--text2);cursor:pointer;font-family:'Sora',sans-serif;}
+.eg-btn{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:.7rem;color:var(--text2);cursor:pointer;font-family:'Sora',sans-serif;transition:all .15s;}
 .eg-btn:hover{border-color:var(--border2);color:var(--text);}
 textarea{width:100%;min-height:300px;background:transparent;border:none;outline:none;resize:none;color:var(--text);font-family:'DM Mono',monospace;font-size:.78rem;line-height:1.75;padding:16px;caret-color:var(--accent);}
 textarea::placeholder{color:var(--text3);}
-.left-foot{padding:12px 16px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.left-foot{padding:12px 16px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px;}
 .char-ct{font-size:.68rem;color:var(--text3);font-family:'DM Mono',monospace;}
 .btn{display:inline-flex;align-items:center;gap:7px;border-radius:8px;font-family:'Sora',sans-serif;cursor:pointer;transition:all .18s;font-weight:500;border:none;}
 .btn-primary{background:linear-gradient(135deg,var(--accent) 0%,#5b6cf6 100%);color:#fff;padding:10px 20px;font-size:.82rem;box-shadow:0 4px 18px rgba(59,130,246,.28);}
@@ -64,10 +66,11 @@ textarea::placeholder{color:var(--text3);}
 .btn-primary:disabled{opacity:.45;cursor:not-allowed;}
 .btn-sm{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:7px 13px;font-size:.75rem;}
 .btn-ghost{background:transparent;color:var(--text3);padding:5px 10px;font-size:.72rem;border:none;}
+.btn-ghost:hover{color:var(--text2);background:var(--bg3);border-radius:6px;}
 .btn-pdf{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);color:var(--green);padding:7px 13px;font-size:.75rem;}
 .btn-email{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.3);color:var(--accent);padding:7px 13px;font-size:.75rem;}
-.tab-bar{display:flex;border-bottom:1px solid var(--border);}
-.tab{padding:11px 18px;font-size:.75rem;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;color:var(--text3);margin-bottom:-1px;}
+.tab-bar{display:flex;border-bottom:1px solid var(--border);overflow-x:auto;}
+.tab{padding:11px 18px;font-size:.75rem;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;color:var(--text3);transition:all .18s;white-space:nowrap;margin-bottom:-1px;}
 .tab.active-home{color:var(--home);border-bottom-color:var(--home);}
 .tab.active-auto{color:var(--auto);border-bottom-color:var(--auto);}
 .tab.active-health{color:var(--health);border-bottom-color:var(--health);}
@@ -80,10 +83,10 @@ textarea::placeholder{color:var(--text3);}
 .spin{width:38px;height:38px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
 .load-steps{display:flex;flex-direction:column;gap:7px;}
-.lstep{display:flex;align-items:center;gap:9px;font-size:.73rem;color:var(--text3);font-family:'DM Mono',monospace;}
+.lstep{display:flex;align-items:center;gap:9px;font-size:.73rem;color:var(--text3);font-family:'DM Mono',monospace;transition:color .3s;}
 .lstep.active{color:var(--accent);}
 .lstep.done{color:var(--green);}
-.form-scroll{max-height:580px;overflow-y:auto;scrollbar-width:thin;}
+.form-scroll{max-height:580px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
 .form-body{padding:18px;}
 .fsection{margin-bottom:20px;}
 .fsection-title{font-size:.66rem;font-weight:600;letter-spacing:.9px;text-transform:uppercase;color:var(--text3);margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid var(--border);}
@@ -111,14 +114,14 @@ select option{background:var(--bg2);}
 .modal-body{padding:20px 22px;overflow-y:auto;flex:1;}
 .email-meta{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
 .email-row{display:flex;align-items:center;gap:10px;}
-.email-label{font-size:.7rem;color:var(--text3);width:56px;}
+.email-label{font-size:.7rem;color:var(--text3);width:56px;flex-shrink:0;}
 .email-val{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:.78rem;color:var(--text2);flex:1;}
 .email-subject{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-size:.8rem;outline:none;}
 .email-textarea{width:100%;min-height:240px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px;color:var(--text);font-family:'Sora',sans-serif;font-size:.82rem;line-height:1.7;outline:none;resize:vertical;}
 .modal-foot{padding:14px 22px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;}
 .loading-email{display:flex;align-items:center;gap:10px;color:var(--text2);font-size:.82rem;padding:40px 0;}
 #toasts{position:fixed;top:18px;right:18px;z-index:200;display:flex;flex-direction:column;gap:8px;}
-.toast{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:11px 16px;font-size:.8rem;color:var(--text);animation:tin .3s ease;display:flex;align-items:center;gap:9px;max-width:320px;}
+.toast{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:11px 16px;font-size:.8rem;color:var(--text);animation:tin .3s ease;display:flex;align-items:center;gap:9px;max-width:320px;box-shadow:0 8px 32px rgba(0,0,0,.5);}
 .toast.ok{border-color:var(--green);}
 .toast.err{border-color:var(--red);}
 @keyframes tin{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
@@ -128,7 +131,7 @@ select option{background:var(--bg2);}
 <div class="app">
 <header>
   <div class="logo">
-    <div class="logo-icon">⚡</div>
+    <div class="logo-icon">&#9889;</div>
     <div>
       <div class="logo-name">Quote<em>AI</em></div>
       <div class="logo-sub">Independent Agent Assistant</div>
@@ -140,125 +143,388 @@ select option{background:var(--bg2);}
   </div>
 </header>
 <div class="type-selector">
-  <div class="type-label">Select quote type(s) — pick one or more</div>
+  <div class="type-label">Select quote type(s) &mdash; pick one or more</div>
   <div class="type-grid">
-    <div class="type-card selected-home" onclick="toggleType('home')" id="card-home"><div class="type-icon">🏠</div><div class="type-name">Homeowners</div><div class="type-check" id="chk-home">✓</div></div>
-    <div class="type-card" onclick="toggleType('auto')" id="card-auto"><div class="type-icon">🚗</div><div class="type-name">Auto</div><div class="type-check" id="chk-auto"></div></div>
-    <div class="type-card" onclick="toggleType('health')" id="card-health"><div class="type-icon">❤️</div><div class="type-name">Health</div><div class="type-check" id="chk-health"></div></div>
-    <div class="type-card" onclick="toggleType('life')" id="card-life"><div class="type-icon">🛡️</div><div class="type-name">Life</div><div class="type-check" id="chk-life"></div></div>
+    <div class="type-card selected-home" onclick="toggleType('home')" id="card-home"><div class="type-icon">&#127968;</div><div class="type-name">Homeowners</div><div class="type-check" id="chk-home">&#10003;</div></div>
+    <div class="type-card" onclick="toggleType('auto')" id="card-auto"><div class="type-icon">&#128663;</div><div class="type-name">Auto</div><div class="type-check" id="chk-auto"></div></div>
+    <div class="type-card" onclick="toggleType('health')" id="card-health"><div class="type-icon">&#10084;</div><div class="type-name">Health</div><div class="type-check" id="chk-health"></div></div>
+    <div class="type-card" onclick="toggleType('life')" id="card-life"><div class="type-icon">&#128737;</div><div class="type-name">Life</div><div class="type-check" id="chk-life"></div></div>
   </div>
 </div>
 <div class="layout">
   <div class="panel left-panel">
     <div class="panel-head"><div class="panel-title"><div class="dot-ind live"></div> Client Notes</div><button class="btn btn-ghost" onclick="clearAll()">Clear</button></div>
-    <div class="example-strip"><span style="font-size:.67rem;color:var(--text3);align-self:center;">Examples:</span><button class="eg-btn" onclick="loadEx('home')">🏠 Home</button><button class="eg-btn" onclick="loadEx('auto')">🚗 Auto</button><button class="eg-btn" onclick="loadEx('health')">❤️ Health</button><button class="eg-btn" onclick="loadEx('life')">🛡️ Life</button><button class="eg-btn" onclick="loadEx('bundle')">📦 Bundle</button></div>
-    <textarea id="client-text" placeholder="Paste client info here — emails, intake forms, handwritten notes, anything...
-
-The AI will read it and fill out your quote forms automatically." oninput="updateCount()"></textarea>
-    <div class="left-foot"><span class="char-ct" id="char-ct">0 chars</span><button class="btn btn-primary" onclick="runExtract()" id="extract-btn"><span>⚡</span> Extract &amp; Fill Forms</button></div>
+    <div class="example-strip">
+      <span style="font-size:.67rem;color:var(--text3);align-self:center;">Examples:</span>
+      <button class="eg-btn" onclick="loadEx('home')">&#127968; Home</button>
+      <button class="eg-btn" onclick="loadEx('auto')">&#128663; Auto</button>
+      <button class="eg-btn" onclick="loadEx('health')">&#10084; Health</button>
+      <button class="eg-btn" onclick="loadEx('life')">&#128737; Life</button>
+      <button class="eg-btn" onclick="loadEx('bundle')">&#128230; Bundle</button>
+    </div>
+    <textarea id="client-text" placeholder="Paste client info here &mdash; emails, intake forms, handwritten notes, anything...&#10;&#10;The AI will read it and fill out your quote forms automatically." oninput="updateCount()"></textarea>
+    <div class="left-foot">
+      <span class="char-ct" id="char-ct">0 chars</span>
+      <button class="btn btn-primary" onclick="runExtract()" id="extract-btn"><span>&#9889;</span> Extract &amp; Fill Forms</button>
+    </div>
   </div>
   <div class="panel" id="right-panel">
-    <div class="panel-head"><div class="panel-title"><div class="dot-ind" id="form-dot"></div> Quote Forms</div><div style="display:flex;gap:7px;"><button class="btn btn-sm btn-email" onclick="openEmailModal()" id="email-btn" style="display:none;">✉️ Draft Email</button><button class="btn btn-sm btn-pdf" onclick="exportPDF()" id="pdf-btn" style="display:none;">↓ PDF</button></div></div>
+    <div class="panel-head">
+      <div class="panel-title"><div class="dot-ind" id="form-dot"></div> Quote Forms</div>
+      <div style="display:flex;gap:7px;">
+        <button class="btn btn-sm btn-email" onclick="openEmailModal()" id="email-btn" style="display:none;">&#9993; Draft Email</button>
+        <button class="btn btn-sm btn-pdf" onclick="exportPDF()" id="pdf-btn" style="display:none;">&#8595; PDF</button>
+      </div>
+    </div>
     <div class="tab-bar" id="tab-bar" style="display:none;"></div>
-    <div class="loading-state" id="loading"><div class="spin"></div><div class="load-steps"><div class="lstep active" id="s1"><span>→</span> Reading client notes</div><div class="lstep" id="s2"><span>○</span> Identifying fields</div><div class="lstep" id="s3"><span>○</span> Filling forms</div><div class="lstep" id="s4"><span>○</span> Calculating fill rate</div></div></div>
-    <div class="empty-state" id="empty"><div class="empty-icon">📋</div><p>Select quote type(s), paste client info, then hit <strong>Extract &amp; Fill</strong>.</p></div>
-    <div class="form-scroll" id="form-area" style="display:none;"><div id="form-home" class="form-body"></div><div id="form-auto" class="form-body" style="display:none;"></div><div id="form-health" class="form-body" style="display:none;"></div><div id="form-life" class="form-body" style="display:none;"></div></div>
-    <div class="form-foot" id="form-foot" style="display:none;"><div><div class="fill-stat">Fields filled: <strong id="fill-stat">0 / 0</strong></div><div class="pbar"><div class="pfill" id="pfill"></div></div></div><div class="foot-actions"><button class="btn btn-sm" onclick="copyJSON()">📋 Copy JSON</button><button class="btn btn-primary" onclick="toast('✅ Quote submitted!','ok')">✓ Submit Quote</button></div></div>
+    <div class="loading-state" id="loading">
+      <div class="spin"></div>
+      <div class="load-steps">
+        <div class="lstep active" id="s1"><span>&#8594;</span> Reading client notes</div>
+        <div class="lstep" id="s2"><span>&#9675;</span> Identifying quote fields</div>
+        <div class="lstep" id="s3"><span>&#9675;</span> Filling forms</div>
+        <div class="lstep" id="s4"><span>&#9675;</span> Calculating fill rate</div>
+      </div>
+    </div>
+    <div class="empty-state" id="empty"><div class="empty-icon">&#128203;</div><p>Select quote type(s), paste client info, then hit <strong>Extract &amp; Fill</strong>.</p></div>
+    <div class="form-scroll" id="form-area" style="display:none;">
+      <div id="form-home" class="form-body"></div>
+      <div id="form-auto" class="form-body" style="display:none;"></div>
+      <div id="form-health" class="form-body" style="display:none;"></div>
+      <div id="form-life" class="form-body" style="display:none;"></div>
+    </div>
+    <div class="form-foot" id="form-foot" style="display:none;">
+      <div>
+        <div class="fill-stat">Fields filled: <strong id="fill-stat">0 / 0</strong></div>
+        <div class="pbar"><div class="pfill" id="pfill"></div></div>
+      </div>
+      <div class="foot-actions">
+        <button class="btn btn-sm" onclick="copyJSON()">&#128203; Copy JSON</button>
+        <button class="btn btn-primary" onclick="toast('&#10003; Quote submitted!','ok')">&#10003; Submit Quote</button>
+      </div>
+    </div>
   </div>
 </div>
 </div>
-<div class="modal-bg" id="email-modal"><div class="modal"><div class="modal-head"><div class="modal-title">✉️ Client Follow-up Email</div><button class="btn btn-ghost" onclick="closeEmailModal()">✕</button></div><div class="modal-body" id="modal-body"><div class="loading-email" id="email-loading"><div class="spin"></div> Drafting email with AI...</div><div id="email-content" style="display:none;"><div class="email-meta"><div class="email-row"><div class="email-label">To:</div><div class="email-val" id="email-to">—</div></div><div class="email-row"><div class="email-label">Subject:</div><input class="email-subject" id="email-subject" value="Your Insurance Quote — Next Steps"/></div></div><textarea class="email-textarea" id="email-body"></textarea></div></div><div class="modal-foot"><button class="btn btn-ghost" onclick="closeEmailModal()">Cancel</button><button class="btn btn-sm" onclick="copyEmail()">📋 Copy Email</button><button class="btn btn-primary" onclick="openMailto()">↗ Open in Mail</button></div></div></div>
+<div class="modal-bg" id="email-modal">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">&#9993; Client Follow-up Email</div><button class="btn btn-ghost" onclick="closeEmailModal()">&#10005;</button></div>
+    <div class="modal-body" id="modal-body">
+      <div class="loading-email" id="email-loading"><div class="spin"></div> Drafting email with AI...</div>
+      <div id="email-content" style="display:none;">
+        <div class="email-meta">
+          <div class="email-row"><div class="email-label">To:</div><div class="email-val" id="email-to">&mdash;</div></div>
+          <div class="email-row"><div class="email-label">Subject:</div><input class="email-subject" id="email-subject" value="Your Insurance Quote &mdash; Next Steps"/></div>
+        </div>
+        <textarea class="email-textarea" id="email-body"></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeEmailModal()">Cancel</button>
+      <button class="btn btn-sm" onclick="copyEmail()">&#128203; Copy Email</button>
+      <button class="btn btn-primary" onclick="openMailto()">&#8599; Open in Mail</button>
+    </div>
+  </div>
+</div>
 <div id="toasts"></div>
 <script>
-const selectedTypes=new Set(['home']);
-let extractedData={};
-let activeTab='home';
-const DEFS={
+var selectedTypes = new Set(['home']);
+var extractedData = {};
+var activeTab = 'home';
+
+var DEFS = {
   home:[
     {s:'Client Info',f:[{k:'full_name',l:'Full Name',t:'text',sp:2},{k:'date_of_birth',l:'Date of Birth',t:'date'},{k:'phone',l:'Phone',t:'tel'},{k:'email',l:'Email',t:'email',sp:2}]},
-    {s:'Property',f:[{k:'property_address',l:'Property Address',t:'text',sp:2},{k:'city',l:'City',t:'text'},{k:'state',l:'State',t:'text'},{k:'zip',l:'ZIP',t:'text'},{k:'year_built',l:'Year Built',t:'text'},{k:'square_footage',l:'Sq Footage',t:'text'},{k:'construction_type',l:'Construction',t:'sel',o:['','frame','masonry','other']},{k:'roof_type',l:'Roof Type',t:'sel',o:['','shingle','tile','metal','flat','other']},{k:'roof_year',l:'Roof Year',t:'text'},{k:'garage',l:'Garage',t:'sel',o:['','none','attached','detached']},{k:'pool',l:'Pool',t:'sel',o:['','yes','no']},{k:'security_system',l:'Security System',t:'sel',o:['','yes','no']}]},
-    {s:'Coverage',f:[{k:'coverage_amount',l:'Coverage Amount ($)',t:'text'},{k:'deductible',l:'Deductible ($)',t:'text'},{k:'current_insurer',l:'Current Insurer',t:'text'},{k:'current_premium',l:'Current Premium ($/yr)',t:'text'},{k:'mortgagee_name',l:'Mortgagee / Lender',t:'text'},{k:'effective_date',l:'Effective Date',t:'date'},{k:'prior_claims',l:'Prior Claims',t:'text',sp:2}]}
+    {s:'Property',f:[{k:'property_address',l:'Property Address',t:'text',sp:2},{k:'city',l:'City',t:'text'},{k:'state',l:'State',t:'text'},{k:'zip',l:'ZIP',t:'text'},{k:'year_built',l:'Year Built',t:'text'},{k:'square_footage',l:'Sq Footage',t:'text'},{k:'construction_type',l:'Construction',t:'sel',o:['','frame','masonry','other']},{k:'roof_type',l:'Roof Type',t:'sel',o:['','shingle','tile','metal','flat','other']},{k:'roof_year',l:'Roof Year',t:'text'},{k:'garage',l:'Garage',t:'sel',o:['','none','attached','detached']},{k:'pool',l:'Pool',t:'sel',o:['','yes','no']},{k:'trampoline',l:'Trampoline',t:'sel',o:['','yes','no']},{k:'security_system',l:'Security System',t:'sel',o:['','yes','no']}]},
+    {s:'Coverage',f:[{k:'coverage_amount',l:'Coverage Amount ($)',t:'text'},{k:'deductible',l:'Deductible ($)',t:'text'},{k:'current_insurer',l:'Current Insurer',t:'text'},{k:'current_premium',l:'Current Premium ($/yr)',t:'text'},{k:'mortgagee_name',l:'Mortgagee / Lender',t:'text'},{k:'mortgagee_loan_number',l:'Loan #',t:'text'},{k:'effective_date',l:'Effective Date',t:'date'},{k:'prior_claims',l:'Prior Claims',t:'text',sp:2}]}
   ],
   auto:[
-    {s:'Driver',f:[{k:'full_name',l:'Full Name',t:'text',sp:2},{k:'date_of_birth',l:'Date of Birth',t:'date'},{k:'license_number',l:'License #',t:'text'},{k:'marital_status',l:'Marital Status',t:'sel',o:['','single','married','divorced','widowed']},{k:'phone',l:'Phone',t:'tel'},{k:'email',l:'Email',t:'email',sp:2},{k:'city',l:'City',t:'text'},{k:'state',l:'State',t:'text'},{k:'zip',l:'ZIP',t:'text'}]},
+    {s:'Driver',f:[{k:'full_name',l:'Full Name',t:'text',sp:2},{k:'date_of_birth',l:'Date of Birth',t:'date'},{k:'license_number',l:'License #',t:'text'},{k:'license_state',l:'License State',t:'text'},{k:'marital_status',l:'Marital Status',t:'sel',o:['','single','married','divorced','widowed']},{k:'phone',l:'Phone',t:'tel'},{k:'email',l:'Email',t:'email',sp:2},{k:'address',l:'Address',t:'text',sp:2},{k:'city',l:'City',t:'text'},{k:'state',l:'State',t:'text'},{k:'zip',l:'ZIP',t:'text'}]},
     {s:'Vehicle 1',f:[{k:'v1_year',l:'Year',t:'text'},{k:'v1_make',l:'Make',t:'text'},{k:'v1_model',l:'Model',t:'text'},{k:'v1_vin',l:'VIN',t:'text',sp:2},{k:'v1_usage',l:'Usage',t:'sel',o:['','pleasure','commute','business']},{k:'v1_miles',l:'Annual Miles',t:'text'},{k:'v1_ownership',l:'Ownership',t:'sel',o:['','owned','leased','financed']}]},
-    {s:'Coverage',f:[{k:'coverage_type',l:'Coverage Type',t:'sel',o:['','liability only','full coverage']},{k:'bodily_injury_limits',l:'Bodily Injury Limits',t:'text'},{k:'comprehensive_deductible',l:'Comp Deductible',t:'text'},{k:'collision_deductible',l:'Collision Deductible',t:'text'},{k:'current_insurer',l:'Current Insurer',t:'text'},{k:'current_premium',l:'Current Premium ($/mo)',t:'text'},{k:'effective_date',l:'Effective Date',t:'date'}]}
+    {s:'Vehicle 2 (if applicable)',f:[{k:'v2_year',l:'Year',t:'text'},{k:'v2_make',l:'Make',t:'text'},{k:'v2_model',l:'Model',t:'text'},{k:'v2_vin',l:'VIN',t:'text',sp:2}]},
+    {s:'Coverage',f:[{k:'coverage_type',l:'Coverage Type',t:'sel',o:['','liability only','full coverage','comprehensive']},{k:'bodily_injury_limits',l:'Bodily Injury Limits',t:'text'},{k:'property_damage_limit',l:'Property Damage Limit',t:'text'},{k:'comprehensive_deductible',l:'Comp Deductible',t:'text'},{k:'collision_deductible',l:'Collision Deductible',t:'text'},{k:'uninsured_motorist',l:'Uninsured Motorist',t:'sel',o:['','yes','no']},{k:'current_insurer',l:'Current Insurer',t:'text'},{k:'current_premium',l:'Current Premium ($/mo)',t:'text'},{k:'continuous_coverage_years',l:'Continuous Coverage (yrs)',t:'text'},{k:'effective_date',l:'Effective Date',t:'date'}]}
   ],
   health:[
-    {s:'Client Info',f:[{k:'full_name',l:'Full Name',t:'text',sp:2},{k:'date_of_birth',l:'Date of Birth',t:'date'},{k:'gender',l:'Gender',t:'sel',o:['','male','female','other']},{k:'tobacco_user',l:'Tobacco User',t:'sel',o:['','yes','no']},{k:'phone',l:'Phone',t:'tel'},{k:'email',l:'Email',t:'email',sp:2},{k:'state',l:'State',t:'text'},{k:'zip',l:'ZIP',t:'text'}]},
-    {s:'Household',f:[{k:'household_size',l:'Household Size',t:'text'},{k:'household_income',l:'Annual Income ($)',t:'text'},{k:'coverage_type',l:'Coverage Type',t:'sel',o:['','individual','family','self+spouse','self+children']},{k:'subsidy_eligible',l:'Subsidy Eligible',t:'sel',o:['','yes','no','unknown']},{k:'dependents',l:'Dependents',t:'text',sp:2}]},
-    {s:'Health & Coverage',f:[{k:'pre_existing_conditions',l:'Pre-existing Conditions',t:'text',sp:2},{k:'current_medications',l:'Current Medications',t:'text',sp:2},{k:'preferred_doctors',l:'Preferred Doctors',t:'text',sp:2},{k:'plan_type_preference',l:'Plan Type',t:'sel',o:['','HMO','PPO','EPO','HDHP','any']},{k:'current_insurer',l:'Current Insurer',t:'text'},{k:'current_premium',l:'Current Premium ($/mo)',t:'text'},{k:'effective_date',l:'Effective Date',t:'date'}]}
+    {s:'Client Info',f:[{k:'full_name',l:'Full Name',t:'text',sp:2},{k:'date_of_birth',l:'Date of Birth',t:'date'},{k:'gender',l:'Gender',t:'sel',o:['','male','female','other']},{k:'tobacco_user',l:'Tobacco User',t:'sel',o:['','yes','no']},{k:'phone',l:'Phone',t:'tel'},{k:'email',l:'Email',t:'email',sp:2},{k:'address',l:'Address',t:'text',sp:2},{k:'city',l:'City',t:'text'},{k:'state',l:'State',t:'text'},{k:'zip',l:'ZIP',t:'text'}]},
+    {s:'Household',f:[{k:'household_size',l:'Household Size',t:'text'},{k:'household_income',l:'Annual Income ($)',t:'text'},{k:'coverage_type',l:'Coverage Type',t:'sel',o:['','individual','family','self+spouse','self+children']},{k:'subsidy_eligible',l:'Subsidy Eligible',t:'sel',o:['','yes','no','unknown']},{k:'dependents',l:'Dependents (name, DOB)',t:'text',sp:2},{k:'open_enrollment_qualifying_event',l:'Qualifying Life Event',t:'text',sp:2}]},
+    {s:'Health & Preferences',f:[{k:'pre_existing_conditions',l:'Pre-existing Conditions',t:'text',sp:2},{k:'current_medications',l:'Current Medications',t:'text',sp:2},{k:'preferred_doctors',l:'Preferred Doctors',t:'text',sp:2},{k:'preferred_hospitals',l:'Preferred Hospitals / Network',t:'text',sp:2},{k:'plan_type_preference',l:'Plan Type Preference',t:'sel',o:['','HMO','PPO','EPO','HDHP','any']},{k:'current_insurer',l:'Current Insurer',t:'text'},{k:'current_premium',l:'Current Premium ($/mo)',t:'text'},{k:'effective_date',l:'Effective Date',t:'date'}]}
   ],
   life:[
-    {s:'Client Info',f:[{k:'full_name',l:'Full Name',t:'text',sp:2},{k:'date_of_birth',l:'Date of Birth',t:'date'},{k:'gender',l:'Gender',t:'sel',o:['','male','female','other']},{k:'tobacco_user',l:'Tobacco User',t:'sel',o:['','yes','no']},{k:'phone',l:'Phone',t:'tel'},{k:'email',l:'Email',t:'email',sp:2}]},
-    {s:'Health & Financial',f:[{k:'height',l:'Height',t:'text'},{k:'weight',l:'Weight (lbs)',t:'text'},{k:'health_rating',l:'Health Rating',t:'sel',o:['','excellent','good','fair','poor']},{k:'occupation',l:'Occupation',t:'text'},{k:'annual_income',l:'Annual Income ($)',t:'text'}]},
-    {s:'Coverage',f:[{k:'coverage_amount',l:'Coverage Amount ($)',t:'text'},{k:'coverage_type',l:'Coverage Type',t:'sel',o:['','term','whole life','universal life']},{k:'term_length',l:'Term Length',t:'sel',o:['','10 years','15 years','20 years','25 years','30 years']},{k:'beneficiary_name',l:'Beneficiary Name',t:'text'},{k:'beneficiary_relationship',l:'Beneficiary Relationship',t:'text'},{k:'current_insurer',l:'Current Insurer',t:'text'},{k:'current_premium',l:'Current Premium ($/mo)',t:'text'},{k:'effective_date',l:'Effective Date',t:'date'}]}
+    {s:'Client Info',f:[{k:'full_name',l:'Full Name',t:'text',sp:2},{k:'date_of_birth',l:'Date of Birth',t:'date'},{k:'gender',l:'Gender',t:'sel',o:['','male','female','other']},{k:'tobacco_user',l:'Tobacco User',t:'sel',o:['','yes','no']},{k:'phone',l:'Phone',t:'tel'},{k:'email',l:'Email',t:'email',sp:2},{k:'address',l:'Address',t:'text',sp:2},{k:'city',l:'City',t:'text'},{k:'state',l:'State',t:'text'},{k:'zip',l:'ZIP',t:'text'}]},
+    {s:'Health & Financial',f:[{k:'height',l:'Height',t:'text'},{k:'weight',l:'Weight (lbs)',t:'text'},{k:'health_rating',l:'Health Rating',t:'sel',o:['','excellent','good','fair','poor']},{k:'occupation',l:'Occupation',t:'text'},{k:'annual_income',l:'Annual Income ($)',t:'text'},{k:'medical_history_notes',l:'Medical History Notes',t:'text',sp:2}]},
+    {s:'Coverage',f:[{k:'coverage_amount',l:'Coverage Amount ($)',t:'text'},{k:'coverage_type',l:'Coverage Type',t:'sel',o:['','term','whole life','universal life']},{k:'term_length',l:'Term Length',t:'sel',o:['','10 years','15 years','20 years','25 years','30 years']},{k:'reason_for_coverage',l:'Reason for Coverage',t:'text',sp:2},{k:'beneficiary_name',l:'Beneficiary Name',t:'text'},{k:'beneficiary_relationship',l:'Beneficiary Relationship',t:'text'},{k:'contingent_beneficiary',l:'Contingent Beneficiary',t:'text',sp:2},{k:'existing_life_insurance',l:'Existing Life Insurance',t:'text',sp:2},{k:'current_insurer',l:'Current Insurer',t:'text'},{k:'current_premium',l:'Current Premium ($/mo)',t:'text'},{k:'effective_date',l:'Effective Date',t:'date'}]}
   ]
 };
-function toggleType(t){if(selectedTypes.has(t)){if(selectedTypes.size===1)return;selectedTypes.delete(t);}else selectedTypes.add(t);renderTypeCards();}
-function renderTypeCards(){['home','auto','health','life'].forEach(t=>{const c=document.getElementById('card-'+t);const k=document.getElementById('chk-'+t);if(selectedTypes.has(t)){c.className='type-card selected-'+t;k.textContent='✓';}else{c.className='type-card';k.textContent='';}});}
-function updateCount(){document.getElementById('char-ct').textContent=document.getElementById('client-text').value.length.toLocaleString()+' chars';}
-function clearAll(){document.getElementById('client-text').value='';updateCount();}
-const EXAMPLES={home:'Client: Rachel Kim, DOB 08/22/1979
-Phone: (512) 887-4421 | rachel.kim@email.com
-Property: 2847 Creekside Lane, Austin TX 78745
-Built 2001, brick/frame, comp shingle roof replaced 2017
-2,650 sqft, 2 stories, 4 bed / 2.5 bath
-Attached 2-car garage, pool in backyard, ADT security system
-Looking for $425,000 dwelling coverage, prefer $2,500 deductible
-Currently with Farmers, paying $3,100/yr, hail claim in 2021
-Mortgage with Wells Fargo, loan # WF-4421-8892
-Wants coverage starting July 1st',auto:'New auto client: James & Linda Torres
-James DOB 5/14/1972, TX license TX72-4489, married
-Linda DOB 11/3/1975
-james.torres@email.com | (214) 556-8833
-4102 Elmwood Drive, Dallas TX 75201
-2021 Toyota Camry XSE, commute ~15,000 mi/yr, financed through Toyota Financial
-2019 Ford Explorer, pleasure use ~9,000 mi/yr, owned
-Want full coverage on both. Prefer $500 deductibles.
-Bodily injury $100k/$300k. Currently with GEICO $2,450/yr combined.
-No accidents or violations. Continuous coverage 12+ years.
-Start date: August 15',health:'Client: Maria Santos, F, DOB 12/5/1983, non-smoker
-720-441-9922 | maria.santos@gmail.com
-5510 Ridgeline Blvd, Denver CO 80211
-Household of 4: husband Carlos DOB 3/18/1980, daughter Sofia DOB 6/2012, son Miguel DOB 9/2015
-Income approx $112,000, may qualify for subsidy
-Self + family coverage. Wants PPO, keep Dr. Angela Reyes at UCHealth
-Maria on Metformin 500mg. Carlos has seasonal allergies.
-Currently on employer plan, leaving job Sept 1 (qualifying event)
-Currently paying $890/mo. Effective date Sept 1.',life:'Thomas Okafor, DOB 2/28/1981, male, never smoked
-thomas.okafor@email.com | (404) 773-2291
-810 Peachtree St NE, Atlanta GA 30308
-6 ft 1 in, 195 lbs. Health: excellent
-Software engineer. Annual income: $185,000
-Wants $1,000,000 term life, 20-year term
-Wife Adaeze is primary beneficiary. No existing life insurance.
-Wants to start within 30 days.',bundle:'Steven & Amy Park
-Steven DOB 4/7/1977 | Amy DOB 9/14/1979
-(503) 228-5517 | steven.park@email.com
-Home: 3320 Forest Ridge Dr, Portland OR 97229
-Built 1995, wood frame, comp shingle roof 2020, 2,900 sqft
-$500k dwelling, $3,000 deductible. Currently Liberty Mutual $3,600/yr.
-Auto: 2022 Honda Accord commute financed, 2020 Subaru Outback pleasure owned
-Full coverage both, $500 deductibles, currently GEICO $2,800/yr
-Life: Steven wants 20yr/$750k term. Excellent health, 175lbs, non-smoker.
-All effective: Sept 1'};
-function loadEx(t){selectedTypes.clear();if(t==='bundle'){['home','auto','life'].forEach(x=>selectedTypes.add(x));}else selectedTypes.add(['auto','health','life'].includes(t)?t:'home');renderTypeCards();document.getElementById('client-text').value=EXAMPLES[t]||EXAMPLES.home;updateCount();}
-async function runExtract(){const text=document.getElementById('client-text').value.trim();if(!text){toast('⚠️ Paste client notes first','err');return;}const btn=document.getElementById('extract-btn');btn.disabled=true;document.getElementById('empty').style.display='none';document.getElementById('form-area').style.display='none';document.getElementById('form-foot').style.display='none';document.getElementById('tab-bar').style.display='none';document.getElementById('email-btn').style.display='none';document.getElementById('pdf-btn').style.display='none';document.getElementById('loading').classList.add('show');const s=animSteps();try{const res=await fetch('/api/extract-quote',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({clientText:text,quoteType:[...selectedTypes]})});const j=await res.json();clearInterval(s);if(!j.success)throw new Error(j.error||'Extraction failed');extractedData=j.data;renderAllForms(extractedData);}catch(err){clearInterval(s);toast('❌ '+err.message,'err');document.getElementById('loading').classList.remove('show');document.getElementById('empty').style.display='flex';}btn.disabled=false;}
-function animSteps(){const ids=['s1','s2','s3','s4'];let i=0;return setInterval(()=>{ids.forEach((id,ix)=>{const el=document.getElementById(id);const ic=el.querySelector('span');if(ix<i){el.className='lstep done';ic.textContent='✓';}else if(ix===i){el.className='lstep active';ic.textContent='→';}else{el.className='lstep';ic.textContent='○';}});i=(i+1)%(ids.length+1);},550);}
-function renderAllForms(data){document.getElementById('loading').classList.remove('show');const types=[...selectedTypes];activeTab=types[0];const bar=document.getElementById('tab-bar');bar.innerHTML='';if(types.length>1){bar.style.display='flex';types.forEach(t=>{const tab=document.createElement('div');const icons={home:'🏠',auto:'🚗',health:'❤️',life:'🛡️'};const labels={home:'Homeowners',auto:'Auto',health:'Health',life:'Life'};tab.className='tab';tab.textContent=icons[t]+' '+labels[t];tab.id='tab-'+t;tab.onclick=()=>switchTab(t);bar.appendChild(tab);});}['home','auto','health','life'].forEach(t=>{const container=document.getElementById('form-'+t);if(selectedTypes.has(t)){const tData=types.length>1?(data[t]||{}):(data[t]||data||{});buildForm(container,DEFS[t],tData,t);container.style.display=t===activeTab?'block':'none';}else{container.innerHTML='';container.style.display='none';}});if(types.length>1)switchTab(activeTab);document.getElementById('form-area').style.display='block';document.getElementById('form-foot').style.display='flex';document.getElementById('email-btn').style.display='inline-flex';document.getElementById('pdf-btn').style.display='inline-flex';document.getElementById('form-dot').className='dot-ind done';updateStats();toast('✅ Forms filled — review and submit!','ok');}
-function buildForm(container,defs,data,type){container.innerHTML='';defs.forEach(section=>{const sec=document.createElement('div');sec.className='fsection';const title=document.createElement('div');title.className='fsection-title';title.textContent=section.s;sec.appendChild(title);const grid=document.createElement('div');grid.className='fgrid';sec.appendChild(grid);section.f.forEach(f=>{const fg=document.createElement('div');fg.className='fg'+(f.sp===2?' s2':' s1');const lbl=document.createElement('label');lbl.textContent=f.l;fg.appendChild(lbl);const rawKey=f.k;let val=data[rawKey];if((val===undefined||val===null)&&rawKey.startsWith('v')){const m=rawKey.match(/^v(d+)_(.+)$/);if(m){const idx=parseInt(m[1])-1;if(data.vehicles&&data.vehicles[idx])val=data.vehicles[idx][m[2]];}}const hasVal=val!==null&&val!==undefined&&val!=='';let el;if(f.t==='sel'){el=document.createElement('select');el.id='f-'+type+'-'+f.k;f.o.forEach(o=>{const op=document.createElement('option');op.value=o;op.textContent=o||'— select —';if(hasVal&&o===String(val))op.selected=true;el.appendChild(op);});}else{el=document.createElement('input');el.type=f.t;el.id='f-'+type+'-'+f.k;if(hasVal)el.value=val;else el.placeholder='—';}if(hasVal)el.classList.add('ai');el.addEventListener('change',updateStats);fg.appendChild(el);grid.appendChild(fg);});container.appendChild(sec);});}
-function switchTab(t){activeTab=t;['home','auto','health','life'].forEach(x=>{document.getElementById('form-'+x).style.display=x===t&&selectedTypes.has(x)?'block':'none';const tab=document.getElementById('tab-'+x);if(tab)tab.className='tab'+(x===t?' active-'+x:'');});updateStats();}
-function updateStats(){const f=document.getElementById('form-'+activeTab);if(!f||f.style.display==='none')return;const inputs=f.querySelectorAll('input,select');let filled=0;inputs.forEach(i=>{if(i.value&&i.value!=='')filled++;});const pct=inputs.length?Math.round(filled/inputs.length*100):0;document.getElementById('fill-stat').textContent=filled+' / '+inputs.length;document.getElementById('pfill').style.width=pct+'%';}
-async function openEmailModal(){document.getElementById('email-modal').classList.add('show');document.getElementById('email-loading').style.display='flex';document.getElementById('email-content').style.display='none';const an=document.getElementById('agent-name').value||'Your Agent';const types=[...selectedTypes];let clientEmail='';for(const t of types){const em=document.getElementById('f-'+t+'-email');if(em&&em.value){clientEmail=em.value;break;}}try{const res=await fetch('/api/extract-quote',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'email',extractedData,quoteTypes:types,agentName:an,clientText:''})});const j=await res.json();document.getElementById('email-loading').style.display='none';document.getElementById('email-content').style.display='block';document.getElementById('email-to').textContent=clientEmail||'(client email not found)';document.getElementById('email-body').value=j.emailBody||'Could not generate email.';}catch(err){document.getElementById('email-loading').style.display='none';document.getElementById('email-body').value='Error: '+err.message;document.getElementById('email-content').style.display='block';}}
-function closeEmailModal(){document.getElementById('email-modal').classList.remove('show');}
-function copyEmail(){navigator.clipboard.writeText('Subject: '+document.getElementById('email-subject').value+'
 
-'+document.getElementById('email-body').value);toast('📋 Email copied','ok');}
-function openMailto(){const to=document.getElementById('email-to').textContent;const s=encodeURIComponent(document.getElementById('email-subject').value);const b=encodeURIComponent(document.getElementById('email-body').value);window.open('mailto:'+to+'?subject='+s+'&body='+b,'_blank');}
-function copyJSON(){navigator.clipboard.writeText(JSON.stringify(extractedData,null,2));toast('📋 JSON copied','ok');}
-function exportPDF(){const types=[...selectedTypes];const ICONS={home:'🏠',auto:'🚗',health:'❤️',life:'🛡️'};const LABELS={home:'Homeowners',auto:'Auto',health:'Health',life:'Life'};let s='';types.forEach(t=>{s+='<h2>'+ICONS[t]+' '+LABELS[t]+' Quote</h2>';DEFS[t].forEach(sec=>{s+='<h3>'+sec.s+'</h3><table>';sec.f.forEach(f=>{const el=document.getElementById('f-'+t+'-'+f.k);s+='<tr><td>'+f.l+'</td><td>'+(el?el.value:'—')+'</td></tr>';});s+='</table>';});});let n='Client';for(const t of types){const el=document.getElementById('f-'+t+'-full_name');if(el&&el.value){n=el.value;break;}}const an=document.getElementById('agent-name').value||'Agent';const html='<!DOCTYPE html><html><head><title>Quote Summary</title><style>body{font-family:sans-serif;max-width:800px;margin:32px auto;color:#1a1a2e;}h1{color:#3b82f6;border-bottom:3px solid #3b82f6;padding-bottom:8px;}h2{color:#3b82f6;margin-top:24px;font-size:1rem;}h3{color:#888;font-size:.78rem;text-transform:uppercase;margin-top:14px;}table{width:100%;border-collapse:collapse;}td{padding:5px 8px;border-bottom:1px solid #f1f1f1;font-size:.82rem;}td:first-child{color:#666;width:42%;}</style></head><body><h1>⚡ QuoteAI — Quote Summary for '+n+'</h1><p style="color:#666;margin-bottom:24px;">Prepared by: '+an+' | '+new Date().toLocaleDateString()+'</p>'+s+'</body></html>';const w=window.open('','_blank');w.document.write(html);w.document.close();setTimeout(()=>w.print(),500);}
-function toast(msg,type='ok'){const t=document.createElement('div');t.className='toast '+(type==='ok'?'ok':'err');t.textContent=msg;document.getElementById('toasts').appendChild(t);setTimeout(()=>t.remove(),3800);}
+var EXAMPLES = {
+  home:'Client: Rachel Kim, DOB 08/22/1979\nPhone: (512) 887-4421 | rachel.kim@email.com\nProperty: 2847 Creekside Lane, Austin TX 78745\nBuilt 2001, brick/frame, comp shingle roof replaced 2017\n2,650 sqft, 2 stories, 4 bed / 2.5 bath\nAttached 2-car garage, pool in backyard, no trampoline\nADT security system installed\nLooking for $425,000 dwelling coverage, prefer $2,500 deductible\nCurrently with Farmers, paying $3,100/yr - had a hail claim in 2021\nMortgage with Wells Fargo - loan # WF-4421-8892\nWants coverage starting July 1st',
+  auto:'New auto client: James & Linda Torres\nJames DOB 5/14/1972 - TX license TX72-4489 - married\nLinda DOB 11/3/1975 - TX license TX75-9812\njames.torres@email.com | (214) 556-8833\n4102 Elmwood Drive, Dallas TX 75201\n2021 Toyota Camry XSE - commute ~15,000 mi/yr - financed through Toyota Financial\n2019 Ford Explorer - pleasure use ~9,000 mi/yr - owned free and clear\nWant full coverage on both. Prefer $500 deductibles.\nBodily injury $100k/$300k. Currently with GEICO $2,450/yr combined.\nNo accidents or violations. Continuous coverage 12+ years.\nStart date: August 15',
+  health:'Client: Maria Santos, F, DOB 12/5/1983, non-smoker\nPhone 720-441-9922 | maria.santos@gmail.com\n5510 Ridgeline Blvd, Denver CO 80211\nHousehold of 4: husband Carlos DOB 3/18/1980, daughter Sofia DOB 6/2012, son Miguel DOB 9/2015\nCombined income approx $112,000 - may qualify for subsidy\nSelf + family coverage. Prefers PPO to keep Dr. Angela Reyes at UCHealth\nMaria on Metformin 500mg. Carlos has seasonal allergies.\nCurrently on employer plan - leaving job Sept 1 (qualifying event)\nCurrently paying $890/mo. Effective date Sept 1.',
+  life:'Thomas Okafor, DOB 2/28/1981, male, never smoked\nthomas.okafor@email.com | (404) 773-2291\n810 Peachtree St NE, Atlanta GA 30308\n6ft 1in, 195 lbs. Health: excellent - no major conditions\nSoftware engineer. Annual income: $185,000\nWants $1,000,000 term life - 20-year term\nReason: mortgage protection + income replacement for family\nWife Adaeze is primary beneficiary (spouse). Kids as contingent.\nNo existing life insurance. Currently uninsured.\nWants to start within next 30 days.',
+  bundle:'BUNDLE - Home + Auto + Life\nClient: Steven & Amy Park\nSteven DOB 4/7/1977 | Amy DOB 9/14/1979\n(503) 228-5517 | steven.park@email.com\nHome: 3320 Forest Ridge Dr, Portland OR 97229\nBuilt 1995, wood frame, comp shingle roof 2020\n2,900 sqft, 2 stories, 3 bed/2.5 bath, attached garage, no pool\nSeeking $500k dwelling, $3,000 deductible. Current: Liberty Mutual $3,600/yr. No claims.\nAuto: 2022 Honda Accord - commute, 18,000 mi/yr, financed\n2020 Subaru Outback - pleasure, 8,000 mi/yr, owned\nFull coverage both. $500 deductibles. Currently GEICO $2,800/yr. No violations.\nLife: Steven wants 20yr/$750k term. Excellent health, 5ft10in 175lbs, non-smoker.\nAmy as primary beneficiary. No existing life insurance.\nAll effective dates: Sept 1'
+};
+
+function toggleType(t) {
+  if (selectedTypes.has(t)) {
+    if (selectedTypes.size === 1) return;
+    selectedTypes.delete(t);
+  } else {
+    selectedTypes.add(t);
+  }
+  renderTypeCards();
+}
+
+function renderTypeCards() {
+  ['home','auto','health','life'].forEach(function(t) {
+    var card = document.getElementById('card-' + t);
+    var chk = document.getElementById('chk-' + t);
+    if (selectedTypes.has(t)) {
+      card.className = 'type-card selected-' + t;
+      chk.innerHTML = '&#10003;';
+    } else {
+      card.className = 'type-card';
+      chk.innerHTML = '';
+    }
+  });
+}
+
+function loadEx(t) {
+  selectedTypes.clear();
+  if (t === 'bundle') { ['home','auto','life'].forEach(function(x){ selectedTypes.add(x); }); }
+  else if (t === 'auto') { selectedTypes.add('auto'); }
+  else if (t === 'health') { selectedTypes.add('health'); }
+  else if (t === 'life') { selectedTypes.add('life'); }
+  else { selectedTypes.add('home'); }
+  renderTypeCards();
+  document.getElementById('client-text').value = EXAMPLES[t] || EXAMPLES.home;
+  updateCount();
+}
+
+function updateCount() {
+  var l = document.getElementById('client-text').value.length;
+  document.getElementById('char-ct').textContent = l.toLocaleString() + ' chars';
+}
+
+function clearAll() {
+  document.getElementById('client-text').value = '';
+  updateCount();
+}
+
+function animSteps() {
+  var ids = ['s1','s2','s3','s4']; var i = 0;
+  return setInterval(function() {
+    ids.forEach(function(id, ix) {
+      var el = document.getElementById(id);
+      if (ix < i) { el.className = 'lstep done'; el.querySelector('span').textContent = '✓'; }
+      else if (ix === i) { el.className = 'lstep active'; el.querySelector('span').textContent = '→'; }
+      else { el.className = 'lstep'; el.querySelector('span').textContent = '○'; }
+    });
+    i = (i + 1) % (ids.length + 1);
+  }, 550);
+}
+
+function runExtract() {
+  var text = document.getElementById('client-text').value.trim();
+  if (!text) { toast('⚠ Paste client notes first', 'err'); return; }
+  var btn = document.getElementById('extract-btn');
+  btn.disabled = true;
+  document.getElementById('empty').style.display = 'none';
+  document.getElementById('form-area').style.display = 'none';
+  document.getElementById('form-foot').style.display = 'none';
+  document.getElementById('tab-bar').style.display = 'none';
+  document.getElementById('email-btn').style.display = 'none';
+  document.getElementById('pdf-btn').style.display = 'none';
+  document.getElementById('loading').classList.add('show');
+  var stepTimer = animSteps();
+  fetch('/api/extract-quote', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({clientText: text, quoteType: Array.from(selectedTypes)})
+  }).then(function(res){ return res.json(); }).then(function(json) {
+    clearInterval(stepTimer);
+    if (!json.success) throw new Error(json.error || 'Extraction failed');
+    extractedData = json.data;
+    renderAllForms(extractedData);
+  }).catch(function(err) {
+    clearInterval(stepTimer);
+    toast('❌ ' + err.message, 'err');
+    document.getElementById('loading').classList.remove('show');
+    document.getElementById('empty').style.display = 'flex';
+  }).finally(function(){ btn.disabled = false; });
+}
+
+function renderAllForms(data) {
+  document.getElementById('loading').classList.remove('show');
+  var types = Array.from(selectedTypes);
+  activeTab = types[0];
+  var bar = document.getElementById('tab-bar');
+  bar.innerHTML = '';
+  if (types.length > 1) {
+    bar.style.display = 'flex';
+    var icons = {home:'🏠',auto:'🚗',health:'❤',life:'🛡'};
+    var labels = {home:'Homeowners',auto:'Auto',health:'Health',life:'Life'};
+    types.forEach(function(t) {
+      var tab = document.createElement('div');
+      tab.className = 'tab';
+      tab.textContent = icons[t] + ' ' + labels[t];
+      tab.id = 'tab-' + t;
+      tab.onclick = function(){ switchTab(t); };
+      bar.appendChild(tab);
+    });
+  }
+  ['home','auto','health','life'].forEach(function(t) {
+    var container = document.getElementById('form-' + t);
+    if (selectedTypes.has(t)) {
+      var tData = types.length > 1 ? (data[t] || {}) : (data[t] || data || {});
+      buildForm(container, DEFS[t], tData, t);
+      container.style.display = t === activeTab ? 'block' : 'none';
+    } else {
+      container.innerHTML = '';
+      container.style.display = 'none';
+    }
+  });
+  if (types.length > 1) switchTab(activeTab);
+  document.getElementById('form-area').style.display = 'block';
+  document.getElementById('form-foot').style.display = 'flex';
+  document.getElementById('email-btn').style.display = 'inline-flex';
+  document.getElementById('pdf-btn').style.display = 'inline-flex';
+  document.getElementById('form-dot').className = 'dot-ind done';
+  updateStats();
+  toast('✅ Forms filled — review and submit!', 'ok');
+}
+
+function buildForm(container, defs, data, type) {
+  container.innerHTML = '';
+  defs.forEach(function(section) {
+    var sec = document.createElement('div'); sec.className = 'fsection';
+    var title = document.createElement('div'); title.className = 'fsection-title'; title.textContent = section.s;
+    sec.appendChild(title);
+    var grid = document.createElement('div'); grid.className = 'fgrid'; sec.appendChild(grid);
+    section.f.forEach(function(f) {
+      var fg = document.createElement('div'); fg.className = 'fg' + (f.sp === 2 ? ' s2' : ' s1');
+      var lbl = document.createElement('label'); lbl.textContent = f.l; fg.appendChild(lbl);
+      var rawKey = f.k;
+      var val = data[rawKey];
+      if ((val === undefined || val === null) && rawKey.startsWith('v')) {
+        var m = rawKey.match(/^v(d+)_(.+)$/);
+        if (m) { var idx = parseInt(m[1]) - 1; if (data.vehicles && data.vehicles[idx]) val = data.vehicles[idx][m[2]]; }
+      }
+      var hasVal = val !== null && val !== undefined && val !== '';
+      var el;
+      if (f.t === 'sel') {
+        el = document.createElement('select'); el.id = 'f-' + type + '-' + f.k;
+        f.o.forEach(function(o) { var op = document.createElement('option'); op.value = o; op.textContent = o || '— select —'; if (hasVal && o === String(val)) op.selected = true; el.appendChild(op); });
+      } else {
+        el = document.createElement('input'); el.type = f.t; el.id = 'f-' + type + '-' + f.k;
+        if (hasVal) el.value = val; else el.placeholder = '—';
+      }
+      if (hasVal) el.classList.add('ai');
+      el.addEventListener('change', updateStats);
+      fg.appendChild(el); grid.appendChild(fg);
+    });
+    container.appendChild(sec);
+  });
+}
+
+function switchTab(t) {
+  activeTab = t;
+  ['home','auto','health','life'].forEach(function(x) {
+    document.getElementById('form-' + x).style.display = x === t && selectedTypes.has(x) ? 'block' : 'none';
+    var tab = document.getElementById('tab-' + x);
+    if (tab) tab.className = 'tab' + (x === t ? ' active-' + x : '');
+  });
+  updateStats();
+}
+
+function updateStats() {
+  var f = document.getElementById('form-' + activeTab);
+  if (!f || f.style.display === 'none') return;
+  var inputs = f.querySelectorAll('input,select');
+  var filled = 0;
+  inputs.forEach(function(i){ if (i.value && i.value !== '') filled++; });
+  var pct = inputs.length ? Math.round(filled / inputs.length * 100) : 0;
+  document.getElementById('fill-stat').textContent = filled + ' / ' + inputs.length;
+  document.getElementById('pfill').style.width = pct + '%';
+}
+
+function openEmailModal() {
+  document.getElementById('email-modal').classList.add('show');
+  document.getElementById('email-loading').style.display = 'flex';
+  document.getElementById('email-content').style.display = 'none';
+  var an = document.getElementById('agent-name').value || 'Your Agent';
+  var types = Array.from(selectedTypes);
+  var clientEmail = '';
+  for (var i = 0; i < types.length; i++) {
+    var em = document.getElementById('f-' + types[i] + '-email');
+    if (em && em.value) { clientEmail = em.value; break; }
+  }
+  fetch('/api/extract-quote', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({action: 'email', extractedData: extractedData, quoteTypes: types, agentName: an, clientText: ''})
+  }).then(function(res){ return res.json(); }).then(function(json) {
+    document.getElementById('email-loading').style.display = 'none';
+    document.getElementById('email-content').style.display = 'block';
+    document.getElementById('email-to').textContent = clientEmail || '(client email not found)';
+    document.getElementById('email-body').value = json.emailBody || 'Could not generate email.';
+  }).catch(function(err) {
+    document.getElementById('email-loading').style.display = 'none';
+    document.getElementById('email-body').value = 'Error: ' + err.message;
+    document.getElementById('email-content').style.display = 'block';
+  });
+}
+
+function closeEmailModal() { document.getElementById('email-modal').classList.remove('show'); }
+
+function copyEmail() {
+  navigator.clipboard.writeText('Subject: ' + document.getElementById('email-subject').value + '\n\n' + document.getElementById('email-body').value);
+  toast('📋 Email copied', 'ok');
+}
+
+function openMailto() {
+  var to = document.getElementById('email-to').textContent;
+  var s = encodeURIComponent(document.getElementById('email-subject').value);
+  var b = encodeURIComponent(document.getElementById('email-body').value);
+  window.open('mailto:' + to + '?subject=' + s + '&body=' + b, '_blank');
+}
+
+function copyJSON() {
+  navigator.clipboard.writeText(JSON.stringify(extractedData, null, 2));
+  toast('📋 JSON copied', 'ok');
+}
+
+function exportPDF() {
+  var types = Array.from(selectedTypes);
+  var ICONS = {home:'🏠',auto:'🚗',health:'❤',life:'🛡'};
+  var LABELS = {home:'Homeowners',auto:'Auto',health:'Health',life:'Life'};
+  var sections = '';
+  types.forEach(function(t) {
+    sections += '<h2>' + ICONS[t] + ' ' + LABELS[t] + ' Quote</h2>';
+    DEFS[t].forEach(function(sec) {
+      sections += '<h3>' + sec.s + '</h3><table>';
+      sec.f.forEach(function(f) {
+        var el = document.getElementById('f-' + t + '-' + f.k);
+        sections += '<tr><td>' + f.l + '</td><td>' + (el ? el.value : '—') + '</td></tr>';
+      });
+      sections += '</table>';
+    });
+  });
+  var clientName = 'Client';
+  for (var i = 0; i < types.length; i++) { var el = document.getElementById('f-' + types[i] + '-full_name'); if (el && el.value) { clientName = el.value; break; } }
+  var agentName = document.getElementById('agent-name').value || 'Agent';
+  var html = '<!DOCTYPE html><html><head><title>Quote Summary</title><style>body{font-family:sans-serif;max-width:800px;margin:32px auto;color:#1a1a2e;}h1{color:#3b82f6;border-bottom:3px solid #3b82f6;padding-bottom:8px;}h2{color:#3b82f6;margin-top:24px;font-size:1rem;}h3{color:#888;font-size:.78rem;text-transform:uppercase;margin-top:14px;}table{width:100%;border-collapse:collapse;}td{padding:5px 8px;border-bottom:1px solid #f1f1f1;font-size:.82rem;}td:first-child{color:#666;width:42%;}</style></head><body><h1>&#9889; QuoteAI &mdash; Quote Summary for ' + clientName + '</h1><p style="color:#666;margin-bottom:24px;">Prepared by: ' + agentName + ' | ' + new Date().toLocaleDateString() + '</p>' + sections + '</body></html>';
+  var w = window.open('', '_blank'); w.document.write(html); w.document.close(); setTimeout(function(){ w.print(); }, 500);
+}
+
+function toast(msg, type) {
+  type = type || 'ok';
+  var t = document.createElement('div');
+  t.className = 'toast ' + (type === 'ok' ? 'ok' : 'err');
+  t.textContent = msg;
+  document.getElementById('toasts').appendChild(t);
+  setTimeout(function(){ t.remove(); }, 3800);
+}
+
 renderTypeCards();
 </script>
 </body>
