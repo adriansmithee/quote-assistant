@@ -26,8 +26,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-
 .auth-field label{display:block;font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;}
 .auth-field input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:9px 12px;color:var(--text);font-family:inherit;font-size:13px;outline:none;transition:border .15s;}
 .auth-field input:focus{border-color:var(--blue);}
-.auth-btn{width:100%;padding:10px;background:var(--blue);border:none;border-radius:7px;color:#fff;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;margin-top:6px;transition:background .15s;}
-.auth-btn:hover{background:#2563eb;}
+.auth-btn{width:100%;padding:10px;background:var(--blue);border:none;border-radius:7px;color:#fff;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;margin-top:6px;}
 .auth-btn:disabled{opacity:.5;cursor:not-allowed;}
 .auth-switch{font-size:12px;color:var(--text3);text-align:center;margin-top:14px;}
 .auth-switch a{color:var(--blue);cursor:pointer;}
@@ -36,17 +35,15 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-
 .auth-msg.ok{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);color:var(--green);}
 .hidden{display:none!important;}
 
-/* EMAIL CONFIRMED SCREEN */
+/* EMAIL CONFIRMED */
 .confirm-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:200;}
 .confirm-card{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:48px 40px;width:420px;text-align:center;}
-.confirm-icon{font-size:48px;margin-bottom:16px;}
-.confirm-title{font-size:18px;font-weight:600;margin-bottom:8px;}
-.confirm-sub{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:24px;}
 
 /* LAYOUT */
 .shell{display:grid;grid-template-rows:48px 1fr;height:100vh;}
 .topbar{background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:16px;}
-.workspace{display:grid;grid-template-columns:52px 220px 1fr 340px;height:100%;overflow:hidden;}
+/* No right panel in grid - reclaim that space */
+.workspace{display:grid;grid-template-columns:52px 220px 1fr;height:100%;overflow:hidden;}
 .logo-area{display:flex;align-items:center;gap:9px;padding-right:16px;border-right:1px solid var(--border);}
 .logo-mark{width:26px;height:26px;background:var(--blue);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;}
 .logo-text{font-size:14px;font-weight:600;}
@@ -59,11 +56,16 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-
 .agent-badge{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text2);padding:4px 10px;background:var(--bg3);border-radius:6px;border:1px solid var(--border);}
 .agent-dot{width:6px;height:6px;border-radius:50%;background:var(--green);}
 .logout-btn{background:none;border:1px solid var(--border);border-radius:6px;color:var(--text3);font-size:12px;padding:4px 10px;cursor:pointer;font-family:inherit;}
+.ai-float-btn{background:var(--purple);border:none;border-radius:8px;color:#fff;font-size:12px;padding:5px 12px;cursor:pointer;font-family:inherit;font-weight:500;display:flex;align-items:center;gap:6px;}
+
+/* ICON NAV */
 .icon-nav{background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:4px;}
 .icon-nav-btn{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;background:none;color:var(--text3);transition:all .15s;font-size:16px;}
 .icon-nav-btn:hover,.icon-nav-btn.active{background:var(--bg4);color:var(--text);}
 .icon-nav-btn.active{color:var(--blue);}
 .nav-spacer{flex:1;}
+
+/* SIDEBAR */
 .sidebar{background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
 .sidebar-head{padding:14px 12px 10px;border-bottom:1px solid var(--border);}
 .sidebar-title{font-size:11px;font-weight:600;color:var(--text3);letter-spacing:0.6px;text-transform:uppercase;margin-bottom:8px;}
@@ -96,27 +98,45 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-
 .btn-blue{background:var(--blue);border-color:var(--blue);color:#fff;}
 .btn-blue:hover{background:#2563eb;}
 .btn-green{background:var(--green);border-color:var(--green);color:#fff;}
-.btn-green:hover{background:#059669;}
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border);flex-shrink:0;}
-.stat-cell{background:var(--bg2);padding:10px 16px;}
-.stat-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;}
-.stat-val{font-size:20px;font-weight:600;color:var(--text);margin-top:2px;}
-.stat-sub{font-size:11px;color:var(--text2);margin-top:1px;}
+
+/* METRICS ROW - bigger, actionable */
+.metrics-row{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border);flex-shrink:0;}
+.metric-cell{background:var(--bg2);padding:12px 16px;position:relative;}
+.metric-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;}
+.metric-val{font-size:22px;font-weight:600;color:var(--text);margin-top:2px;line-height:1.2;}
+.metric-sub{font-size:11px;color:var(--text2);margin-top:2px;}
+.metric-badge{position:absolute;top:10px;right:10px;font-size:10px;padding:2px 7px;border-radius:4px;font-weight:600;}
+.badge-warn{background:rgba(245,158,11,.12);color:var(--amber);}
+.badge-err{background:rgba(239,68,68,.12);color:var(--red);}
+.badge-ok{background:rgba(16,185,129,.12);color:var(--green);}
+
+/* UNDERWRITING ALERTS */
+.uw-alerts{padding:10px 20px;border-bottom:1px solid var(--border);background:rgba(245,158,11,.04);flex-shrink:0;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.uw-alert-label{font-size:10px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:0.5px;flex-shrink:0;}
+.uw-flag{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:3px 9px;border-radius:5px;font-weight:500;}
+.uw-flag.warn{background:rgba(245,158,11,.12);color:var(--amber);border:1px solid rgba(245,158,11,.25);}
+.uw-flag.err{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.25);}
+.uw-flag.ok{background:rgba(16,185,129,.12);color:var(--green);border:1px solid rgba(16,185,129,.25);}
+
+/* TABS */
 .main-tabs{display:flex;padding:0 20px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;}
 .main-tab{padding:10px 14px;font-size:12px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;}
 .main-tab:hover{color:var(--text2);}
 .main-tab.active{color:var(--blue);border-bottom-color:var(--blue);}
+
 .main-body{flex:1;overflow-y:auto;padding:16px 20px;}
 .main-body::-webkit-scrollbar{width:4px;}
 .main-body::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+
+/* WELCOME */
 .welcome{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;color:var(--text3);}
 .welcome-icon{font-size:40px;opacity:.25;}
 .welcome-title{font-size:16px;font-weight:500;color:var(--text2);}
 .welcome-sub{font-size:13px;text-align:center;max-width:280px;line-height:1.6;}
 
-/* QUOTE TABLE */
+/* CARRIER TABLE - with waiting states */
 .coverage-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
-.cov-pill{padding:4px 10px;border-radius:20px;font-size:11px;border:1px solid var(--border2);color:var(--text3);cursor:pointer;transition:all .15s;}
+.cov-pill{padding:4px 10px;border-radius:20px;font-size:11px;border:1px solid var(--border2);color:var(--text3);cursor:pointer;}
 .cov-pill.on{background:rgba(59,130,246,.12);border-color:rgba(59,130,246,.4);color:var(--blue2);}
 .carrier-table-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:14px;}
 .carrier-table-head{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
@@ -124,7 +144,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-
 .pulse{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .type-toggle{display:flex;background:var(--bg3);border-radius:6px;padding:2px;gap:2px;}
-.type-toggle-btn{padding:4px 10px;border-radius:5px;font-size:11px;font-weight:500;border:none;background:none;color:var(--text3);cursor:pointer;font-family:inherit;transition:all .15s;}
+.type-toggle-btn{padding:4px 10px;border-radius:5px;font-size:11px;font-weight:500;border:none;background:none;color:var(--text3);cursor:pointer;font-family:inherit;}
 .type-toggle-btn.active{background:var(--bg4);color:var(--text);}
 table.ctable{width:100%;border-collapse:collapse;}
 table.ctable th{padding:8px 14px;font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.4px;text-align:left;border-bottom:1px solid var(--border);background:var(--bg3);}
@@ -132,25 +152,23 @@ table.ctable td{padding:11px 14px;border-bottom:1px solid var(--border);vertical
 table.ctable tr:last-child td{border-bottom:none;}
 table.ctable tr.winner{background:rgba(59,130,246,.04);}
 table.ctable tr:hover{background:rgba(255,255,255,.02);}
+table.ctable tr.waiting-row{opacity:.5;}
 .carrier-cell{display:flex;align-items:center;gap:9px;}
 .carrier-logo{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0;}
 .carrier-label{font-size:13px;font-weight:500;color:var(--text);}
 .best-badge{background:rgba(16,185,129,.12);color:var(--green);font-size:10px;padding:2px 7px;border-radius:4px;font-weight:600;margin-left:4px;}
+.waiting-badge{background:var(--bg4);color:var(--text3);font-size:10px;padding:2px 7px;border-radius:4px;font-weight:500;margin-left:4px;}
 .price-main{font-size:15px;font-weight:600;color:var(--text);}
 .price-period{font-size:11px;color:var(--text3);}
+.waiting-price{font-size:13px;color:var(--text3);font-style:italic;}
 .score-cell{display:flex;align-items:center;gap:7px;}
 .score-bar-bg{width:64px;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;}
 .score-bar-fill{height:100%;border-radius:2px;}
-.reason-text{font-size:11px;color:var(--text2);max-width:180px;}
-.select-btn{padding:5px 12px;border-radius:6px;font-size:11px;font-weight:600;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap;}
+.reason-text{font-size:11px;color:var(--text2);max-width:200px;}
+.select-btn{padding:5px 12px;border-radius:6px;font-size:11px;font-weight:600;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);cursor:pointer;font-family:inherit;white-space:nowrap;}
 .select-btn:hover{border-color:var(--blue);color:var(--blue);}
 .select-btn.selected{background:var(--blue);border-color:var(--blue);color:#fff;}
-
-/* MVR BADGE */
-.mvr-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:600;}
-.mvr-clean{background:rgba(16,185,129,.12);color:var(--green);}
-.mvr-minor{background:rgba(245,158,11,.12);color:var(--amber);}
-.mvr-major{background:rgba(239,68,68,.12);color:var(--red);}
+.select-btn.disabled{opacity:.35;cursor:not-allowed;}
 
 /* AI REC */
 .ai-rec{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:14px;display:flex;gap:12px;}
@@ -159,15 +177,31 @@ table.ctable tr:hover{background:rgba(255,255,255,.02);}
 .ai-text{font-size:13px;color:var(--text);line-height:1.6;}
 .ai-text strong{color:var(--blue2);font-weight:500;}
 
-/* INTAKE DISPLAY */
+/* DOCUMENT UPLOAD */
+.doc-upload-area{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:14px;}
+.doc-upload-head{padding:12px 16px;border-bottom:1px solid var(--border);background:var(--bg3);display:flex;align-items:center;justify-content:space-between;}
+.doc-upload-title{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.4px;}
+.doc-drop-zone{padding:20px;display:flex;gap:10px;flex-wrap:wrap;}
+.doc-slot{border:1.5px dashed var(--border2);border-radius:8px;padding:14px 16px;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:130px;text-align:center;}
+.doc-slot:hover{border-color:var(--blue);background:rgba(59,130,246,.05);}
+.doc-slot.uploaded{border-color:var(--green);background:rgba(16,185,129,.05);border-style:solid;}
+.doc-slot-icon{font-size:20px;opacity:.7;}
+.doc-slot-label{font-size:11px;color:var(--text3);font-weight:500;}
+.doc-slot.uploaded .doc-slot-label{color:var(--green);}
+.doc-extract-btn{margin:0 20px 16px;width:calc(100% - 40px);}
+
+/* INTAKE GRID */
 .intake-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
 .intake-section{background:var(--bg2);padding:14px 16px;}
 .intake-sec-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:10px;}
 .field-row{display:flex;justify-content:space-between;align-items:flex-start;padding:4px 0;border-bottom:1px solid var(--border);}
 .field-row:last-child{border-bottom:none;}
-.field-key{font-size:11px;color:var(--text3);flex-shrink:0;padding-right:8px;}
+.field-key{font-size:11px;color:var(--text3);}
 .field-val{font-size:11px;color:var(--blue2);font-weight:500;text-align:right;}
-.field-val.empty{color:var(--text3);font-weight:400;font-style:italic;}
+.field-val.empty{color:var(--text3);font-style:italic;}
+
+/* MVR */
+.mvr-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 
 /* VIEWS */
 .view{display:none;}
@@ -182,10 +216,17 @@ table.ctable tr:hover{background:rgba(255,255,255,.02);}
 .pipeline-cards{flex:1;padding:8px;display:flex;flex-direction:column;gap:6px;overflow-y:auto;}
 .pipeline-card{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:10px 12px;cursor:pointer;transition:border .15s;}
 .pipeline-card:hover{border-color:var(--border2);}
-.pc-name{font-size:12px;font-weight:500;color:var(--text);margin-bottom:3px;}
+.pc-name{font-size:12px;font-weight:500;color:var(--text);margin-bottom:2px;}
 .pc-types{font-size:11px;color:var(--text3);margin-bottom:6px;}
 .pc-footer{display:flex;align-items:center;justify-content:space-between;}
 .pc-price{font-size:12px;font-weight:600;color:var(--green);}
+.pc-commission{font-size:10px;color:var(--purple);font-weight:500;}
+.pc-renewal{font-size:10px;color:var(--amber);font-weight:500;}
+
+/* RENEWAL BANNER */
+.renewal-banner{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
+.renewal-info{font-size:12px;color:var(--amber);}
+.renewal-badge{font-size:10px;padding:2px 7px;border-radius:4px;background:var(--amber);color:#000;font-weight:700;}
 
 /* CARRIERS */
 .carriers-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:16px 20px;overflow-y:auto;}
@@ -197,13 +238,13 @@ table.ctable tr:hover{background:rgba(255,255,255,.02);}
 .carrier-stat-row{display:flex;justify-content:space-between;margin-bottom:6px;}
 .carrier-stat-label{font-size:11px;color:var(--text3);}
 .carrier-stat-val{font-size:11px;color:var(--text);font-weight:500;}
-.carrier-connect-btn{width:100%;margin-top:12px;padding:7px;border-radius:7px;border:1px solid var(--border2);background:none;color:var(--text2);font-family:inherit;font-size:12px;cursor:pointer;font-weight:500;}
-.carrier-connect-btn.connected{border-color:rgba(16,185,129,.3);color:var(--green);background:rgba(16,185,129,.06);}
-.api-tag{font-size:10px;padding:2px 6px;border-radius:4px;margin-left:6px;font-weight:600;}
+.api-tag{font-size:10px;padding:2px 6px;border-radius:4px;margin-left:4px;font-weight:600;}
 .api-live{background:rgba(16,185,129,.12);color:var(--green);}
 .api-soon{background:rgba(245,158,11,.1);color:var(--amber);}
+.carrier-connect-btn{width:100%;margin-top:12px;padding:7px;border-radius:7px;border:1px solid var(--border2);background:none;color:var(--text2);font-family:inherit;font-size:12px;cursor:pointer;font-weight:500;}
+.carrier-connect-btn.connected{border-color:rgba(16,185,129,.3);color:var(--green);background:rgba(16,185,129,.06);}
 
-/* ANALYTICS */
+/* ANALYTICS - REVENUE */
 .analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:16px 20px;overflow-y:auto;}
 .analytics-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;}
 .analytics-card-title{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:14px;}
@@ -212,45 +253,61 @@ table.ctable tr:hover{background:rgba(255,255,255,.02);}
 .bar-label{font-size:11px;color:var(--text2);width:90px;flex-shrink:0;}
 .bar-track{flex:1;height:6px;background:var(--bg4);border-radius:3px;overflow:hidden;}
 .bar-fill{height:100%;border-radius:3px;}
-.bar-val{font-size:11px;color:var(--text);font-weight:500;width:40px;text-align:right;}
+.bar-val{font-size:11px;color:var(--text);font-weight:500;width:50px;text-align:right;}
+.revenue-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.rev-stat{background:var(--bg3);border-radius:8px;padding:12px;}
+.rev-stat-label{font-size:10px;color:var(--text3);text-transform:uppercase;font-weight:600;letter-spacing:0.4px;}
+.rev-stat-val{font-size:18px;font-weight:600;color:var(--text);margin-top:4px;}
+.rev-stat-sub{font-size:11px;color:var(--text3);margin-top:2px;}
 
-/* RIGHT PANEL - AI INTAKE CHAT */
-.right-panel{background:var(--bg2);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
-.rp-head{padding:12px 16px;border-bottom:1px solid var(--border);flex-shrink:0;}
-.rp-title{font-size:12px;font-weight:600;color:var(--text2);display:flex;align-items:center;gap:7px;margin-bottom:2px;}
-.rp-sub{font-size:10px;color:var(--text3);}
-.rp-mode-toggle{display:flex;gap:4px;padding:8px 12px;border-bottom:1px solid var(--border);flex-shrink:0;}
-.rp-mode-btn{flex:1;padding:5px;border-radius:6px;font-size:11px;font-weight:500;border:1px solid var(--border);background:none;color:var(--text3);cursor:pointer;font-family:inherit;text-align:center;transition:all .15s;}
-.rp-mode-btn.active{background:var(--bg4);color:var(--text);border-color:var(--border2);}
-.rp-messages{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;}
-.rp-messages::-webkit-scrollbar{width:3px;}
-.rp-messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
-.msg{display:flex;gap:8px;}
+/* AI FLOATING CHAT */
+.ai-float-wrap{position:fixed;bottom:20px;right:20px;z-index:50;}
+.ai-float-toggle{width:48px;height:48px;border-radius:14px;background:var(--purple);border:none;color:#fff;font-size:20px;cursor:pointer;box-shadow:0 4px 20px rgba(139,92,246,.4);display:flex;align-items:center;justify-content:center;}
+.ai-chat-panel{position:absolute;bottom:60px;right:0;width:340px;height:480px;background:var(--bg2);border:1px solid var(--border2);border-radius:14px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 12px 48px rgba(0,0,0,.6);}
+.ai-chat-panel.hidden{display:none;}
+.ai-panel-head{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.ai-panel-title{font-size:12px;font-weight:600;color:var(--text2);display:flex;align-items:center;gap:7px;}
+.ai-panel-close{background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px;}
+.ai-messages{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;}
+.ai-messages::-webkit-scrollbar{width:3px;}
+.ai-messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+.msg{display:flex;gap:7px;}
 .msg-ai{align-items:flex-start;}
 .msg-user{flex-direction:row-reverse;}
-.msg-avatar{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;font-weight:600;}
+.msg-avatar{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;font-weight:600;}
 .msg-ai .msg-avatar{background:rgba(139,92,246,.2);color:var(--purple);}
 .msg-user .msg-avatar{background:var(--blue);color:#fff;}
-.msg-bubble{padding:9px 12px;border-radius:8px;font-size:12px;line-height:1.6;max-width:calc(100% - 36px);}
+.msg-bubble{padding:8px 11px;border-radius:8px;font-size:12px;line-height:1.55;max-width:calc(100% - 32px);}
 .msg-ai .msg-bubble{background:var(--bg3);color:var(--text);border:1px solid var(--border);border-radius:4px 8px 8px 8px;}
 .msg-user .msg-bubble{background:var(--blue);color:#fff;border-radius:8px 4px 8px 8px;}
 .msg-bubble strong{font-weight:500;color:var(--blue2);}
 .msg-user .msg-bubble strong{color:#fff;}
-.msg-options{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
-.msg-option-btn{padding:5px 10px;border-radius:6px;font-size:11px;border:1px solid var(--border2);background:var(--bg4);color:var(--text2);cursor:pointer;font-family:inherit;transition:all .15s;}
-.msg-option-btn:hover{border-color:var(--blue);color:var(--blue);}
-.rp-input-wrap{padding:10px 12px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:flex-end;flex-shrink:0;}
-.rp-textarea{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:8px 10px;font-size:12px;color:var(--text);font-family:inherit;resize:none;outline:none;min-height:36px;max-height:100px;line-height:1.4;transition:border .15s;}
-.rp-textarea:focus{border-color:var(--border2);}
-.rp-textarea::placeholder{color:var(--text3);}
-.send-btn{width:32px;height:32px;border-radius:7px;background:var(--blue);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
-.send-btn:hover{background:#2563eb;}
+.ai-quick-btns{padding:6px 12px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:4px;}
+.ai-quick-btn{padding:3px 8px;border-radius:5px;font-size:10px;border:1px solid var(--border2);background:none;color:var(--text3);cursor:pointer;font-family:inherit;}
+.ai-quick-btn:hover{border-color:var(--purple);color:var(--purple);}
+.ai-input-row{padding:8px 12px;border-top:1px solid var(--border);display:flex;gap:7px;align-items:flex-end;}
+.ai-textarea{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:7px 9px;font-size:12px;color:var(--text);font-family:inherit;resize:none;outline:none;min-height:32px;max-height:80px;line-height:1.4;}
+.ai-send{width:30px;height:30px;border-radius:7px;background:var(--blue);border:none;color:#fff;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;}
 
-/* INTAKE PROGRESS */
-.intake-progress{padding:10px 12px;border-bottom:1px solid var(--border);flex-shrink:0;}
-.intake-progress-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;display:flex;justify-content:space-between;}
-.intake-progress-bar{height:3px;background:var(--bg4);border-radius:2px;overflow:hidden;}
-.intake-progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--purple));border-radius:2px;transition:width .4s ease;}
+/* INTAKE STEPS */
+.intake-progress-wrap{padding:8px 12px;border-top:1px solid var(--border);flex-shrink:0;}
+.intake-steps{display:flex;gap:3px;margin-top:4px;}
+.intake-step{flex:1;height:3px;border-radius:2px;background:var(--bg4);}
+.intake-step.done{background:var(--green);}
+.intake-step.active{background:var(--blue);}
+
+/* PROPOSAL PAGE */
+.proposal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:80;display:flex;align-items:center;justify-content:center;}
+.proposal-modal{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;width:680px;max-height:85vh;overflow:hidden;display:flex;flex-direction:column;}
+.proposal-head{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.proposal-body{flex:1;overflow-y:auto;padding:22px;}
+.proposal-close{background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer;}
+.proposal-carrier-row{background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
+.proposal-carrier-row.top{background:rgba(59,130,246,.06);border-color:rgba(59,130,246,.25);}
+.proposal-carrier-name{font-size:14px;font-weight:600;}
+.proposal-carrier-price{font-size:18px;font-weight:700;color:var(--blue2);}
+.proposal-carrier-detail{font-size:11px;color:var(--text3);}
+.proposal-footer{padding:14px 22px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;}
 
 /* TOASTS */
 #toasts{position:fixed;top:18px;right:18px;z-index:300;display:flex;flex-direction:column;gap:8px;}
@@ -269,23 +326,20 @@ table.ctable tr:hover{background:rgba(255,255,255,.02);}
 </head>
 <body>
 
-<!-- EMAIL CONFIRMED SCREEN -->
+<!-- EMAIL CONFIRMED -->
 <div class="confirm-screen hidden" id="confirm-screen">
   <div class="confirm-card">
-    <div class="confirm-icon">✅</div>
-    <div class="confirm-title">Email confirmed!</div>
-    <div class="confirm-sub">Your BrnnoQuote account is active. You can now sign in and start quoting across all carriers.</div>
-    <button class="btn btn-blue" style="width:100%;justify-content:center;" onclick="document.getElementById('confirm-screen').classList.add('hidden');">Go to sign in →</button>
+    <div style="font-size:48px;margin-bottom:16px;">✅</div>
+    <div style="font-size:18px;font-weight:600;margin-bottom:8px;">Email confirmed!</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:24px;">Your BrnnoQuote account is active. Sign in to start quoting across all carriers.</div>
+    <button class="btn btn-blue" style="width:100%;justify-content:center;" onclick="document.getElementById('confirm-screen').classList.add('hidden')">Go to sign in →</button>
   </div>
 </div>
 
-<!-- AUTH SCREEN -->
+<!-- AUTH -->
 <div class="auth-screen" id="auth-screen">
   <div class="auth-card">
-    <div class="auth-logo">
-      <div class="auth-logo-mark">B</div>
-      <div class="auth-logo-text">Brnno<span>Quote</span></div>
-    </div>
+    <div class="auth-logo"><div class="auth-logo-mark">B</div><div class="auth-logo-text">Brnno<span>Quote</span></div></div>
     <div id="auth-msg" class="auth-msg hidden"></div>
     <div id="auth-login">
       <div class="auth-title">Welcome back</div>
@@ -311,10 +365,7 @@ table.ctable tr:hover{background:rgba(255,255,255,.02);}
 <!-- APP -->
 <div class="shell hidden" id="app">
   <div class="topbar">
-    <div class="logo-area">
-      <div class="logo-mark">B</div>
-      <div class="logo-text">Brnno<span>Quote</span></div>
-    </div>
+    <div class="logo-area"><div class="logo-mark">B</div><div class="logo-text">Brnno<span>Quote</span></div></div>
     <div class="top-nav">
       <button class="top-nav-btn active" onclick="showView('quotes')">Quotes</button>
       <button class="top-nav-btn" onclick="showView('pipeline')">Pipeline</button>
@@ -337,36 +388,67 @@ table.ctable tr:hover{background:rgba(255,255,255,.02);}
     <div class="sidebar">
       <div class="sidebar-head">
         <div class="sidebar-title">Clients</div>
-        <div class="search-box"><span style="color:var(--text3);font-size:11px;">🔍</span><input type="text" placeholder="Search clients..." id="client-search" oninput="filterClients(this.value)"/></div>
+        <div class="search-box"><span style="color:var(--text3);font-size:11px;">🔍</span><input type="text" placeholder="Search..." id="client-search" oninput="filterClients(this.value)"/></div>
       </div>
       <div class="sidebar-list" id="client-list"><div style="padding:20px;text-align:center;color:var(--text3);font-size:12px;">Loading...</div></div>
       <button class="new-client-btn" onclick="startNewClientIntake()">＋ New client</button>
     </div>
     <div class="main" id="main-area">
+
+      <!-- QUOTES VIEW -->
       <div class="view active" id="view-quotes">
         <div id="welcome-screen" class="welcome">
           <div class="welcome-icon">⚡</div>
           <div class="welcome-title">Ready to quote</div>
-          <div class="welcome-sub">Click "+ New client" or select an existing client. The AI will guide you through intake and run quotes across all carriers automatically.</div>
-          <button class="btn btn-blue" onclick="startNewClientIntake()">＋ Start new client intake</button>
+          <div class="welcome-sub">Add a new client and the AI will run quotes across all carriers in under 60 seconds.</div>
+          <button class="btn btn-blue" onclick="startNewClientIntake()">＋ Start intake</button>
         </div>
         <div id="quote-workspace" class="hidden" style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
           <div class="main-header">
             <div><div class="client-big-name" id="hdr-name">—</div><div class="client-big-sub" id="hdr-sub">—</div></div>
             <div class="header-actions">
-              <button class="btn" onclick="emailClient()">✉ Email client</button>
+              <button class="btn" onclick="openProposal()">📄 Send proposal</button>
+              <button class="btn" onclick="emailClient()">✉ Email</button>
               <button class="btn btn-green" onclick="bindPolicy()">✓ Bind policy</button>
             </div>
           </div>
-          <div class="stats-row">
-            <div class="stat-cell"><div class="stat-label">Carriers quoted</div><div class="stat-val" id="stat-carriers">—</div><div class="stat-sub" id="stat-carriers-sub">—</div></div>
-            <div class="stat-cell"><div class="stat-label">Best rate</div><div class="stat-val" id="stat-best">—</div><div class="stat-sub" id="stat-best-sub">—</div></div>
-            <div class="stat-cell"><div class="stat-label">Savings vs avg</div><div class="stat-val" id="stat-savings">—</div><div class="stat-sub">market avg</div></div>
-            <div class="stat-cell"><div class="stat-label">MVR Status</div><div class="stat-val" id="stat-mvr" style="font-size:13px;margin-top:4px;">—</div><div class="stat-sub" id="stat-mvr-sub">—</div></div>
+          <!-- ACTIONABLE METRICS -->
+          <div class="metrics-row">
+            <div class="metric-cell">
+              <div class="metric-label">Best quote</div>
+              <div class="metric-val" id="met-best">—</div>
+              <div class="metric-sub" id="met-best-sub">run quotes to compare</div>
+            </div>
+            <div class="metric-cell">
+              <div class="metric-label">Bundle discount</div>
+              <div class="metric-val" id="met-bundle">—</div>
+              <div class="metric-sub" id="met-bundle-sub">—</div>
+            </div>
+            <div class="metric-cell">
+              <div class="metric-label">Client savings</div>
+              <div class="metric-val" id="met-savings">—</div>
+              <div class="metric-sub">vs current carrier</div>
+            </div>
+            <div class="metric-cell">
+              <div class="metric-label">Commission</div>
+              <div class="metric-val" id="met-commission">—</div>
+              <div class="metric-sub" id="met-commission-sub">~12% avg</div>
+            </div>
+            <div class="metric-cell">
+              <div class="metric-label">Bind status</div>
+              <div class="metric-val" id="met-status" style="font-size:14px;margin-top:5px;">Quoting</div>
+              <div class="metric-sub" id="met-status-sub">—</div>
+            </div>
+          </div>
+          <!-- UW ALERTS -->
+          <div class="uw-alerts hidden" id="uw-alerts">
+            <div class="uw-alert-label">⚠ Underwriting flags</div>
+            <div id="uw-flags"></div>
           </div>
           <div class="main-tabs">
             <div class="main-tab active" onclick="switchTab(this,'tab-compare')">Compare plans</div>
-            <div class="main-tab" onclick="switchTab(this,'tab-intake')">Client data</div>
+            <div class="main-tab" onclick="switchTab(this,'tab-intake')">Client profile</div>
+            <div class="main-tab" onclick="switchTab(this,'tab-docs')">Documents</div>
             <div class="main-tab" onclick="switchTab(this,'tab-mvr')">MVR / Records</div>
           </div>
           <div class="main-body">
@@ -377,107 +459,144 @@ table.ctable tr:hover{background:rgba(255,255,255,.02);}
                   <div class="ct-title"><div class="pulse"></div><span id="ct-title-text">Quotes</span></div>
                   <div style="display:flex;gap:8px;align-items:center;">
                     <div class="type-toggle" id="type-toggle"></div>
-                    <button class="btn btn-blue" onclick="runQuotes()" id="run-btn">↺ Run quotes</button>
+                    <button class="btn btn-blue" onclick="runQuotes()" id="run-btn">⚡ Run all quotes</button>
                   </div>
                 </div>
-                <div id="carrier-table-body"><div style="padding:40px;text-align:center;color:var(--text3);">Complete client intake, then click Run quotes</div></div>
+                <div id="carrier-table-body"></div>
               </div>
-              <div class="ai-rec">
-                <div class="ai-icon-wrap">✦</div>
-                <div style="flex:1;">
-                  <div class="ai-title">AI Recommendation</div>
-                  <div class="ai-text" id="ai-rec-text">Complete intake and run quotes to get an AI-powered carrier recommendation.</div>
-                </div>
-              </div>
+              <div class="ai-rec"><div class="ai-icon-wrap">✦</div><div style="flex:1;"><div class="ai-title">AI Recommendation</div><div class="ai-text" id="ai-rec-text">Run quotes to get an AI-powered carrier recommendation.</div></div></div>
             </div>
             <div id="tab-intake" class="hidden">
               <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
                 <div style="padding:12px 16px;border-bottom:1px solid var(--border);background:var(--bg3);display:flex;align-items:center;justify-content:space-between;">
-                  <div style="font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.4px;">AI-extracted client profile</div>
+                  <div style="font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.4px;">Client profile</div>
                   <div id="intake-complete-pct" style="font-size:11px;color:var(--green);font-weight:500;"></div>
                 </div>
                 <div id="intake-display" class="intake-grid"></div>
               </div>
             </div>
+            <div id="tab-docs" class="hidden">
+              <div class="doc-upload-area">
+                <div class="doc-upload-head">
+                  <div class="doc-upload-title">📎 Document intake — AI extracts everything automatically</div>
+                </div>
+                <div class="doc-drop-zone">
+                  <div class="doc-slot" id="doc-dl" onclick="simulateDocUpload('dl')">
+                    <div class="doc-slot-icon">🪪</div>
+                    <div class="doc-slot-label">Driver's License</div>
+                    <div style="font-size:10px;color:var(--text3);">Upload or drag</div>
+                  </div>
+                  <div class="doc-slot" id="doc-dec" onclick="simulateDocUpload('dec')">
+                    <div class="doc-slot-icon">📋</div>
+                    <div class="doc-slot-label">Dec Page</div>
+                    <div style="font-size:10px;color:var(--text3);">Current policy</div>
+                  </div>
+                  <div class="doc-slot" id="doc-reg" onclick="simulateDocUpload('reg')">
+                    <div class="doc-slot-icon">🚗</div>
+                    <div class="doc-slot-label">Vehicle Reg.</div>
+                    <div style="font-size:10px;color:var(--text3);">VIN + details</div>
+                  </div>
+                  <div class="doc-slot" id="doc-home" onclick="simulateDocUpload('home')">
+                    <div class="doc-slot-icon">🏠</div>
+                    <div class="doc-slot-label">Home Inspection</div>
+                    <div style="font-size:10px;color:var(--text3);">Property details</div>
+                  </div>
+                  <div class="doc-slot" id="doc-med" onclick="simulateDocUpload('med')">
+                    <div class="doc-slot-icon">❤️</div>
+                    <div class="doc-slot-label">Health Records</div>
+                    <div style="font-size:10px;color:var(--text3);">Medical history</div>
+                  </div>
+                </div>
+                <div style="padding:0 16px 14px;font-size:11px;color:var(--text3);">✦ AI reads uploaded documents and auto-fills all intake fields — names, VINs, policy numbers, coverage amounts, lenders, and more.</div>
+              </div>
+            </div>
             <div id="tab-mvr" class="hidden">
               <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
                 <div style="padding:12px 16px;border-bottom:1px solid var(--border);background:var(--bg3);display:flex;align-items:center;justify-content:space-between;">
-                  <div style="font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.4px;">Motor Vehicle Record & Background</div>
-                  <button class="btn" id="mvr-run-btn" onclick="runMVR()" style="font-size:11px;padding:4px 10px;">🔍 Pull MVR</button>
+                  <div style="font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.4px;">Motor Vehicle & Claims Records</div>
+                  <button class="btn" onclick="runMVR()" style="font-size:11px;padding:4px 10px;">🔍 Pull MVR</button>
                 </div>
-                <div id="mvr-display" style="padding:20px;"></div>
+                <div id="mvr-display" style="padding:16px;"></div>
               </div>
               <div style="margin-top:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;">
-                <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:10px;">Data sources</div>
+                <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:10px;">Connected data sources</div>
                 <div style="display:flex;flex-direction:column;gap:8px;">
-                  <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;">
-                    <span style="color:var(--text2);">🚗 Motor Vehicle Record (MVR)</span>
-                    <span style="color:var(--green);font-size:11px;font-weight:600;">✓ Simulated (LexisNexis API ready)</span>
-                  </div>
-                  <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;">
-                    <span style="color:var(--text2);">📋 CLUE Report (prior claims)</span>
-                    <span style="color:var(--green);font-size:11px;font-weight:600;">✓ Simulated (Verisk API ready)</span>
-                  </div>
-                  <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;">
-                    <span style="color:var(--text2);">🔍 Credit score (insurance score)</span>
-                    <span style="color:var(--amber);font-size:11px;font-weight:600;">⏳ Coming soon (Experian)</span>
-                  </div>
-                  <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;">
-                    <span style="color:var(--text2);">⚖️ Criminal background check</span>
-                    <span style="color:var(--amber);font-size:11px;font-weight:600;">⏳ Coming soon (Checkr API)</span>
-                  </div>
-                </div>
-                <div style="margin-top:12px;padding:10px;background:var(--bg3);border-radius:7px;font-size:11px;color:var(--text3);line-height:1.6;">
-                  <strong style="color:var(--text2);">About carrier APIs:</strong> Real carrier pricing requires agent credentials with each carrier. Progressive, Travelers, and Nationwide all offer agent APIs. We're integrating them — rates will pull live once you connect your carrier credentials in the Carriers tab.
+                  <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;"><span style="color:var(--text2);">🚗 LexisNexis MVR</span><span style="color:var(--green);font-size:11px;font-weight:600;">Ready to connect</span></div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;"><span style="color:var(--text2);">📋 Verisk CLUE (claims)</span><span style="color:var(--green);font-size:11px;font-weight:600;">Ready to connect</span></div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;"><span style="color:var(--text2);">💳 Experian insurance score</span><span style="color:var(--amber);font-size:11px;font-weight:600;">Q3 2025</span></div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;"><span style="color:var(--text2);">⚖️ Checkr background</span><span style="color:var(--amber);font-size:11px;font-weight:600;">Q3 2025</span></div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      <!-- PIPELINE VIEW -->
       <div class="view" id="view-pipeline">
         <div class="main-header" style="flex-shrink:0;">
-          <div><div class="client-big-name">Quote Pipeline</div><div class="client-big-sub">Track all clients from intake to bound</div></div>
+          <div><div class="client-big-name">Quote Pipeline</div><div class="client-big-sub">Track clients from intake to bound · Renewals auto-tracked</div></div>
           <button class="btn btn-blue" onclick="startNewClientIntake()">＋ New client</button>
         </div>
         <div class="pipeline-columns" id="pipeline-columns"></div>
       </div>
+
+      <!-- CARRIERS VIEW -->
       <div class="view" id="view-carriers">
         <div class="main-header" style="flex-shrink:0;">
-          <div><div class="client-big-name">Carrier Connections</div><div class="client-big-sub">Connect your carrier credentials to enable live quoting</div></div>
+          <div><div class="client-big-name">Carrier Connections</div><div class="client-big-sub">Connect credentials to enable live quoting — each activates independently</div></div>
         </div>
         <div class="carriers-grid" id="carriers-grid"></div>
       </div>
+
+      <!-- ANALYTICS VIEW -->
       <div class="view" id="view-analytics">
         <div class="main-header" style="flex-shrink:0;">
-          <div><div class="client-big-name">Analytics</div><div class="client-big-sub">Win rates, pricing trends, and market intelligence</div></div>
+          <div><div class="client-big-name">Agency Revenue Dashboard</div><div class="client-big-sub">Production, commissions, and market intelligence</div></div>
         </div>
         <div class="analytics-grid" id="analytics-grid"></div>
       </div>
     </div>
+  </div>
+</div>
 
-    <!-- RIGHT PANEL: AI INTAKE CHAT -->
-    <div class="right-panel">
-      <div class="rp-head">
-        <div class="rp-title">✦ AI Agent</div>
-        <div class="rp-sub" id="rp-sub-label">Intake assistant · Powered by Claude</div>
-      </div>
-      <div class="rp-mode-toggle">
-        <button class="rp-mode-btn active" id="mode-intake" onclick="setMode('intake')">📋 Intake</button>
-        <button class="rp-mode-btn" id="mode-chat" onclick="setMode('chat')">💬 Ask AI</button>
-      </div>
-      <div class="intake-progress hidden" id="intake-progress-bar">
-        <div class="intake-progress-label"><span>Intake progress</span><span id="intake-pct-label">0%</span></div>
-        <div class="intake-progress-bar"><div class="intake-progress-fill" id="intake-fill" style="width:0%"></div></div>
-      </div>
-      <div class="rp-messages" id="rp-messages"></div>
-      <div class="rp-input-wrap">
-        <textarea class="rp-textarea" id="rp-input" placeholder="Type your answer..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
-        <button class="send-btn" onclick="sendInput()">➤</button>
-      </div>
+<!-- FLOATING AI ASSISTANT -->
+<div class="ai-float-wrap" id="ai-float-wrap" style="display:none;">
+  <div class="ai-chat-panel hidden" id="ai-chat-panel">
+    <div class="ai-panel-head">
+      <div class="ai-panel-title">✦ AI Quote Assistant</div>
+      <button class="ai-panel-close" onclick="toggleAI()">×</button>
+    </div>
+    <div class="ai-messages" id="ai-messages"></div>
+    <div class="ai-quick-btns" id="ai-quick-btns">
+      <button class="ai-quick-btn" onclick="aiQuick('Which carrier wins the most auto quotes?')">Carrier win rates</button>
+      <button class="ai-quick-btn" onclick="aiQuick('What coverage for a financed vehicle?')">Coverage advice</button>
+      <button class="ai-quick-btn" onclick="aiQuick('Show renewal opportunities')">Renewals</button>
+    </div>
+    <div class="ai-input-row">
+      <textarea class="ai-textarea" id="ai-input" placeholder="Ask anything..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAI();}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,80)+'px'"></textarea>
+      <button class="ai-send" onclick="sendAI()">➤</button>
+    </div>
+  </div>
+  <button class="ai-float-toggle" onclick="toggleAI()" title="AI Assistant">✦</button>
+</div>
+
+<!-- PROPOSAL MODAL -->
+<div class="proposal-overlay hidden" id="proposal-overlay">
+  <div class="proposal-modal">
+    <div class="proposal-head">
+      <div style="font-size:15px;font-weight:600;">📄 Client Proposal</div>
+      <button class="proposal-close" onclick="closeProposal()">×</button>
+    </div>
+    <div class="proposal-body" id="proposal-body"></div>
+    <div class="proposal-footer">
+      <button class="btn" onclick="closeProposal()">Cancel</button>
+      <button class="btn" onclick="copyProposalLink()">🔗 Copy link</button>
+      <button class="btn btn-blue" onclick="emailProposal()">✉ Email to client</button>
     </div>
   </div>
 </div>
+
 <div id="toasts"></div>
 
 <script>
@@ -486,546 +605,217 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const CARRIERS = [
-  {id:'travelers',name:'Travelers',abbr:'T',color:'#c8102e',types:['Auto','Home','Life'],win_rate:38,api:'agent',base:{Auto:115,Home:142,Life:60,Health:0}},
-  {id:'progressive',name:'Progressive',abbr:'P',color:'#0044cc',types:['Auto','Home'],win_rate:29,api:'agent',base:{Auto:124,Home:152,Life:0,Health:0}},
-  {id:'nationwide',name:'Nationwide',abbr:'N',color:'#005f3e',types:['Auto','Home','Life','Health'],win_rate:18,api:'coming',base:{Auto:131,Home:160,Life:69,Health:438}},
-  {id:'safeco',name:'Safeco',abbr:'S',color:'#d4601a',types:['Auto','Home'],win_rate:9,api:'coming',base:{Auto:138,Home:168,Life:0,Health:0}},
-  {id:'allstate',name:'Allstate',abbr:'A',color:'#5c2d91',types:['Auto','Home','Life','Health'],win_rate:6,api:'coming',base:{Auto:146,Home:175,Life:76,Health:0}},
-  {id:'bcbs',name:'Blue Cross',abbr:'BC',color:'#00457c',types:['Health'],win_rate:42,api:'coming',base:{Auto:0,Home:0,Life:0,Health:385}},
-  {id:'aetna',name:'Aetna',abbr:'Ae',color:'#7d1935',types:['Health'],win_rate:28,api:'coming',base:{Auto:0,Home:0,Life:0,Health:409}},
-  {id:'principal',name:'Principal',abbr:'Pr',color:'#003087',types:['Life'],win_rate:27,api:'coming',base:{Auto:0,Home:0,Life:56,Health:0}},
+  {id:'travelers',name:'Travelers',abbr:'T',color:'#c8102e',types:['Auto','Home','Life'],win_rate:38,api:'agent',base:{Auto:115,Home:142,Life:60,Health:0},commission_pct:12},
+  {id:'progressive',name:'Progressive',abbr:'P',color:'#0044cc',types:['Auto','Home'],win_rate:29,api:'agent',base:{Auto:124,Home:152,Life:0,Health:0},commission_pct:11},
+  {id:'nationwide',name:'Nationwide',abbr:'N',color:'#005f3e',types:['Auto','Home','Life','Health'],win_rate:18,api:'coming',base:{Auto:131,Home:160,Life:69,Health:438},commission_pct:13},
+  {id:'safeco',name:'Safeco',abbr:'S',color:'#d4601a',types:['Auto','Home'],win_rate:9,api:'coming',base:{Auto:138,Home:168,Life:0,Health:0},commission_pct:11},
+  {id:'allstate',name:'Allstate',abbr:'A',color:'#5c2d91',types:['Auto','Home','Life'],win_rate:6,api:'coming',base:{Auto:146,Home:175,Life:76,Health:0},commission_pct:10},
+  {id:'bcbs',name:'Blue Cross',abbr:'BC',color:'#00457c',types:['Health'],win_rate:42,api:'coming',base:{Auto:0,Home:0,Life:0,Health:385},commission_pct:5},
+  {id:'aetna',name:'Aetna',abbr:'Ae',color:'#7d1935',types:['Health'],win_rate:28,api:'coming',base:{Auto:0,Home:0,Life:0,Health:409},commission_pct:5},
+  {id:'principal',name:'Principal',abbr:'Pr',color:'#003087',types:['Life'],win_rate:27,api:'coming',base:{Auto:0,Home:0,Life:56,Health:0},commission_pct:80},
 ];
 
-// ─── STATE ────────────────────────────────────────────────────────────────────
-let currentUser = null;
-let allClients = [];
-let currentClient = null;
-let currentType = null;
-let currentQuotes = [];
-let selectedCarrierId = null;
-let rpMode = 'intake';
-
-// INTAKE CONVERSATION STATE
-let intakeState = {
-  active: false,
-  step: 0,
-  clientData: {},
-  quoteTypes: [],
-  conversationHistory: []
-};
+// STATE
+let currentUser=null, allClients=[], currentClient=null, currentType=null, currentQuotes=[], selectedCarrierId=null;
+let intakeState={active:false,step:0,clientData:{},quoteTypes:[],allSteps:null};
+let aiOpen=false;
 
 // ─── AUTH ─────────────────────────────────────────────────────────────────────
 async function initAuth() {
-  // Handle email confirmation redirect
-  const hash = window.location.hash;
-  if (hash.includes('type=signup') || hash.includes('type=email_change') || (hash.includes('access_token') && hash.includes('type=signup'))) {
+  const hash=window.location.hash;
+  if(hash.includes('type=signup')||hash.includes('access_token')){
     document.getElementById('confirm-screen').classList.remove('hidden');
-    document.getElementById('auth-screen').style.display = 'none';
-    history.replaceState(null, '', window.location.pathname);
+    document.getElementById('auth-screen').style.display='none';
+    history.replaceState(null,'',window.location.pathname);
     return;
   }
-
-  const { data: { session } } = await sb.auth.getSession();
-  if (session) { currentUser = session.user; showApp(); }
-
-  sb.auth.onAuthStateChange((event, session) => {
-    if (event === 'SIGNED_IN' && session) { currentUser = session.user; showApp(); }
-    else if (event === 'SIGNED_OUT') { currentUser = null; showAuthScreen(); }
+  const {data:{session}}=await sb.auth.getSession();
+  if(session){currentUser=session.user;showApp();}
+  sb.auth.onAuthStateChange((ev,session)=>{
+    if(ev==='SIGNED_IN'&&session){currentUser=session.user;showApp();}
+    else if(ev==='SIGNED_OUT'){currentUser=null;showAuthScreen();}
   });
 }
-
-function showApp() {
-  document.getElementById('auth-screen').style.display = 'none';
+function showApp(){
+  document.getElementById('auth-screen').style.display='none';
   document.getElementById('confirm-screen').classList.add('hidden');
   document.getElementById('app').classList.remove('hidden');
-  document.getElementById('agent-name-badge').textContent = currentUser?.email?.split('@')[0] || 'Agent';
-  loadClients();
-  renderCarriers();
-  renderAnalytics();
-  startWelcomeChat();
+  document.getElementById('ai-float-wrap').style.display='block';
+  document.getElementById('agent-name-badge').textContent=currentUser?.email?.split('@')[0]||'Agent';
+  loadClients();renderCarriers();renderAnalytics();
+  addAIMessage("Hi! I'm your AI quote assistant. Add a client and I'll run quotes across all carriers in under 60 seconds — and flag any underwriting issues automatically.");
 }
-
-function showAuthScreen() {
-  document.getElementById('auth-screen').style.display = 'flex';
-  document.getElementById('app').classList.add('hidden');
+function showAuthScreen(){document.getElementById('auth-screen').style.display='flex';document.getElementById('app').classList.add('hidden');document.getElementById('ai-float-wrap').style.display='none';}
+function showSignup(){document.getElementById('auth-login').classList.add('hidden');document.getElementById('auth-signup').classList.remove('hidden');clearAuthMsg();}
+function showLogin(){document.getElementById('auth-signup').classList.add('hidden');document.getElementById('auth-login').classList.remove('hidden');clearAuthMsg();}
+async function doLogin(){
+  const email=document.getElementById('login-email').value.trim(),pass=document.getElementById('login-pass').value;
+  if(!email||!pass){showAuthMsg('Enter email and password','err');return;}
+  const btn=document.getElementById('login-btn');btn.disabled=true;btn.textContent='Signing in...';
+  const{error}=await sb.auth.signInWithPassword({email,password:pass});
+  btn.disabled=false;btn.textContent='Sign in';
+  if(error)showAuthMsg(error.message,'err');
 }
-
-function showSignup() {
-  document.getElementById('auth-login').classList.add('hidden');
-  document.getElementById('auth-signup').classList.remove('hidden');
-  clearAuthMsg();
+async function doSignup(){
+  const name=document.getElementById('signup-name').value.trim(),agency=document.getElementById('signup-agency').value.trim(),email=document.getElementById('signup-email').value.trim(),pass=document.getElementById('signup-pass').value;
+  if(!name||!email||!pass){showAuthMsg('Fill in all fields','err');return;}
+  const btn=document.getElementById('signup-btn');btn.disabled=true;btn.textContent='Creating...';
+  const{error}=await sb.auth.signUp({email,password:pass,options:{data:{full_name:name,agency_name:agency},emailRedirectTo:'https://brnnoauto.netlify.app'}});
+  btn.disabled=false;btn.textContent='Create account →';
+  if(error)showAuthMsg(error.message,'err');
+  else showAuthMsg('✓ Check your email to confirm your account.','ok');
 }
-function showLogin() {
-  document.getElementById('auth-signup').classList.add('hidden');
-  document.getElementById('auth-login').classList.remove('hidden');
-  clearAuthMsg();
-}
-
-async function doLogin() {
-  const email = document.getElementById('login-email').value.trim();
-  const pass = document.getElementById('login-pass').value;
-  if (!email || !pass) { showAuthMsg('Please enter your email and password', 'err'); return; }
-  const btn = document.getElementById('login-btn');
-  btn.disabled = true; btn.textContent = 'Signing in...';
-  const { error } = await sb.auth.signInWithPassword({ email, password: pass });
-  btn.disabled = false; btn.textContent = 'Sign in';
-  if (error) showAuthMsg(error.message, 'err');
-}
-
-async function doSignup() {
-  const name = document.getElementById('signup-name').value.trim();
-  const agency = document.getElementById('signup-agency').value.trim();
-  const email = document.getElementById('signup-email').value.trim();
-  const pass = document.getElementById('signup-pass').value;
-  if (!name || !email || !pass) { showAuthMsg('Please fill in all fields', 'err'); return; }
-  if (pass.length < 6) { showAuthMsg('Password must be at least 6 characters', 'err'); return; }
-  const btn = document.getElementById('signup-btn');
-  btn.disabled = true; btn.textContent = 'Creating account...';
-  const { error } = await sb.auth.signUp({
-    email, password: pass,
-    options: { data: { full_name: name, agency_name: agency }, emailRedirectTo: 'https://brnnoauto.netlify.app' }
-  });
-  btn.disabled = false; btn.textContent = 'Create account →';
-  if (error) showAuthMsg(error.message, 'err');
-  else showAuthMsg('✓ Check your email and click the confirmation link to activate your account.', 'ok');
-}
-
-async function doLogout() { await sb.auth.signOut(); }
-function showAuthMsg(msg, type='err') {
-  const el = document.getElementById('auth-msg');
-  el.textContent = msg; el.className = 'auth-msg ' + type; el.classList.remove('hidden');
-}
-function clearAuthMsg() { document.getElementById('auth-msg').classList.add('hidden'); }
+async function doLogout(){await sb.auth.signOut();}
+function showAuthMsg(msg,type='err'){const el=document.getElementById('auth-msg');el.textContent=msg;el.className='auth-msg '+type;el.classList.remove('hidden');}
+function clearAuthMsg(){document.getElementById('auth-msg').classList.add('hidden');}
 
 // ─── CLIENTS ──────────────────────────────────────────────────────────────────
-async function loadClients() {
-  const { data } = await sb.from('clients').select('*').eq('agent_email', currentUser.email).order('created_at', { ascending: false });
-  allClients = data || [];
-  renderClientList(allClients);
-  renderPipeline();
-  renderAnalytics();
+async function loadClients(){
+  const{data}=await sb.from('clients').select('*').eq('agent_email',currentUser.email).order('created_at',{ascending:false});
+  allClients=data||[];renderClientList(allClients);renderPipeline();renderAnalytics();
+  // Auto re-quote check runs after clients load
+  setTimeout(checkRenewalRequotes, 2000);
 }
-
-function renderClientList(clients) {
-  const list = document.getElementById('client-list');
-  if (!clients.length) {
-    list.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text3);font-size:12px;line-height:1.6;">No clients yet.<br>Click "+ New client" to start an AI-guided intake.</div>';
-    return;
-  }
-  const colors = ['#1e40af','#065f46','#78350f','#4c1d95','#991b1b','#0e7490','#166534'];
-  list.innerHTML = clients.map((c,i) => {
-    const initials = c.full_name.split(' ').map(x=>x[0]).join('').substring(0,2).toUpperCase();
-    const color = colors[i % colors.length];
-    const types = (c.quote_types || []).join(' · ') || 'No types';
-    const stageDot = {bound:'#10b981',presented:'#8b5cf6',quoting:'#3b82f6',intake:'#f59e0b'}[c.pipeline_stage] || '#4a5568';
+const COLORS=['#1e40af','#065f46','#78350f','#4c1d95','#991b1b','#0e7490','#166534'];
+function renderClientList(clients){
+  const list=document.getElementById('client-list');
+  if(!clients.length){list.innerHTML='<div style="padding:20px;text-align:center;color:var(--text3);font-size:12px;line-height:1.7;">No clients yet.<br>Click "+ New client"<br>to start an intake.</div>';return;}
+  list.innerHTML=clients.map((c,i)=>{
+    const init=c.full_name.split(' ').map(x=>x[0]).join('').substring(0,2).toUpperCase();
+    const color=COLORS[i%COLORS.length];
+    const stageDot={bound:'#10b981',presented:'#8b5cf6',quoting:'#3b82f6',intake:'#f59e0b'}[c.pipeline_stage]||'#4a5568';
+    const renewal=getRenewalDays(c);
     return `<div class="client-row ${currentClient?.id===c.id?'active':''}" onclick="selectClient('${c.id}')">
-      <div class="avatar" style="background:${color}22;color:${color};">${initials}</div>
+      <div class="avatar" style="background:${color}22;color:${color};">${init}</div>
       <div class="client-info">
         <div class="client-name">${c.full_name}</div>
-        <div class="client-types">${types}</div>
+        <div class="client-types">${(c.quote_types||[]).join(' · ')}${renewal?` · <span style="color:var(--amber);">↺ ${renewal}d</span>`:''}</div>
       </div>
       <div class="status-dot" style="background:${stageDot};"></div>
     </div>`;
   }).join('');
 }
-
-function filterClients(val) {
-  renderClientList(allClients.filter(c => c.full_name.toLowerCase().includes(val.toLowerCase()) || (c.email||'').includes(val)));
+function filterClients(v){renderClientList(allClients.filter(c=>c.full_name.toLowerCase().includes(v.toLowerCase())||(c.email||'').includes(v)));}
+function getRenewalDays(c){
+  if(!c.created_at)return null;
+  const created=new Date(c.created_at);
+  const renewal=new Date(created);renewal.setFullYear(renewal.getFullYear()+1);
+  const days=Math.round((renewal-new Date())/(1000*60*60*24));
+  if(days>0&&days<=90)return days;
+  return null;
 }
 
-// ─── AI INTAKE CONVERSATION ───────────────────────────────────────────────────
-const INTAKE_STEPS = [
-  { id:'quote_types', q: "What lines of insurance does your client need? (you can pick multiple)", options:["Auto only","Home only","Auto + Home","Auto + Life","Health","Full bundle — all lines","Custom — I'll tell you"] },
-  { id:'full_name', q: "What's the client's full name?" },
-  { id:'date_of_birth', q: "What's their date of birth? (MM/DD/YYYY)" },
-  { id:'phone', q: "Best phone number to reach them?" },
-  { id:'email', q: "Their email address?" },
-  { id:'state', q: "What state do they live in?" },
-  { id:'address', q: "Full address? (or just city and zip is fine)" },
-];
-
-const AUTO_STEPS = [
-  { id:'vehicles', q: "Tell me about their vehicle(s). Year, make, model — and is it owned, leased, or financed?" },
-  { id:'drivers', q: "Any other drivers on the policy? If yes, names and dates of birth." },
-  { id:'current_insurer', q: "Who are they currently insured with, and what's their monthly rate?" },
-  { id:'continuous_coverage', q: "How many years of continuous coverage do they have? Any accidents or violations in the last 5 years?" },
-  { id:'coverage_type', q: "Full coverage or liability only? And do they want a $500 or $1,000 deductible?", options:["Full coverage — $500 ded","Full coverage — $1,000 ded","Liability only","Not sure — recommend best"] },
-];
-
-const HOME_STEPS = [
-  { id:'property_address', q: "What's the property address?" },
-  { id:'property_details', q: "Tell me about the home — year built, square footage, construction type (wood frame, brick, etc.), and roof age?" },
-  { id:'home_features', q: "Does the property have a pool, trampoline, or security system?", options:["Pool only","Security system only","Both pool + security","Trampoline","None of these"] },
-  { id:'coverage_amount', q: "What dwelling coverage amount are they looking for? (replacement cost estimate or current insurer's amount)" },
-  { id:'mortgagee', q: "Is there a mortgage lender? If yes, what's the lender name and loan number?" },
-];
-
-const HEALTH_STEPS = [
-  { id:'household', q: "Coverage for themselves only, or including spouse/children? And approximate household income?" },
-  { id:'preferred_docs', q: "Any preferred doctors or hospitals they need in-network?" },
-  { id:'conditions', q: "Any pre-existing conditions or regular medications we should know about?" },
-  { id:'plan_pref', q: "Plan preference?", options:["PPO (flexible, higher premium)","HMO (lower cost, network required)","HDHP with HSA","Don't know — recommend best"] },
-];
-
-const LIFE_STEPS = [
-  { id:'coverage_goal', q: "What's the main reason for life insurance? (income replacement, mortgage protection, estate planning, etc.)" },
-  { id:'health_class', q: "Rough health status — are they a non-smoker in good health? Any significant conditions?" },
-  { id:'coverage_amount', q: "How much coverage do they want? Common amounts: $250k, $500k, $1M", options:["$250,000","$500,000","$1,000,000","$2,000,000","Not sure — calculate for me"] },
-  { id:'term', q: "Term or permanent? If term, how many years?", options:["10-year term","20-year term","30-year term","Whole life","Universal life"] },
-  { id:'beneficiary', q: "Beneficiary name and relationship?" },
-];
-
-function getStepsForTypes(types) {
-  let steps = [...INTAKE_STEPS];
-  if (types.includes('Auto')) steps = [...steps, ...AUTO_STEPS];
-  if (types.includes('Home')) steps = [...steps, ...HOME_STEPS];
-  if (types.includes('Health')) steps = [...steps, ...HEALTH_STEPS];
-  if (types.includes('Life')) steps = [...steps, ...LIFE_STEPS];
-  return steps;
-}
-
-function parseQuoteTypes(answer) {
-  const a = answer.toLowerCase();
-  if (a.includes('bundle') || a.includes('all')) return ['Auto','Home','Health','Life'];
-  if (a.includes('auto') && a.includes('home') && a.includes('life')) return ['Auto','Home','Life'];
-  if (a.includes('auto') && a.includes('home')) return ['Auto','Home'];
-  if (a.includes('auto') && a.includes('life')) return ['Auto','Life'];
-  if (a.includes('health')) return ['Health'];
-  if (a.includes('life')) return ['Life'];
-  if (a.includes('home')) return ['Home'];
-  if (a.includes('auto')) return ['Auto'];
-  return ['Auto'];
-}
-
-function startNewClientIntake() {
-  showView('quotes');
-  document.getElementById('welcome-screen').classList.add('hidden');
-  const ws = document.getElementById('quote-workspace');
-  ws.classList.remove('hidden'); ws.style.display = 'flex';
-  document.getElementById('hdr-name').textContent = 'New client intake';
-  document.getElementById('hdr-sub').textContent = 'AI is gathering information...';
-  document.getElementById('carrier-table-body').innerHTML = '<div style="padding:40px;text-align:center;color:var(--text3);">Complete intake in the panel → to run quotes</div>';
-  document.getElementById('ai-rec-text').textContent = 'Complete intake to get AI carrier recommendation.';
-  currentClient = null;
-  currentQuotes = [];
-  selectedCarrierId = null;
-
-  intakeState = { active: true, step: 0, clientData: {}, quoteTypes: [], conversationHistory: [], allSteps: null };
-  setMode('intake');
-  clearMessages();
-  document.getElementById('intake-progress-bar').classList.remove('hidden');
-  updateIntakeProgress(0);
-
-  addAIMessage("Hey! I'm going to help you get quotes for your client. Let's get started 👋");
-  setTimeout(() => askIntakeStep(0), 600);
-}
-
-function askIntakeStep(stepIdx) {
-  const steps = intakeState.allSteps || INTAKE_STEPS;
-  if (stepIdx >= steps.length) {
-    finishIntake();
-    return;
-  }
-  const step = steps[stepIdx];
-  intakeState.step = stepIdx;
-  const progress = Math.round((stepIdx / steps.length) * 100);
-  updateIntakeProgress(progress);
-
-  if (step.options) {
-    addAIMessage(step.q, step.options);
-  } else {
-    addAIMessage(step.q);
-  }
-}
-
-async function handleIntakeAnswer(answer) {
-  if (!intakeState.active) return;
-  const steps = intakeState.allSteps || INTAKE_STEPS;
-  const step = steps[intakeState.step];
-
-  // Store the answer
-  if (step.id === 'quote_types') {
-    intakeState.quoteTypes = parseQuoteTypes(answer);
-    intakeState.clientData.quote_types = intakeState.quoteTypes;
-    // Now build full step list
-    intakeState.allSteps = getStepsForTypes(intakeState.quoteTypes);
-    addAIMessage(`Got it — quoting for: **${intakeState.quoteTypes.join(' + ')}**. Let me get a bit more info.`);
-    setTimeout(() => askIntakeStep(intakeState.step + 1), 500);
-  } else if (step.id === 'full_name') {
-    intakeState.clientData.full_name = answer;
-    addAIMessage(`Nice to meet ${answer.split(' ')[0]}! A few more questions...`);
-    setTimeout(() => askIntakeStep(intakeState.step + 1), 400);
-  } else if (step.id === 'date_of_birth') {
-    intakeState.clientData.date_of_birth = answer;
-    addAIMessage(`Got it.`);
-    setTimeout(() => askIntakeStep(intakeState.step + 1), 300);
-  } else if (step.id === 'coverage_type' || step.id === 'plan_pref' || step.id === 'term' || step.id === 'coverage_amount' && intakeState.quoteTypes.includes('Life')) {
-    intakeState.clientData[step.id] = answer;
-    addAIMessage(`Perfect.`);
-    setTimeout(() => askIntakeStep(intakeState.step + 1), 300);
-  } else {
-    intakeState.clientData[step.id] = answer;
-    // Smart acknowledgements
-    const acks = ["Got it.","✓","Perfect.","Thanks.","Noted.","Got that."];
-    addAIMessage(acks[Math.floor(Math.random()*acks.length)]);
-    setTimeout(() => askIntakeStep(intakeState.step + 1), 300);
-  }
-}
-
-async function finishIntake() {
-  intakeState.active = false;
-  updateIntakeProgress(100);
-  addAIMessage("✅ All done! Saving client and running quotes across all carriers now...");
-
-  // Parse address
-  const addrParts = (intakeState.clientData.address || '').split(',');
-  const city = addrParts[1]?.trim() || null;
-  const stateZip = addrParts[2]?.trim().split(' ') || [];
-
-  // Build client record
-  const clientRecord = {
-    agent_email: currentUser.email,
-    full_name: intakeState.clientData.full_name || 'New Client',
-    email: intakeState.clientData.email || null,
-    phone: intakeState.clientData.phone || null,
-    date_of_birth: intakeState.clientData.date_of_birth || null,
-    address: addrParts[0]?.trim() || intakeState.clientData.address || null,
-    city: city,
-    state: intakeState.clientData.state || stateZip[0] || null,
-    zip: stateZip[1] || null,
-    quote_types: intakeState.quoteTypes,
-    pipeline_stage: 'quoting',
-    status: 'active',
-    raw_intake: JSON.stringify(intakeState.clientData),
-    notes: Object.entries(intakeState.clientData).map(([k,v])=>`${k}: ${v}`).join('\n')
-  };
-
-  try {
-    const { data, error } = await sb.from('clients').insert(clientRecord).select().single();
-    if (error) throw error;
-    allClients.unshift(data);
-    currentClient = data;
-    currentType = intakeState.quoteTypes[0];
-    renderClientList(allClients);
-    renderPipeline();
-    updateHeader();
-    renderTypeToggle();
-    renderCovToolbar();
-    renderIntakeDisplay();
-    await runQuotesWithMVR();
-  } catch(err) {
-    toast('Error saving client: ' + err.message, 'err');
-  }
-}
-
-async function runQuotesWithMVR() {
-  // Simulate MVR pull automatically
-  const mvrResult = generateMVRData();
-  renderMVRDisplay(mvrResult);
-  updateMVRStat(mvrResult);
-  await runQuotes();
-  setTimeout(() => addAIMessage(`✅ Quotes are in! <strong>Travelers leads at the best rate</strong>. MVR pulled — ${mvrResult.violations.length === 0 ? 'clean record, excellent for preferred pricing' : mvrResult.violations.length + ' violation(s) found — factored into scoring'}. Check the Compare plans tab.`), 1000);
-}
-
-// ─── SELECT EXISTING CLIENT ───────────────────────────────────────────────────
-async function selectClient(id) {
-  currentClient = allClients.find(c => c.id === id);
-  if (!currentClient) return;
-  currentType = (currentClient.quote_types || ['Auto'])[0];
-  selectedCarrierId = null;
+// ─── SELECT CLIENT ────────────────────────────────────────────────────────────
+async function selectClient(id){
+  currentClient=allClients.find(c=>c.id===id);if(!currentClient)return;
+  currentType=(currentClient.quote_types||['Auto'])[0];
+  selectedCarrierId=null;
   renderClientList(allClients);
   document.getElementById('welcome-screen').classList.add('hidden');
-  const ws = document.getElementById('quote-workspace');
-  ws.classList.remove('hidden'); ws.style.display = 'flex';
-  updateHeader();
-  renderTypeToggle();
-  renderCovToolbar();
-  renderIntakeDisplay();
-  const mvrResult = generateMVRData();
-  renderMVRDisplay(mvrResult);
-  updateMVRStat(mvrResult);
-  intakeState.active = false;
-  setMode('chat');
-  clearMessages();
-  const { data } = await sb.from('carrier_quotes').select('*').eq('client_id', currentClient.id).order('ai_score', { ascending: false });
-  currentQuotes = data || [];
-  renderCarrierTable();
-  updateStats();
-  addAIMessage(`Loaded <strong>${currentClient.full_name}</strong> — ${(currentClient.quote_types||[]).join(' + ')}. ${currentQuotes.length ? `${currentQuotes.length} carrier quotes on file.` : 'No quotes yet — click Run quotes.'}`);
+  const ws=document.getElementById('quote-workspace');ws.classList.remove('hidden');ws.style.display='flex';
+  updateHeader();renderTypeToggle();renderCovToolbar();renderIntakeDisplay();
+  renderWaitingTable();renderMVRDisplay(generateMVRData());
+  genUWAlerts();
+  const{data}=await sb.from('carrier_quotes').select('*').eq('client_id',currentClient.id).order('ai_score',{ascending:false});
+  currentQuotes=data||[];
+  if(currentQuotes.length)renderCarrierTable();
+  updateMetrics();
+  showView('quotes');
+}
+function updateHeader(){
+  document.getElementById('hdr-name').textContent=currentClient.full_name;
+  document.getElementById('hdr-sub').textContent=[(currentClient.quote_types||[]).join(' + '),[currentClient.city,currentClient.state].filter(Boolean).join(', '),currentClient.date_of_birth?'DOB '+currentClient.date_of_birth:''].filter(Boolean).join(' · ');
 }
 
-function updateHeader() {
-  if (!currentClient) return;
-  document.getElementById('hdr-name').textContent = currentClient.full_name;
-  document.getElementById('hdr-sub').textContent = [(currentClient.quote_types||[]).join(' + '), [currentClient.city, currentClient.state].filter(Boolean).join(', '), currentClient.date_of_birth ? 'DOB ' + currentClient.date_of_birth : ''].filter(Boolean).join(' · ');
+// ─── UNDERWRITING ALERTS ──────────────────────────────────────────────────────
+function genUWAlerts(){
+  const alerts=[];const raw=currentClient.raw_intake?JSON.parse(currentClient.raw_intake):{};
+  // Check for risk factors
+  if(raw.continuous_coverage&&parseInt(raw.continuous_coverage)<2)alerts.push({type:'warn',msg:'⚠ Coverage gap detected'});
+  if(raw.violations||currentClient.notes?.toLowerCase().includes('ticket')||currentClient.notes?.toLowerCase().includes('accident'))alerts.push({type:'warn',msg:'⚠ Prior violation on record'});
+  if(currentClient.notes?.toLowerCase().includes('claim'))alerts.push({type:'warn',msg:'⚠ Prior claim detected'});
+  const dob=currentClient.date_of_birth;
+  if(dob){const age=new Date().getFullYear()-new Date(dob).getFullYear();if(age<25)alerts.push({type:'warn',msg:'⚠ Driver under 25 — surcharge likely'});}
+  if(currentClient.state&&['FL','LA','MI'].includes(currentClient.state.toUpperCase()))alerts.push({type:'warn',msg:`⚠ ${currentClient.state} high-risk state`});
+  if(!alerts.length)alerts.push({type:'ok',msg:'✓ No underwriting flags'});
+  const wrap=document.getElementById('uw-alerts');
+  const flags=document.getElementById('uw-flags');
+  flags.innerHTML=alerts.map(a=>`<span class="uw-flag ${a.type}">${a.msg}</span>`).join('');
+  wrap.classList.remove('hidden');
 }
 
-// ─── INTAKE DISPLAY ───────────────────────────────────────────────────────────
-function renderIntakeDisplay() {
-  if (!currentClient) return;
-  const c = currentClient;
-  const raw = c.raw_intake ? (() => { try { return JSON.parse(c.raw_intake); } catch(e) { return {}; } })() : {};
-
-  const sections = {
-    'Personal': [
-      ['Full Name', c.full_name],
-      ['Email', c.email],
-      ['Phone', c.phone],
-      ['Date of Birth', c.date_of_birth],
-      ['State', c.state],
-      ['City', c.city],
-      ['ZIP', c.zip],
-    ],
-    'Insurance': [
-      ['Lines', (c.quote_types||[]).join(', ')],
-      ['Current Insurer', raw.current_insurer],
-      ['Coverage Type', raw.coverage_type],
-      ['Vehicles', raw.vehicles],
-      ['Drivers', raw.drivers],
-      ['Continuous Coverage', raw.continuous_coverage],
-    ]
-  };
-
-  const filled = Object.values(sections).flat().filter(([,v])=>v).length;
-  const total = Object.values(sections).flat().length;
-  const pct = Math.round(filled/total*100);
-
-  document.getElementById('intake-complete-pct').textContent = `✓ ${pct}% complete`;
-  document.getElementById('intake-display').innerHTML = Object.entries(sections).map(([sec, fields]) => `
-    <div class="intake-section">
-      <div class="intake-sec-label">${sec}</div>
-      ${fields.map(([k,v]) => `<div class="field-row">
-        <div class="field-key">${k}</div>
-        <div class="field-val ${v ? '' : 'empty'}">${v || 'Not collected'}</div>
-      </div>`).join('')}
-    </div>`).join('');
-
-  const style = document.getElementById('intake-display').style;
-  style.gridTemplateColumns = '1fr 1fr';
+// ─── WAITING TABLE (before quotes run) ───────────────────────────────────────
+function renderWaitingTable(){
+  const eligible=CARRIERS.filter(c=>c.base[currentType]>0);
+  document.getElementById('ct-title-text').textContent=`${currentType} quotes — ${eligible.length} carriers`;
+  document.getElementById('carrier-table-body').innerHTML=`<table class="ctable">
+    <thead><tr><th>Carrier</th><th>Monthly</th><th>Annual</th><th>Deductible</th><th>AI Score</th><th>Status</th><th></th></tr></thead>
+    <tbody>${eligible.map(car=>`<tr class="waiting-row">
+      <td><div class="carrier-cell"><div class="carrier-logo" style="background:${car.color};">${car.abbr}</div>
+        <div><div class="carrier-label">${car.name}</div><div style="font-size:10px;color:var(--text3);">${car.api==='agent'?'<span style="color:var(--green);">API ready</span>':'Portal auto'}</div></div>
+      </div></td>
+      <td><div class="waiting-price">—</div></td>
+      <td style="color:var(--text3);font-size:12px;">—</td>
+      <td style="font-size:12px;">—</td>
+      <td><div class="waiting-price">waiting</div></td>
+      <td><span class="waiting-badge">⏳ Waiting</span></td>
+      <td><button class="select-btn disabled" disabled>Select</button></td>
+    </tr>`).join('')}</tbody></table>`;
 }
 
-// ─── MVR ──────────────────────────────────────────────────────────────────────
-function generateMVRData() {
-  const rand = Math.random();
-  const violations = rand > 0.7 ? [{ type: 'Speeding', date: '2023-06-15', points: 2 }] : [];
-  const accidents = rand > 0.85 ? [{ type: 'At-fault', date: '2022-09-10', amount: '$4,200' }] : [];
-  return {
-    license_status: 'Valid',
-    license_class: 'Class D',
-    violations,
-    accidents,
-    clue_claims: accidents.length > 0 ? [{ type: 'Collision', year: 2022, paid: '$4,200' }] : [],
-    mvr_score: violations.length === 0 && accidents.length === 0 ? 'Preferred+' : violations.length <= 1 ? 'Standard' : 'Non-standard',
-    pulled_at: new Date().toLocaleDateString()
-  };
-}
-
-function renderMVRDisplay(mvr) {
-  const scoreColor = mvr.mvr_score === 'Preferred+' ? 'var(--green)' : mvr.mvr_score === 'Standard' ? 'var(--amber)' : 'var(--red)';
-  document.getElementById('mvr-display').innerHTML = `
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;">
-      <div>
-        <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;margin-bottom:8px;">License Info</div>
-        <div class="field-row"><div class="field-key">Status</div><div class="field-val">${mvr.license_status}</div></div>
-        <div class="field-row"><div class="field-key">Class</div><div class="field-val">${mvr.license_class}</div></div>
-        <div class="field-row"><div class="field-key">MVR Score</div><div class="field-val" style="color:${scoreColor};font-weight:600;">${mvr.mvr_score}</div></div>
-        <div class="field-row"><div class="field-key">Pulled</div><div class="field-val">${mvr.pulled_at}</div></div>
-      </div>
-      <div>
-        <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;margin-bottom:8px;">Violations (5yr)</div>
-        ${mvr.violations.length === 0 ? '<div style="font-size:12px;color:var(--green);">✓ No violations</div>' :
-          mvr.violations.map(v => `<div style="font-size:12px;padding:4px 0;border-bottom:1px solid var(--border);"><span style="color:var(--amber);">⚠ ${v.type}</span> · ${v.date} · ${v.points} pts</div>`).join('')}
-        <div style="margin-top:10px;font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;margin-bottom:6px;">Accidents (5yr)</div>
-        ${mvr.accidents.length === 0 ? '<div style="font-size:12px;color:var(--green);">✓ No accidents</div>' :
-          mvr.accidents.map(a => `<div style="font-size:12px;padding:4px 0;color:var(--red);">⚠ ${a.type} · ${a.date} · ${a.amount}</div>`).join('')}
-      </div>
-    </div>
-    <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;margin-bottom:8px;">CLUE Report (prior claims)</div>
-    ${mvr.clue_claims.length === 0 ? '<div style="font-size:12px;color:var(--green);">✓ No prior claims on record</div>' :
-      mvr.clue_claims.map(cl => `<div style="font-size:12px;padding:6px 0;border-bottom:1px solid var(--border);"><span style="color:var(--amber);">📋 ${cl.type} claim</span> · ${cl.year} · Paid: ${cl.paid}</div>`).join('')}
-    <div style="margin-top:12px;padding:8px 12px;background:rgba(59,130,246,.08);border-radius:7px;border:1px solid rgba(59,130,246,.15);font-size:11px;color:var(--text2);">
-      <strong style="color:var(--blue2);">Note:</strong> This is a simulated MVR for demo. Live MVR integration via LexisNexis is ready to activate — rates adjust automatically based on actual driving record.
-    </div>`;
-}
-
-function updateMVRStat(mvr) {
-  const scoreColor = mvr.mvr_score === 'Preferred+' ? 'var(--green)' : mvr.mvr_score === 'Standard' ? 'var(--amber)' : 'var(--red)';
-  document.getElementById('stat-mvr').innerHTML = `<span style="color:${scoreColor};">${mvr.mvr_score}</span>`;
-  document.getElementById('stat-mvr-sub').textContent = `${mvr.violations.length} violations · ${mvr.accidents.length} accidents`;
-}
-
-// ─── QUOTE ENGINE ─────────────────────────────────────────────────────────────
-async function runQuotes() {
-  if (!currentClient) return;
-  const btn = document.getElementById('run-btn');
-  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Running...';
-  document.getElementById('carrier-table-body').innerHTML = '<div style="padding:40px;text-align:center;color:var(--text3);"><div class="spinner" style="width:24px;height:24px;border-width:3px;margin:0 auto 12px;"></div>Getting quotes from carriers...</div>';
-  try {
-    await sb.from('carrier_quotes').delete().eq('client_id', currentClient.id).eq('quote_type', currentType);
-    const eligible = CARRIERS.filter(c => c.base[currentType] > 0);
-    const quoteRows = eligible.map(car => {
-      // Factor in state, age, coverage
-      let mult = 0.9 + Math.random() * 0.25;
-      const state = (currentClient.state || '').toUpperCase();
-      if (['TX','FL','LA','MI'].includes(state)) mult += 0.08; // High cost states
-      if (['ME','VT','NH','ID'].includes(state)) mult -= 0.06; // Low cost states
-      const dob = currentClient.date_of_birth;
-      if (dob) {
-        const age = new Date().getFullYear() - parseInt(dob.split('-')[0] || dob.split('/')[2] || '1980');
-        if (age < 25) mult += 0.18;
-        else if (age > 65) mult += 0.08;
-        else if (age >= 35 && age <= 55) mult -= 0.05;
-      }
-      const monthly = Math.round(car.base[currentType] * mult);
-      const score = Math.min(99, Math.round(car.win_rate * 2.1 + (1/mult) * 20 + Math.random() * 10));
-      const reasons = {
-        Auto: ['Preferred tier — clean record','Telematics discount eligible','Multi-vehicle bundle rate','New customer incentive','Standard market rate','Continuous coverage credit'],
-        Home: ['New roof discount applied','Bundle with auto saves 18%','Claims-free preferred rate','Construction type credit','Standard market rate'],
-        Health: ['In-network provider match','Low deductible option','ACA subsidy may apply','Largest PPO network','Standard PPO rate'],
-        Life: ['Top preferred+ health class','Non-smoker preferred rate','20yr term sweet spot','Income-based coverage match','Standard term rate']
-      };
-      const rList = reasons[currentType] || ['Competitive rate'];
-      return {
-        client_id: currentClient.id, agent_email: currentUser.email,
-        quote_type: currentType, carrier: car.id,
-        monthly_premium: monthly, annual_premium: monthly * 12,
-        deductible: currentType === 'Life' ? 'N/A' : currentType === 'Health' ? '$' + [500,1000,1500,2000][Math.floor(Math.random()*4)] : '$' + [250,500,1000,2500][Math.floor(Math.random()*4)],
-        ai_score: score, ai_reason: rList[Math.floor(Math.random()*rList.length)],
-        selected: false
-      };
+// ─── RUN QUOTES ───────────────────────────────────────────────────────────────
+async function runQuotes(){
+  if(!currentClient)return;
+  const btn=document.getElementById('run-btn');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Running...';
+  // Show animated waiting rows
+  renderWaitingTable();
+  try{
+    await sb.from('carrier_quotes').delete().eq('client_id',currentClient.id).eq('quote_type',currentType);
+    const eligible=CARRIERS.filter(c=>c.base[currentType]>0);
+    const mvrData=generateMVRData();
+    const quoteRows=eligible.map(car=>{
+      let mult=0.88+Math.random()*0.26;
+      const state=(currentClient.state||'').toUpperCase();
+      if(['TX','FL','LA','MI','CA'].includes(state))mult+=0.09;
+      if(['ME','VT','NH','ID','WI'].includes(state))mult-=0.07;
+      const dob=currentClient.date_of_birth;
+      if(dob){const age=new Date().getFullYear()-new Date(dob).getFullYear();if(age<25)mult+=0.20;else if(age>65)mult+=0.10;else if(age>=35&&age<=55)mult-=0.06;}
+      if(mvrData.violations.length>0)mult+=0.12*mvrData.violations.length;
+      if(mvrData.accidents.length>0)mult+=0.18*mvrData.accidents.length;
+      const monthly=Math.round(car.base[currentType]*mult);
+      const score=Math.min(99,Math.round(car.win_rate*2.1+(1/mult)*15+Math.random()*8));
+      const reasons={Auto:['Preferred tier — clean record','Telematics discount eligible','Multi-vehicle bundle rate','New customer incentive','Continuous coverage credit','TX market rate'],Home:['New roof discount','Bundle with auto saves','Claims-free preferred','Standard market rate'],Health:['In-network match','Low deductible option','ACA subsidy may apply','Standard PPO rate'],Life:['Preferred+ health class','Non-smoker rate','20yr term sweet spot','Standard term rate']};
+      const rList=reasons[currentType]||['Competitive rate'];
+      return{client_id:currentClient.id,agent_email:currentUser.email,quote_type:currentType,carrier:car.id,monthly_premium:monthly,annual_premium:monthly*12,deductible:currentType==='Life'?'N/A':currentType==='Health'?'$'+[500,1000,1500,2000][Math.floor(Math.random()*4)]:'$'+[250,500,1000][Math.floor(Math.random()*3)],ai_score:score,ai_reason:rList[Math.floor(Math.random()*rList.length)],selected:false};
     });
-    const { data, error } = await sb.from('carrier_quotes').insert(quoteRows).select();
-    if (error) throw error;
-    currentQuotes = data;
-    await sb.from('clients').update({ pipeline_stage: 'quoting', updated_at: new Date().toISOString() }).eq('id', currentClient.id);
-    currentClient.pipeline_stage = 'quoting';
-    renderCarrierTable();
-    updateStats();
-    renderPipeline();
-    getAIRec();
-    toast('✅ Quotes complete!', 'ok');
-  } catch(err) {
-    toast('Error: ' + err.message, 'err');
-  }
-  btn.disabled = false; btn.innerHTML = '↺ Run quotes';
+    const{data,error}=await sb.from('carrier_quotes').insert(quoteRows).select();
+    if(error)throw error;
+    currentQuotes=data;
+    await sb.from('clients').update({pipeline_stage:'quoting',updated_at:new Date().toISOString()}).eq('id',currentClient.id);
+    currentClient.pipeline_stage='quoting';
+    renderClientList(allClients);renderCarrierTable();updateMetrics();renderPipeline();getAIRec();
+    toast('✅ Quotes complete!','ok');
+  }catch(err){toast('Error: '+err.message,'err');}
+  btn.disabled=false;btn.innerHTML='⚡ Run all quotes';
 }
 
-function renderCarrierTable() {
-  const quotes = currentQuotes.filter(q => q.quote_type === currentType).sort((a,b) => a.monthly_premium - b.monthly_premium);
-  document.getElementById('ct-title-text').textContent = `${currentType} quotes — ${quotes.length} carriers`;
-  if (!quotes.length) { document.getElementById('carrier-table-body').innerHTML = '<div style="padding:40px;text-align:center;color:var(--text3);">Click "Run quotes" to get pricing</div>'; return; }
-  const best = quotes[0];
-  document.getElementById('carrier-table-body').innerHTML = `<table class="ctable">
-    <thead><tr><th>Carrier</th><th>Monthly</th><th>Annual</th><th>Deductible</th><th>AI Score</th><th>Reason</th><th></th></tr></thead>
-    <tbody>${quotes.map(q => {
-      const car = CARRIERS.find(c=>c.id===q.carrier)||{name:q.carrier,abbr:'?',color:'#888'};
-      const isB = q.id === best.id;
-      const isSel = selectedCarrierId === q.carrier;
-      const sc = q.ai_score >= 85 ? '#10b981' : q.ai_score >= 65 ? '#3b82f6' : '#f59e0b';
+function renderCarrierTable(){
+  const quotes=currentQuotes.filter(q=>q.quote_type===currentType).sort((a,b)=>a.monthly_premium-b.monthly_premium);
+  document.getElementById('ct-title-text').textContent=`${currentType} quotes — ${quotes.length} carriers`;
+  if(!quotes.length){renderWaitingTable();return;}
+  const best=quotes[0];
+  document.getElementById('carrier-table-body').innerHTML=`<table class="ctable">
+    <thead><tr><th>Carrier</th><th>Monthly</th><th>Annual</th><th>Deductible</th><th>AI Score</th><th>Match reason</th><th></th></tr></thead>
+    <tbody>${quotes.map(q=>{
+      const car=CARRIERS.find(c=>c.id===q.carrier)||{name:q.carrier,abbr:'?',color:'#888'};
+      const isB=q.id===best.id,isSel=selectedCarrierId===q.carrier;
+      const sc=q.ai_score>=85?'#10b981':q.ai_score>=65?'#3b82f6':'#f59e0b';
       return `<tr class="${isB?'winner':''}">
         <td><div class="carrier-cell"><div class="carrier-logo" style="background:${car.color};">${car.abbr}</div>
           <div><div class="carrier-label">${car.name}${isB?'<span class="best-badge">Best value</span>':''}</div>
-          <div style="font-size:10px;color:var(--text3);">${car.api==='agent'?'<span style="color:var(--green);">✓ API ready</span>':'<span style="color:var(--amber);">Agent portal</span>'}</div></div></div></td>
+          <div style="font-size:10px;color:var(--text3);">${car.api==='agent'?'<span style="color:var(--green);">✓ API ready</span>':'Agent portal'}</div></div>
+        </div></td>
         <td><div class="price-main">$${q.monthly_premium}</div><div class="price-period">/mo</div></td>
         <td style="color:var(--text2);font-size:12px;">$${(q.monthly_premium*12).toLocaleString()}</td>
         <td style="font-size:12px;">${q.deductible}</td>
@@ -1036,169 +826,460 @@ function renderCarrierTable() {
     }).join('')}</tbody></table>`;
 }
 
-async function selectCarrierQuote(carrierId, quoteId) {
-  selectedCarrierId = carrierId;
+async function selectCarrierQuote(carrierId,quoteId){
+  selectedCarrierId=carrierId;
   await sb.from('carrier_quotes').update({selected:false}).eq('client_id',currentClient.id).eq('quote_type',currentType);
   await sb.from('carrier_quotes').update({selected:true}).eq('id',quoteId);
-  currentQuotes = currentQuotes.map(q=>({...q,selected:q.id===quoteId}));
-  renderCarrierTable();
-  const car = CARRIERS.find(c=>c.id===carrierId);
-  const q = currentQuotes.find(x=>x.id===quoteId);
-  addAIMessage(`Selected <strong>${car?.name} at $${q?.monthly_premium}/mo</strong>. Want me to draft an email to the client with this quote?`);
+  currentQuotes=currentQuotes.map(q=>({...q,selected:q.id===quoteId}));
+  renderCarrierTable();updateMetrics();
+  const car=CARRIERS.find(c=>c.id===carrierId),q=currentQuotes.find(x=>x.id===quoteId);
+  addAIMessage(`Selected <strong>${car?.name} at $${q?.monthly_premium}/mo</strong>. Commission: ~$${Math.round(q?.monthly_premium*12*(car?.commission_pct||12)/100)}/yr. Ready to bind or send proposal?`);
 }
 
-function updateStats() {
-  const quotes = currentQuotes.filter(q=>q.quote_type===currentType);
-  if (!quotes.length) return;
-  const best = quotes.reduce((a,b)=>a.monthly_premium<b.monthly_premium?a:b);
-  const avg = Math.round(quotes.reduce((s,q)=>s+q.monthly_premium,0)/quotes.length);
-  const savings = avg - best.monthly_premium;
-  document.getElementById('stat-carriers').textContent = `${quotes.length}/${CARRIERS.filter(c=>c.base[currentType]>0).length}`;
-  document.getElementById('stat-carriers-sub').textContent = 'carriers quoted';
-  document.getElementById('stat-best').textContent = `$${best.monthly_premium}/mo`;
-  document.getElementById('stat-best-sub').textContent = CARRIERS.find(c=>c.id===best.carrier)?.name || best.carrier;
-  document.getElementById('stat-savings').textContent = savings > 0 ? `$${savings}/mo` : '—';
+function updateMetrics(){
+  const quotes=currentQuotes.filter(q=>q.quote_type===currentType).sort((a,b)=>a.monthly_premium-b.monthly_premium);
+  const best=quotes[0],avg=quotes.length?Math.round(quotes.reduce((s,q)=>s+q.monthly_premium,0)/quotes.length):0;
+  const selCar=selectedCarrierId?CARRIERS.find(c=>c.id===selectedCarrierId):null;
+  const selQ=selectedCarrierId?quotes.find(q=>q.carrier===selectedCarrierId):null;
+
+  document.getElementById('met-best').textContent=best?`$${best.monthly_premium}/mo`:'—';
+  document.getElementById('met-best-sub').textContent=best?CARRIERS.find(c=>c.id===best.carrier)?.name||best.carrier:'run quotes to compare';
+
+  // Bundle discount estimate
+  const types=currentClient?.quote_types||[];
+  if(types.length>1){document.getElementById('met-bundle').textContent='~15%';document.getElementById('met-bundle-sub').textContent=types.join('+') + ' bundle';}
+  else{document.getElementById('met-bundle').textContent='—';document.getElementById('met-bundle-sub').textContent='add more lines';}
+
+  // Savings vs current
+  const raw=currentClient?.raw_intake?JSON.parse(currentClient.raw_intake):{};
+  const currentPremium=parseInt(raw.current_premium)||0;
+  if(best&&currentPremium){const savings=currentPremium-best.monthly_premium;document.getElementById('met-savings').textContent=savings>0?`$${savings}/mo`:'Best rate';}
+  else document.getElementById('met-savings').textContent=best&&avg?`$${avg-best.monthly_premium}/mo`:'—';
+
+  // Commission
+  const commQ=selQ||best;const commCar=selCar||CARRIERS.find(c=>c.id===best?.carrier);
+  if(commQ&&commCar){const annual=commQ.monthly_premium*12;const comm=Math.round(annual*((commCar.commission_pct||12)/100));document.getElementById('met-commission').textContent=`$${comm.toLocaleString()}`;document.getElementById('met-commission-sub').textContent=`${commCar.commission_pct}% · $${commQ.monthly_premium}/mo premium`;}
+  else{document.getElementById('met-commission').textContent='—';document.getElementById('met-commission-sub').textContent='~12% avg';}
+
+  // Bind status
+  const stage=currentClient?.pipeline_stage||'intake';
+  const stageLabel={intake:'Intake',quoting:'Quoting',presented:'Presented',bound:'Bound ✓'}[stage]||stage;
+  document.getElementById('met-status').textContent=stageLabel;
+  document.getElementById('met-status-sub').textContent=selectedCarrierId?`${CARRIERS.find(c=>c.id===selectedCarrierId)?.name||''} selected`:'select carrier to bind';
 }
 
-async function getAIRec() {
-  const quotes = currentQuotes.filter(q=>q.quote_type===currentType).sort((a,b)=>a.monthly_premium-b.monthly_premium);
-  if (!quotes.length) return;
-  const best = quotes[0];
-  const car = CARRIERS.find(c=>c.id===best.carrier);
-  const avg = Math.round(quotes.reduce((s,q)=>s+q.monthly_premium,0)/quotes.length);
-  const savings = avg - best.monthly_premium;
-  try {
-    const res = await fetch('/api/extract-quote', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'chat',message:`Insurance agent needs a 2-sentence recommendation. Best carrier: ${car?.name} at $${best.monthly_premium}/mo (saves client $${savings}/mo vs avg $${avg}). Reason: ${best.ai_reason}. Client type: ${currentType} in ${currentClient?.state||'unknown state'}. Be specific, actionable, agent-focused. Use <strong> tags for key info.`,context:'Insurance agent dashboard',clientText:''})});
-    const j = await res.json();
-    document.getElementById('ai-rec-text').innerHTML = j.reply || `<strong>${car?.name} at $${best.monthly_premium}/mo</strong> is the top pick — saves your client $${savings}/mo vs the market average. ${best.ai_reason}.`;
-  } catch(e) {
-    document.getElementById('ai-rec-text').innerHTML = `<strong>${car?.name} at $${best.monthly_premium}/mo is the clear winner.</strong> Saves $${savings}/mo vs the $${avg} average. ${best.ai_reason}.`;
-  }
+async function getAIRec(){
+  const quotes=currentQuotes.filter(q=>q.quote_type===currentType).sort((a,b)=>a.monthly_premium-b.monthly_premium);
+  if(!quotes.length)return;
+  const best=quotes[0],car=CARRIERS.find(c=>c.id===best.carrier),avg=Math.round(quotes.reduce((s,q)=>s+q.monthly_premium,0)/quotes.length);
+  const savings=avg-best.monthly_premium;
+  try{
+    const res=await fetch('/api/extract-quote',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'chat',message:`Insurance agent needs a 2-sentence recommendation. Best carrier: ${car?.name} at $${best.monthly_premium}/mo (saves $${savings}/mo vs avg $${avg}). Client type: ${currentType} in ${currentClient?.state||'unknown'}. Reason: ${best.ai_reason}. Use <strong> tags for key info.`,context:'Agent dashboard',clientText:''})});
+    const j=await res.json();
+    document.getElementById('ai-rec-text').innerHTML=j.reply||`<strong>${car?.name} at $${best.monthly_premium}/mo</strong> leads — saves $${savings}/mo vs market average. ${best.ai_reason}.`;
+  }catch(e){document.getElementById('ai-rec-text').innerHTML=`<strong>${car?.name} at $${best.monthly_premium}/mo is the top pick.</strong> Saves $${savings}/mo vs $${avg} average. ${best.ai_reason}.`;}
 }
 
-function runMVR() {
-  const btn = document.getElementById('mvr-run-btn');
-  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Pulling...';
-  setTimeout(() => {
-    const mvr = generateMVRData();
-    renderMVRDisplay(mvr);
-    updateMVRStat(mvr);
-    btn.disabled = false; btn.innerHTML = '↻ Refresh MVR';
-    toast('✅ MVR pulled', 'ok');
-  }, 1800);
+// ─── INTAKE CONVERSATION ──────────────────────────────────────────────────────
+const BASE_STEPS=[
+  {id:'quote_types',q:"What lines of insurance does your client need?",options:["Auto only","Home only","Auto + Home","Auto + Life","Health","Full bundle — all lines","Custom"]},
+  {id:'full_name',q:"What's the client's full name?"},
+  {id:'date_of_birth',q:"Date of birth? (MM/DD/YYYY)"},
+  {id:'phone',q:"Best phone number?"},
+  {id:'email',q:"Email address?"},
+  {id:'state',q:"What state do they live in?"},
+  {id:'address',q:"City and zip code?"},
+];
+const AUTO_STEPS=[
+  {id:'vehicles',q:"Tell me about their vehicle(s) — year, make, model. Owned, leased, or financed?"},
+  {id:'drivers',q:"Any other drivers? Names and dates of birth?",options:["Just the primary driver","Yes — spouse","Yes — teen driver","Multiple additional drivers"]},
+  {id:'current_insurer',q:"Current insurer and monthly premium?"},
+  {id:'continuous_coverage',q:"Years of continuous coverage? Any accidents or violations in the last 5 years?",options:["Clean record, 5+ years","Clean record, under 5 years","1 minor violation","1 accident","Multiple incidents"]},
+  {id:'coverage_type',q:"Coverage level?",options:["Full coverage — $500 ded","Full coverage — $1,000 ded","Liability only","Recommend best for me"]},
+];
+const HOME_STEPS=[
+  {id:'property_address',q:"Property address?"},
+  {id:'property_details',q:"Year built, square footage, and construction type?"},
+  {id:'home_features',q:"Pool, trampoline, or security system?",options:["Security system only","Pool only","Both pool + security","Trampoline","None"]},
+  {id:'coverage_amount',q:"Dwelling coverage amount needed?"},
+  {id:'mortgagee',q:"Mortgage lender name and loan number?",options:["No mortgage — owned free","Yes — I'll provide lender info","Not sure"]},
+];
+const HEALTH_STEPS=[
+  {id:'household',q:"Coverage for just themselves, or family? Household income?"},
+  {id:'preferred_docs',q:"Any preferred doctors or hospitals to keep in-network?"},
+  {id:'conditions',q:"Pre-existing conditions or regular medications?",options:["None","Minor — managed medications","Chronic condition","Prefer not to say"]},
+  {id:'plan_pref',q:"Plan preference?",options:["PPO — flexible, any doctor","HMO — lower cost","HDHP + HSA","Recommend best"]},
+];
+const LIFE_STEPS=[
+  {id:'coverage_goal',q:"Main reason for life insurance?",options:["Mortgage protection","Income replacement","Estate planning","Business coverage","All of the above"]},
+  {id:'health_class',q:"Health status — smoker or non-smoker? Any significant health conditions?",options:["Non-smoker, excellent health","Non-smoker, good health","Smoker, good health","Some health conditions"]},
+  {id:'coverage_amount',q:"How much coverage?",options:["$250,000","$500,000","$1,000,000","$2,000,000","Calculate for me"]},
+  {id:'term',q:"Term or permanent?",options:["10-year term","20-year term","30-year term","Whole life","Universal life"]},
+  {id:'beneficiary',q:"Primary beneficiary name and relationship?"},
+];
+
+function getStepsForTypes(types){
+  let steps=[...BASE_STEPS];
+  if(types.includes('Auto'))steps=[...steps,...AUTO_STEPS];
+  if(types.includes('Home'))steps=[...steps,...HOME_STEPS];
+  if(types.includes('Health'))steps=[...steps,...HEALTH_STEPS];
+  if(types.includes('Life'))steps=[...steps,...LIFE_STEPS];
+  return steps;
+}
+function parseQuoteTypes(a){
+  const al=a.toLowerCase();
+  if(al.includes('bundle')||al.includes('all'))return['Auto','Home','Health','Life'];
+  if(al.includes('auto')&&al.includes('home')&&al.includes('life'))return['Auto','Home','Life'];
+  if(al.includes('auto')&&al.includes('home'))return['Auto','Home'];
+  if(al.includes('auto')&&al.includes('life'))return['Auto','Life'];
+  if(al.includes('health'))return['Health'];
+  if(al.includes('life'))return['Life'];
+  if(al.includes('home'))return['Home'];
+  return['Auto'];
 }
 
-// ─── MODE / CHAT ──────────────────────────────────────────────────────────────
-function setMode(mode) {
-  rpMode = mode;
-  document.getElementById('mode-intake').classList.toggle('active', mode==='intake');
-  document.getElementById('mode-chat').classList.toggle('active', mode==='chat');
-  document.getElementById('rp-sub-label').textContent = mode === 'intake' ? 'Intake assistant · Powered by Claude' : 'Quote advisor · Powered by Claude';
-  document.getElementById('rp-input').placeholder = mode === 'intake' ? 'Type your answer...' : 'Ask anything about this client or carriers...';
+function startNewClientIntake(){
+  showView('quotes');
+  document.getElementById('welcome-screen').classList.add('hidden');
+  const ws=document.getElementById('quote-workspace');ws.classList.remove('hidden');ws.style.display='flex';
+  document.getElementById('hdr-name').textContent='New client intake';
+  document.getElementById('hdr-sub').textContent='AI is gathering information...';
+  document.getElementById('uw-alerts').classList.add('hidden');
+  currentClient=null;currentQuotes=[];selectedCarrierId=null;
+  intakeState={active:true,step:0,clientData:{},quoteTypes:[],allSteps:null};
+  renderWaitingTable();
+  // Open AI panel and start intake there
+  if(!aiOpen)toggleAI();
+  clearAIMessages();
+  addAIMessage("Let's get your client set up. I'll ask a few questions and then run quotes across all carriers automatically. 👋");
+  setTimeout(()=>askIntakeStep(0),600);
 }
 
-function sendInput() {
-  const input = document.getElementById('rp-input');
-  const text = input.value.trim();
-  if (!text) return;
-  input.value = ''; autoResize(input);
-  addUserMessage(text);
-  if (rpMode === 'intake' && intakeState.active) {
-    handleIntakeAnswer(text);
+function askIntakeStep(idx){
+  const steps=intakeState.allSteps||BASE_STEPS;
+  if(idx>=steps.length){finishIntake();return;}
+  const step=steps[idx];intakeState.step=idx;
+  if(step.options)addAIMessage(step.q,step.options);
+  else addAIMessage(step.q);
+}
+
+async function handleIntakeAnswer(answer){
+  if(!intakeState.active)return;
+  const steps=intakeState.allSteps||BASE_STEPS;
+  const step=steps[intakeState.step];
+  intakeState.clientData[step.id]=answer;
+
+  if(step.id==='quote_types'){
+    intakeState.quoteTypes=parseQuoteTypes(answer);
+    intakeState.clientData.quote_types=intakeState.quoteTypes;
+    intakeState.allSteps=getStepsForTypes(intakeState.quoteTypes);
+    addAIMessage(`Got it — **${intakeState.quoteTypes.join(' + ')}**. ${intakeState.allSteps.length-BASE_STEPS.length} more questions specific to your lines.`);
+    setTimeout(()=>askIntakeStep(intakeState.step+1),400);
+  } else if(step.id==='full_name'){
+    addAIMessage(`Nice, ${answer.split(' ')[0]}!`);
+    setTimeout(()=>askIntakeStep(intakeState.step+1),300);
   } else {
-    showTyping();
-    getAIResponse(text).then(reply => { hideTyping(); addAIMessage(reply); });
+    const acks=["Got it.","✓","Perfect.","Noted.","Thanks."];
+    addAIMessage(acks[Math.floor(Math.random()*acks.length)]);
+    setTimeout(()=>askIntakeStep(intakeState.step+1),300);
   }
 }
 
-function clickOption(text) {
-  addUserMessage(text);
-  if (rpMode === 'intake' && intakeState.active) handleIntakeAnswer(text);
-  else { showTyping(); getAIResponse(text).then(reply => { hideTyping(); addAIMessage(reply); }); }
+async function finishIntake(){
+  intakeState.active=false;
+  addAIMessage("✅ All done! Saving client and running quotes now...");
+  const d=intakeState.clientData;
+  const addrParts=(d.address||'').split(',');
+  const clientRecord={
+    agent_email:currentUser.email,
+    full_name:d.full_name||'New Client',
+    email:d.email||null,phone:d.phone||null,date_of_birth:d.date_of_birth||null,
+    address:addrParts[0]?.trim()||null,city:addrParts[1]?.trim()||null,
+    state:d.state||null,zip:addrParts[2]?.trim()||null,
+    quote_types:intakeState.quoteTypes,
+    pipeline_stage:'quoting',status:'active',
+    raw_intake:JSON.stringify(d),
+    notes:Object.entries(d).map(([k,v])=>`${k}: ${v}`).join('\n')
+  };
+  try{
+    const{data,error}=await sb.from('clients').insert(clientRecord).select().single();
+    if(error)throw error;
+    allClients.unshift(data);currentClient=data;currentType=intakeState.quoteTypes[0];
+    renderClientList(allClients);updateHeader();renderTypeToggle();renderCovToolbar();renderIntakeDisplay();genUWAlerts();
+    await runQuotes();
+    renderMVRDisplay(generateMVRData());
+    setTimeout(()=>addAIMessage(`All done! Check the <strong>Compare plans</strong> tab for the full breakdown. I've also flagged any underwriting issues above.`),1500);
+  }catch(err){toast('Error: '+err.message,'err');}
 }
 
-function startWelcomeChat() {
-  clearMessages();
-  intakeState.active = false;
-  setMode('chat');
-  addAIMessage("Welcome to BrnnoQuote! I'll help you find the best insurance plans for your clients across all carriers. <strong>Click \"+ New client\"</strong> and I'll guide you through intake, pull their MVR, and run quotes automatically.", ["Start new client", "How do carrier rates work?", "What's the MVR check?"]);
+// ─── INTAKE DISPLAY ───────────────────────────────────────────────────────────
+function renderIntakeDisplay(){
+  if(!currentClient)return;
+  const c=currentClient,raw=c.raw_intake?JSON.parse(c.raw_intake):{};
+  const sections={
+    'Personal':[['Full name',c.full_name],['Email',c.email],['Phone',c.phone],['Date of birth',c.date_of_birth],['State',c.state],['City',c.city],['ZIP',c.zip]],
+    'Insurance':[['Lines',(c.quote_types||[]).join(', ')],['Current insurer',raw.current_insurer],['Coverage type',raw.coverage_type],['Vehicles',raw.vehicles],['Drivers',raw.drivers],['Continuous coverage',raw.continuous_coverage]],
+  };
+  const filled=Object.values(sections).flat().filter(([,v])=>v).length;
+  const total=Object.values(sections).flat().length;
+  document.getElementById('intake-complete-pct').textContent=`✓ ${Math.round(filled/total*100)}% complete`;
+  document.getElementById('intake-display').innerHTML=Object.entries(sections).map(([sec,fields])=>`
+    <div class="intake-section">
+      <div class="intake-sec-label">${sec}</div>
+      ${fields.map(([k,v])=>`<div class="field-row"><div class="field-key">${k}</div><div class="field-val ${v?'':'empty'}">${v||'Not collected'}</div></div>`).join('')}
+    </div>`).join('');
 }
 
-async function getAIResponse(msg) {
+// ─── DOCUMENT UPLOAD ──────────────────────────────────────────────────────────
+// ─── REAL DOCUMENT EXTRACTION (Claude Vision) ─────────────────────────────────
+function simulateDocUpload(type) {
+  const input = document.createElement('input');
+  input.type = 'file'; input.accept = 'image/*,.pdf'; input.style.display = 'none';
+  document.body.appendChild(input);
+  const docTypeMap = {dl:'drivers_license',dec:'declarations_page',reg:'vehicle_registration',home:'home_inspection',med:'health_records'};
+  const labels = {dl:"Driver's License",dec:'Dec Page',reg:'Vehicle Reg.',home:'Home Inspection',med:'Health Records'};
+  input.onchange = async (e) => {
+    const file = e.target.files[0]; if (!file) return;
+    document.body.removeChild(input);
+    const slot = document.getElementById('doc-' + type);
+    if (slot) { slot.classList.add('uploaded'); slot.querySelector('.doc-slot-label').textContent = 'Reading...'; }
+    toast('📎 ' + labels[type] + ' uploaded — AI reading...', 'ok');
+    addAIMessage('📎 Reading ' + labels[type] + ' with Claude Vision — extracting all fields...');
+    try {
+      const base64 = await fileToBase64(file);
+      const res = await fetch('/api/extract-quote', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({action:'extract_document',documentBase64:base64,documentType:docTypeMap[type],mimeType:file.type||'image/jpeg',quoteTypes:currentClient?.quote_types||['Auto']})
+      });
+      const data = await res.json();
+      if (data.success) {
+        if (slot) { slot.querySelector('.doc-slot-label').textContent = '✓ ' + labels[type]; slot.querySelector('.doc-slot-icon').textContent = '✅'; }
+        await mergeExtractedDataToClient(data.extracted || {}, data.document_type);
+        if (data.underwriting_flags?.length) renderUWFlagsFromDoc(data.underwriting_flags);
+        if (data.carrier_appetite) renderCarrierAppetitePanel(data.carrier_appetite);
+        const fieldCount = Object.values(data.extracted||{}).filter(v=>v!==null&&v!==undefined).length;
+        addAIMessage('✅ Extracted <strong>' + fieldCount + ' fields</strong> from ' + labels[type] + '. ' + data.completeness + '% complete. ' + formatExtractedSummary(data.extracted||{}, data.document_type));
+        if ((data.extracted||{}).annual_premium && currentClient) {
+          const mo = Math.round(data.extracted.annual_premium/12);
+          addAIMessage('Current carrier: <strong>' + (data.extracted.insurer||'Unknown') + '</strong> at <strong>$' + mo + '/mo</strong>. Running quotes to find savings...');
+          setTimeout(() => runQuotes(), 1200);
+        }
+        toast('✅ ' + fieldCount + ' fields extracted', 'ok');
+      } else throw new Error(data.error || 'Extraction failed');
+    } catch(err) {
+      if (slot) slot.querySelector('.doc-slot-label').textContent = labels[type];
+      toast('❌ ' + err.message, 'err');
+      addAIMessage("Couldn't read that document — try a clearer image or paste the info manually.");
+    }
+  };
+  input.click();
+}
+
+function fileToBase64(file) {
+  return new Promise((resolve,reject) => { const r = new FileReader(); r.onload = () => resolve(r.result.split(',')[1]); r.onerror = reject; r.readAsDataURL(file); });
+}
+
+async function mergeExtractedDataToClient(extracted, docType) {
+  if (!currentClient) return;
+  const updates = {};
+  if (extracted.full_name||extracted.named_insured) updates.full_name = extracted.full_name||extracted.named_insured;
+  if (extracted.date_of_birth) updates.date_of_birth = extracted.date_of_birth;
+  if (extracted.address||extracted.insured_address) updates.address = extracted.address||extracted.insured_address;
+  if (extracted.city) updates.city = extracted.city;
+  if (extracted.state||extracted.license_state) updates.state = extracted.state||extracted.license_state;
+  if (extracted.zip) updates.zip = extracted.zip;
+  if (extracted.email) updates.email = extracted.email;
+  if (extracted.phone) updates.phone = extracted.phone;
+  const existingRaw = currentClient.raw_intake ? JSON.parse(currentClient.raw_intake) : {};
+  updates.raw_intake = JSON.stringify({...existingRaw,...extracted,_doc_type:docType});
+  updates.updated_at = new Date().toISOString();
   try {
-    const ctx = currentClient ? `Agent working with client ${currentClient.full_name}. State: ${currentClient.state}. Lines: ${(currentClient.quote_types||[]).join(',')}. Best quote: $${currentQuotes.filter(q=>q.quote_type===currentType).sort((a,b)=>a.monthly_premium-b.monthly_premium)[0]?.monthly_premium||'?'}/mo.` : 'No client selected.';
-    const res = await fetch('/api/extract-quote', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'chat',message:msg,context:ctx,clientText:''})});
-    const j = await res.json();
-    return j.reply || fallback(msg);
-  } catch(e) { return fallback(msg); }
+    await sb.from('clients').update(updates).eq('id', currentClient.id);
+    Object.assign(currentClient, updates);
+    allClients = allClients.map(c => c.id===currentClient.id ? {...c,...updates} : c);
+    renderIntakeDisplay();
+  } catch(e) { console.error('merge error:', e); }
 }
 
-function fallback(msg) {
-  const m = msg.toLowerCase();
-  if (m.includes('rate') || m.includes('carrier')) return '<strong>Rates come from carrier algorithms</strong> factoring state, age, driving record, credit score, and coverage level. Right now we simulate this accurately — live carrier APIs (Progressive, Travelers) are being integrated so rates will pull real-time once you add your agent credentials.';
-  if (m.includes('mvr')) return '<strong>MVR (Motor Vehicle Record)</strong> shows violations, accidents, and license status. We pull it automatically via LexisNexis so you never have to ask clients about their record — the carriers check it anyway, and knowing upfront lets you match them to the right tier.';
-  if (m.includes('bind') || m.includes('submit')) return 'Select a carrier in the Compare tab, then click <strong>Bind policy</strong>. This will mark the client as bound in your pipeline and notify you to complete the carrier application.';
-  if (m.includes('new client') || m.includes('start new')) { setTimeout(() => startNewClientIntake(), 500); return 'Starting intake now...'; }
-  return 'I can help with carrier selection, coverage recommendations, and client management. What specifically are you looking for?';
+function renderUWFlagsFromDoc(flags) {
+  document.getElementById('uw-flags').innerHTML = flags.map(f=>'<span class="uw-flag ' + f.type + '">' + f.msg + '</span>').join('');
+  document.getElementById('uw-alerts').classList.remove('hidden');
+}
+
+function renderCarrierAppetitePanel(appetite) {
+  const types = Object.keys(appetite); if(!types.length) return;
+  const carriers = Object.entries(appetite[types[0]]).sort((a,b)=>(b[1].score||0)-(a[1].score||0));
+  const avoid = carriers.filter(([,d])=>!d.likely_approve).map(([id])=>id);
+  let msg = '<strong>Carrier appetite for this profile:</strong><br>' + carriers.slice(0,3).map(([id,d])=>(d.likely_approve?'✓':'⚠') + ' <strong>' + id.charAt(0).toUpperCase()+id.slice(1) + '</strong> — ' + d.reason).join('<br>');
+  if (avoid.length) msg += '<br>⚠ May decline: ' + avoid.join(', ');
+  document.getElementById('ai-rec-text').innerHTML = msg;
+}
+
+function formatExtractedSummary(data, docType) {
+  if (docType==='declarations_page') return [data.named_insured,data.annual_premium?'$'+data.annual_premium+'/yr':null,data.vehicles?.length?data.vehicles.length+' vehicle(s)':null].filter(Boolean).join(', ')||'See profile tab';
+  if (docType==='drivers_license') return [data.full_name,data.date_of_birth,data.license_state].filter(Boolean).join(', ');
+  if (docType==='vehicle_registration') return [data.year,data.make,data.model,data.vin].filter(Boolean).join(' ');
+  return 'See Client profile tab';
+}
+
+// ─── AUTO RE-QUOTE ENGINE ─────────────────────────────────────────────────────
+async function checkRenewalRequotes() {
+  if (!allClients.length || !currentUser) return;
+  try {
+    const res = await fetch('/api/extract-quote', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({action:'requote_check',clients:allClients.map(c=>({id:c.id,full_name:c.full_name,quote_types:c.quote_types,pipeline_stage:c.pipeline_stage,created_at:c.created_at,current_premium:extractCurrentPremium(c)})),agentEmail:currentUser.email})
+    });
+    const data = await res.json();
+    if (data.success && data.savings_found?.length > 0) showRenewalOpportunities(data.savings_found, data.ai_summary);
+  } catch(e) { console.error('Requote error:', e); }
+}
+
+function extractCurrentPremium(c) {
+  try { const r=c.raw_intake?JSON.parse(c.raw_intake):{};return r.current_premium||null; } catch(e){ return null; }
+}
+
+function showRenewalOpportunities(savingsFound, aiSummary) {
+  const total = savingsFound.reduce((s,x)=>s+x.annual_savings,0);
+  addAIMessage('🔄 <strong>Auto re-quote complete!</strong> ' + savingsFound.length + ' savings found — $' + total + '/yr:<br><br>' + savingsFound.map(s=>'• <strong>' + s.client_name + '</strong>: save $' + s.monthly_savings + '/mo → ' + s.new_best_carrier + ' (' + s.days_to_renewal + 'd)').join('<br>'));
+  if (aiSummary) setTimeout(()=>addAIMessage(aiSummary), 600);
+  toast('🔄 ' + savingsFound.length + ' renewal savings found!', 'ok');
+}
+
+// ─── MVR ──────────────────────────────────────────────────────────────────────
+function generateMVRData(){
+  const seed=(currentClient?.full_name||'').length%10;
+  const violations=seed>7?[{type:'Speeding 1-10mph',date:'2023-04-15',points:2,state:currentClient?.state||'TX'}]:[];
+  const accidents=seed>9?[{type:'At-fault collision',date:'2022-08-20',amount:3800,atFault:true}]:[];
+  return{license_status:'Valid',license_class:'Class D',violations,accidents,suspensions:[],mvr_score:violations.length===0&&accidents.length===0?'Preferred+':'Standard'};
+}
+function renderMVRDisplay(mvr){
+  const sc=mvr.mvr_score==='Preferred+'?'var(--green)':mvr.mvr_score==='Standard'?'var(--amber)':'var(--red)';
+  document.getElementById('mvr-display').innerHTML=`
+    <div class="mvr-grid">
+      <div>
+        <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;margin-bottom:8px;">License</div>
+        <div class="field-row"><div class="field-key">Status</div><div class="field-val">${mvr.license_status}</div></div>
+        <div class="field-row"><div class="field-key">Class</div><div class="field-val">${mvr.license_class}</div></div>
+        <div class="field-row"><div class="field-key">MVR Score</div><div class="field-val" style="color:${sc};font-weight:700;">${mvr.mvr_score}</div></div>
+        <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;margin:12px 0 8px;">Violations (5yr)</div>
+        ${mvr.violations.length===0?'<div style="font-size:12px;color:var(--green);">✓ None</div>':mvr.violations.map(v=>`<div style="font-size:12px;color:var(--amber);padding:3px 0;">⚠ ${v.type} · ${v.date}</div>`).join('')}
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;margin-bottom:8px;">Accidents (5yr)</div>
+        ${mvr.accidents.length===0?'<div style="font-size:12px;color:var(--green);">✓ None</div>':mvr.accidents.map(a=>`<div style="font-size:12px;color:var(--red);padding:3px 0;">⚠ ${a.type} · $${a.amount?.toLocaleString()}</div>`).join('')}
+        <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;margin:12px 0 8px;">CLUE Report</div>
+        ${mvr.accidents.length===0?'<div style="font-size:12px;color:var(--green);">✓ No prior claims</div>':'<div style="font-size:12px;color:var(--amber);">⚠ Claims on record — see above</div>'}
+        <div style="margin-top:12px;padding:8px;background:rgba(59,130,246,.06);border-radius:6px;font-size:11px;color:var(--text3);">Simulated data — add LexisNexis API key to go live</div>
+      </div>
+    </div>`;
+}
+function runMVR(){const btn=document.getElementById('mvr-run-btn')||{};btn.disabled=true;btn.innerHTML='<span class="spinner"></span>';setTimeout(()=>{renderMVRDisplay(generateMVRData());btn.disabled=false;btn.innerHTML='🔍 Pull MVR';toast('✅ MVR pulled','ok');},1800);}
+
+// ─── MISC UI ──────────────────────────────────────────────────────────────────
+function renderTypeToggle(){
+  document.getElementById('type-toggle').innerHTML=(currentClient?.quote_types||['Auto']).map(t=>`<button class="type-toggle-btn ${t===currentType?'active':''}" onclick="switchType('${t}')">${t}</button>`).join('');
+}
+function switchType(t){currentType=t;selectedCarrierId=null;renderTypeToggle();currentQuotes.length?renderCarrierTable():renderWaitingTable();renderCovToolbar();updateMetrics();}
+function renderCovToolbar(){
+  const pills={Auto:['Full coverage','Liability only','$500 ded','$1,000 ded','100/300 BI','Uninsured motorist'],Home:['Replacement cost','ACV','$1k ded','$2.5k ded','Water backup'],Health:['PPO','HMO','HDHP','Family plan','Subsidy eligible'],Life:['20yr term','30yr term','$500k','$1M','No exam']};
+  const on=['Full coverage','$500 ded','100/300 BI','PPO','Family plan','20yr term','$1M','Replacement cost'];
+  document.getElementById('cov-toolbar').innerHTML=`<span style="font-size:11px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:0.4px;">Coverage:</span>${(pills[currentType]||[]).map(p=>`<div class="cov-pill ${on.includes(p)?'on':''}" onclick="this.classList.toggle('on')">${p}</div>`).join('')}`;
+}
+function switchTab(el,tabId){
+  document.querySelectorAll('.main-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');
+  ['tab-compare','tab-intake','tab-docs','tab-mvr'].forEach(id=>{const e=document.getElementById(id);if(e)e.classList.toggle('hidden',id!==tabId);});
+}
+function showView(view){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+view)?.classList.add('active');
+  document.querySelectorAll('.top-nav-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.top-nav-btn').forEach(b=>{if(b.textContent.toLowerCase().includes(view.replace('quotes','quote')))b.classList.add('active');});
 }
 
 // ─── PIPELINE ─────────────────────────────────────────────────────────────────
-function renderPipeline() {
-  const stages = [
+function renderPipeline(){
+  const stages=[
     {label:'Intake',key:'intake',color:'#f59e0b'},
     {label:'Quoting',key:'quoting',color:'#3b82f6'},
     {label:'Presented',key:'presented',color:'#8b5cf6'},
     {label:'Bound',key:'bound',color:'#10b981'}
   ];
-  document.getElementById('pipeline-columns').innerHTML = stages.map(s => {
-    const clients = allClients.filter(c=>c.pipeline_stage===s.key);
-    return `<div class="pipeline-col">
+  // Find renewals
+  const renewals=allClients.filter(c=>getRenewalDays(c)!==null&&c.pipeline_stage==='bound');
+  document.getElementById('pipeline-columns').innerHTML = stages.map(s=>{
+    const clients=allClients.filter(c=>c.pipeline_stage===s.key);
+    const renewalSection=s.key==='bound'&&renewals.length?`<div style="padding:8px;border-bottom:1px solid var(--border);background:rgba(245,158,11,.04);">
+      <div style="font-size:10px;font-weight:600;color:var(--amber);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px;">⟳ Renewals due</div>
+      ${renewals.map(c=>{const days=getRenewalDays(c);return`<div class="renewal-banner"><div class="renewal-info">↺ ${c.full_name}<br><span style="font-size:11px;">${(c.quote_types||[]).join(' · ')}</span></div><span class="renewal-badge">${days}d</span></div>`;}).join('')}
+    </div>`:''
+    return`<div class="pipeline-col">
       <div class="pipeline-col-head">
         <div class="pipeline-col-label" style="color:${s.color};">${s.label}</div>
         <div class="pipeline-count">${clients.length}</div>
       </div>
+      ${renewalSection}
       <div class="pipeline-cards">
-        ${clients.map(c=>`<div class="pipeline-card" onclick="selectClient('${c.id}');showView('quotes')">
-          <div class="pc-name">${c.full_name}</div>
-          <div class="pc-types">${(c.quote_types||[]).join(' · ')}</div>
-          <div class="pc-footer"><div class="pc-price">${s.key==='bound'?'Bound ✓':'Active'}</div><div style="font-size:11px;color:var(--text3);">${new Date(c.created_at).toLocaleDateString()}</div></div>
-        </div>`).join('')}
-        ${!clients.length?'<div style="padding:16px;text-align:center;color:var(--text3);font-size:11px;">No clients</div>':''}
+        ${clients.map(c=>{
+          const renewal=getRenewalDays(c);
+          const commission=c.notes?.match(/monthly_premium:\s*(\d+)/)?.[1]?Math.round(parseInt(c.notes.match(/monthly_premium:\s*(\d+)/)[1])*12*0.12):null;
+          return`<div class="pipeline-card" onclick="selectClient('${c.id}');showView('quotes')">
+            <div class="pc-name">${c.full_name}</div>
+            <div class="pc-types">${(c.quote_types||[]).join(' · ')}</div>
+            <div class="pc-footer">
+              <div class="pc-price">${s.key==='bound'?'Bound ✓':'Active'}</div>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;">
+                ${commission?`<div class="pc-commission">~$${commission}/yr commission</div>`:''}
+                ${renewal?`<div class="pc-renewal">↺ ${renewal}d renewal</div>`:''}
+              </div>
+            </div>
+          </div>`;
+        }).join('')}
+        ${!clients.length?'<div style="padding:16px;text-align:center;color:var(--text3);font-size:11px;">Empty</div>':''}
       </div>
     </div>`;
   }).join('');
 }
 
-// ─── CARRIERS VIEW ────────────────────────────────────────────────────────────
-function renderCarriers() {
-  document.getElementById('carriers-grid').innerHTML = CARRIERS.map(c=>`
+// ─── CARRIERS ─────────────────────────────────────────────────────────────────
+function renderCarriers(){
+  document.getElementById('carriers-grid').innerHTML=CARRIERS.map(c=>`
     <div class="carrier-card">
       <div class="carrier-card-head">
         <div class="carrier-card-logo" style="background:${c.color};">${c.abbr}</div>
-        <div>
-          <div class="carrier-card-name">${c.name} ${c.api==='agent'?'<span class="api-tag api-live">API Ready</span>':'<span class="api-tag api-soon">Coming Soon</span>'}</div>
-          <div class="carrier-card-types">${c.types.join(' · ')}</div>
-        </div>
+        <div><div class="carrier-card-name">${c.name} <span class="api-tag ${c.api==='agent'?'api-live':'api-soon'}">${c.api==='agent'?'API Ready':'Coming Soon'}</span></div>
+        <div class="carrier-card-types">${c.types.join(' · ')}</div></div>
       </div>
-      <div class="carrier-stat-row"><div class="carrier-stat-label">Win rate</div><div class="carrier-stat-val">${c.win_rate}%</div></div>
-      <div class="carrier-stat-row"><div class="carrier-stat-label">Integration</div><div class="carrier-stat-val">${c.api==='agent'?'Agent API':'Portal automation'}</div></div>
+      <div class="carrier-stat-row"><div class="carrier-stat-label">Agency win rate</div><div class="carrier-stat-val">${c.win_rate}% of quotes</div></div>
+      <div class="carrier-stat-row"><div class="carrier-stat-label">Avg commission</div><div class="carrier-stat-val">${c.commission_pct}% of premium</div></div>
       <div class="carrier-stat-row"><div class="carrier-stat-label">Lines</div><div class="carrier-stat-val">${c.types.join(', ')}</div></div>
       <div style="display:flex;align-items:center;gap:6px;font-size:12px;margin-top:8px;">
         <div style="width:6px;height:6px;border-radius:50%;background:${c.api==='agent'?'#10b981':'#f59e0b'};"></div>
-        <span style="color:${c.api==='agent'?'var(--green)':'var(--amber)'};">${c.api==='agent'?'API credentials ready to connect':'Needs agent portal credentials'}</span>
+        <span style="color:${c.api==='agent'?'var(--green)':'var(--amber)'};">${c.api==='agent'?'Credentials ready — add in Netlify env vars':'Needs agent portal credentials'}</span>
       </div>
-      <button class="carrier-connect-btn ${c.api==='agent'?'connected':''}">${c.api==='agent'?'✓ Connect your credentials':'Request API access'}</button>
+      <button class="carrier-connect-btn ${c.api==='agent'?'connected':''}">${c.api==='agent'?'✓ Ready to connect':'Request API access'}</button>
     </div>`).join('');
 }
 
-// ─── ANALYTICS ────────────────────────────────────────────────────────────────
-function renderAnalytics() {
-  const total = allClients.length;
-  const bound = allClients.filter(c=>c.pipeline_stage==='bound').length;
-  const quoting = allClients.filter(c=>['quoting','presented'].includes(c.pipeline_stage)).length;
-  document.getElementById('analytics-grid').innerHTML = `
+// ─── ANALYTICS / REVENUE ──────────────────────────────────────────────────────
+function renderAnalytics(){
+  const total=allClients.length,bound=allClients.filter(c=>c.pipeline_stage==='bound').length;
+  const quoting=allClients.filter(c=>['quoting','presented'].includes(c.pipeline_stage)).length;
+  const estMonthlyPremium=bound*142; // rough avg
+  const estCommission=Math.round(estMonthlyPremium*12*0.12);
+  const retention=total>0?Math.round(bound/total*100):0;
+  document.getElementById('analytics-grid').innerHTML=`
     <div class="analytics-card">
-      <div class="analytics-card-title">Carrier win rates (platform avg)</div>
+      <div class="analytics-card-title">Agency revenue (estimated)</div>
+      <div class="revenue-stats">
+        <div class="rev-stat"><div class="rev-stat-label">Policies bound</div><div class="rev-stat-val">${bound}</div><div class="rev-stat-sub">this month</div></div>
+        <div class="rev-stat"><div class="rev-stat-label">Est. annual commission</div><div class="rev-stat-val">$${estCommission.toLocaleString()}</div><div class="rev-stat-sub">~12% avg</div></div>
+        <div class="rev-stat"><div class="rev-stat-label">Monthly premium written</div><div class="rev-stat-val">$${estMonthlyPremium.toLocaleString()}</div><div class="rev-stat-sub">bound clients</div></div>
+        <div class="rev-stat"><div class="rev-stat-label">Retention rate</div><div class="rev-stat-val">${retention}%</div><div class="rev-stat-sub">bound / total</div></div>
+      </div>
+    </div>
+    <div class="analytics-card">
+      <div class="analytics-card-title">Carrier win rates</div>
       <div class="bar-chart">${CARRIERS.filter(c=>c.win_rate>0).sort((a,b)=>b.win_rate-a.win_rate).map(c=>`
         <div class="bar-row"><div class="bar-label">${c.name}</div>
         <div class="bar-track"><div class="bar-fill" style="width:${c.win_rate*2.5}%;background:${c.color};"></div></div>
@@ -1206,116 +1287,126 @@ function renderAnalytics() {
       </div>
     </div>
     <div class="analytics-card">
-      <div class="analytics-card-title">Your pipeline</div>
+      <div class="analytics-card-title">Pipeline</div>
       <div class="bar-chart">
-        <div class="bar-row"><div class="bar-label">Total clients</div><div class="bar-track"><div class="bar-fill" style="width:${total?100:0}%;background:#3b82f6;"></div></div><div class="bar-val">${total}</div></div>
-        <div class="bar-row"><div class="bar-label">Active</div><div class="bar-track"><div class="bar-fill" style="width:${total?quoting/total*100:0}%;background:#8b5cf6;"></div></div><div class="bar-val">${quoting}</div></div>
+        <div class="bar-row"><div class="bar-label">Total clients</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:#3b82f6;"></div></div><div class="bar-val">${total}</div></div>
+        <div class="bar-row"><div class="bar-label">Active quotes</div><div class="bar-track"><div class="bar-fill" style="width:${total?quoting/total*100:0}%;background:#8b5cf6;"></div></div><div class="bar-val">${quoting}</div></div>
         <div class="bar-row"><div class="bar-label">Bound</div><div class="bar-track"><div class="bar-fill" style="width:${total?bound/total*100:0}%;background:#10b981;"></div></div><div class="bar-val">${bound}</div></div>
+        <div class="bar-row"><div class="bar-label">Renewals due</div><div class="bar-track"><div class="bar-fill" style="width:${total?allClients.filter(c=>getRenewalDays(c)).length/total*100:0}%;background:#f59e0b;"></div></div><div class="bar-val">${allClients.filter(c=>getRenewalDays(c)).length}</div></div>
       </div>
     </div>
     <div class="analytics-card">
       <div class="analytics-card-title">Lines of business</div>
       <div class="bar-chart">${['Auto','Home','Health','Life'].map(t=>{
         const n=allClients.filter(c=>(c.quote_types||[]).includes(t)).length;
-        const colors={Auto:'#3b82f6',Home:'#10b981',Health:'#f59e0b',Life:'#8b5cf6'};
-        return `<div class="bar-row"><div class="bar-label">${t}</div>
-          <div class="bar-track"><div class="bar-fill" style="width:${total?n/total*100:0}%;background:${colors[t]};"></div></div>
-          <div class="bar-val">${n}</div></div>`;
+        const clr={Auto:'#3b82f6',Home:'#10b981',Health:'#f59e0b',Life:'#8b5cf6'}[t];
+        return`<div class="bar-row"><div class="bar-label">${t}</div><div class="bar-track"><div class="bar-fill" style="width:${total?n/total*100:0}%;background:${clr};"></div></div><div class="bar-val">${n}</div></div>`;
       }).join('')}</div>
-    </div>
-    <div class="analytics-card">
-      <div class="analytics-card-title">MVR data sources</div>
-      <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px;">
-        <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--text2);">LexisNexis (MVR)</span><span style="color:var(--green);font-weight:600;">Ready</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--text2);">Verisk CLUE (claims)</span><span style="color:var(--green);font-weight:600;">Ready</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--text2);">Experian (credit)</span><span style="color:var(--amber);font-weight:600;">Q3 2025</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--text2);">Checkr (background)</span><span style="color:var(--amber);font-weight:600;">Q3 2025</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--text2);">Progressive API</span><span style="color:var(--green);font-weight:600;">Integrating</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--text2);">Travelers API</span><span style="color:var(--green);font-weight:600;">Integrating</span></div>
-      </div>
     </div>`;
 }
 
-// ─── MISC ─────────────────────────────────────────────────────────────────────
-function renderTypeToggle() {
-  document.getElementById('type-toggle').innerHTML = (currentClient?.quote_types||['Auto']).map(t=>
-    `<button class="type-toggle-btn ${t===currentType?'active':''}" onclick="switchType('${t}')">${t}</button>`
-  ).join('');
+// ─── PROPOSAL ─────────────────────────────────────────────────────────────────
+function openProposal(){
+  if(!currentClient||!currentQuotes.length){toast('Run quotes first to generate a proposal','err');return;}
+  const quotes=currentQuotes.filter(q=>q.quote_type===currentType).sort((a,b)=>a.monthly_premium-b.monthly_premium);
+  document.getElementById('proposal-body').innerHTML=`
+    <div style="margin-bottom:18px;">
+      <div style="font-size:11px;color:var(--text3);text-transform:uppercase;font-weight:600;letter-spacing:0.4px;">Prepared for</div>
+      <div style="font-size:18px;font-weight:600;margin-top:4px;">${currentClient.full_name}</div>
+      <div style="font-size:12px;color:var(--text2);">${currentType} Insurance · ${new Date().toLocaleDateString()}</div>
+    </div>
+    <div style="font-size:11px;color:var(--text3);text-transform:uppercase;font-weight:600;letter-spacing:0.4px;margin-bottom:10px;">Your options</div>
+    ${quotes.map((q,i)=>{
+      const car=CARRIERS.find(c=>c.id===q.carrier)||{name:q.carrier,abbr:'?',color:'#888'};
+      return`<div class="proposal-carrier-row ${i===0?'top':''}">
+        <div>
+          <div class="proposal-carrier-name">${i===0?'⭐ ':''}${car.name}${i===0?' — Recommended':''}</div>
+          <div class="proposal-carrier-detail">${q.deductible} deductible · ${q.ai_reason}</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="proposal-carrier-price">$${q.monthly_premium}<span style="font-size:12px;font-weight:400;color:var(--text2);">/mo</span></div>
+          <div style="font-size:11px;color:var(--text3);">$${(q.monthly_premium*12).toLocaleString()}/yr</div>
+        </div>
+      </div>`;
+    }).join('')}
+    <div style="margin-top:16px;padding:12px;background:var(--bg3);border-radius:8px;font-size:12px;color:var(--text2);line-height:1.6;">
+      AI recommendation: ${document.getElementById('ai-rec-text').textContent}
+    </div>`;
+  document.getElementById('proposal-overlay').classList.remove('hidden');
 }
-function switchType(t) {
-  currentType=t; selectedCarrierId=null;
-  renderTypeToggle(); renderCarrierTable(); renderCovToolbar(); updateStats();
-}
-function renderCovToolbar() {
-  const pills={Auto:['Full coverage','Liability only','$500 ded','$1,000 ded','100/300 BI','Uninsured motorist'],Home:['Replacement cost','ACV','$1k ded','$2.5k ded','Water backup'],Health:['PPO','HMO','HDHP','Family plan','Subsidy eligible'],Life:['20yr term','30yr term','$500k','$1M','No exam']};
-  const on=['Full coverage','$500 ded','100/300 BI','PPO','Family plan','20yr term','$1M','Replacement cost'];
-  document.getElementById('cov-toolbar').innerHTML=`<span style="font-size:11px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:0.4px;">Coverage:</span>${(pills[currentType]||[]).map(p=>`<div class="cov-pill ${on.includes(p)?'on':''}" onclick="this.classList.toggle('on')">${p}</div>`).join('')}`;
-}
-function switchTab(el, tabId) {
-  document.querySelectorAll('.main-tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  ['tab-compare','tab-intake','tab-mvr'].forEach(id=>{ const e=document.getElementById(id); if(e) e.classList.toggle('hidden',id!==tabId); });
-}
-function showView(view) {
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-  document.getElementById('view-'+view)?.classList.add('active');
-  document.querySelectorAll('.top-nav-btn, .icon-nav-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.top-nav-btn').forEach(b=>{ if(b.textContent.toLowerCase().includes(view.replace('quotes','quote'))) b.classList.add('active'); });
-}
-async function bindPolicy() {
-  if (!selectedCarrierId) { addAIMessage('Select a carrier first — click "Select" in the comparison table.'); setMode('chat'); return; }
-  const car=CARRIERS.find(c=>c.id===selectedCarrierId);
-  const q=currentQuotes.find(x=>x.carrier===selectedCarrierId&&x.quote_type===currentType);
-  if (confirm(`Bind ${currentClient?.full_name} with ${car?.name} at $${q?.monthly_premium}/mo?`)) {
+function closeProposal(){document.getElementById('proposal-overlay').classList.add('hidden');}
+function copyProposalLink(){navigator.clipboard.writeText(`https://brnnoauto.netlify.app/proposal/${currentClient?.id}`);toast('🔗 Proposal link copied','ok');}
+function emailProposal(){emailClient();}
+
+// ─── ACTIONS ──────────────────────────────────────────────────────────────────
+async function bindPolicy(){
+  if(!selectedCarrierId){addAIMessage('Select a carrier first by clicking "Select" in the comparison table.');toggleAI();return;}
+  const car=CARRIERS.find(c=>c.id===selectedCarrierId),q=currentQuotes.find(x=>x.carrier===selectedCarrierId&&x.quote_type===currentType);
+  if(confirm(`Bind ${currentClient?.full_name} with ${car?.name} at $${q?.monthly_premium}/mo?`)){
     await sb.from('clients').update({pipeline_stage:'bound',status:'bound',updated_at:new Date().toISOString()}).eq('id',currentClient.id);
     currentClient.pipeline_stage='bound';
     allClients=allClients.map(c=>c.id===currentClient.id?{...c,pipeline_stage:'bound',status:'bound'}:c);
-    renderClientList(allClients); renderPipeline();
-    toast('🎉 Policy bound with ' + car?.name, 'ok');
-    addAIMessage(`🎉 <strong>${currentClient.full_name}</strong> is now bound with ${car?.name} at $${q?.monthly_premium}/mo. Set a renewal reminder for 11 months from today.`);
+    renderClientList(allClients);renderPipeline();updateMetrics();renderAnalytics();
+    document.getElementById('met-status').textContent='Bound ✓';
+    toast('🎉 Policy bound with '+car?.name,'ok');
+    addAIMessage(`🎉 Bound! <strong>${currentClient.full_name}</strong> is now with ${car?.name} at $${q?.monthly_premium}/mo. Commission: ~$${Math.round((q?.monthly_premium||0)*12*(car?.commission_pct||12)/100)}/yr. I'll track their renewal automatically.`);
   }
 }
-function emailClient() {
-  if (!currentClient?.email) { addAIMessage('No email on file for this client. It was collected during intake — check Client data tab.'); return; }
+function emailClient(){
+  if(!currentClient?.email){toast('No email on file for this client','err');return;}
   const best=currentQuotes.filter(q=>q.quote_type===currentType).sort((a,b)=>a.monthly_premium-b.monthly_premium)[0];
   const car=best?CARRIERS.find(c=>c.id===best.carrier):null;
-  window.open(`mailto:${currentClient.email}?subject=Your ${currentType} Insurance Quote — ${car?.name||'Results Ready'}&body=Hi ${currentClient.full_name.split(' ')[0]},%0D%0A%0D%0AGreat news! I've found your best ${currentType} insurance options. The top recommendation is ${car?.name||'a leading carrier'} at $${best?.monthly_premium||'TBD'}/mo.%0D%0A%0D%0ALet's connect this week to finalize — reply here or call me directly.%0D%0A%0D%0ABest regards`,'_blank');
+  window.open(`mailto:${currentClient.email}?subject=Your ${currentType} Insurance Options&body=Hi ${currentClient.full_name.split(' ')[0]},%0D%0A%0D%0AHere are your ${currentType} insurance options:%0D%0A%0D%0ABest option: ${car?.name||'Top carrier'} at $${best?.monthly_premium||'TBD'}/mo%0D%0A%0D%0ALet me know when you'd like to move forward!%0D%0A%0D%0ABest regards`,'_blank');
 }
 
-// ─── MESSAGES ─────────────────────────────────────────────────────────────────
-function clearMessages() { document.getElementById('rp-messages').innerHTML = ''; }
-function addAIMessage(html, options) {
-  const msgs=document.getElementById('rp-messages');
-  const optHtml=options?`<div class="msg-options">${options.map(o=>`<button class="msg-option-btn" onclick="clickOption('${o}')">${o}</button>`).join('')}</div>`:'';
+// ─── FLOATING AI ──────────────────────────────────────────────────────────────
+function toggleAI(){
+  aiOpen=!aiOpen;
+  document.getElementById('ai-chat-panel').classList.toggle('hidden',!aiOpen);
+}
+function clearAIMessages(){document.getElementById('ai-messages').innerHTML='';}
+function addAIMessage(html,options){
+  const msgs=document.getElementById('ai-messages');
+  const optHtml=options?`<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:7px;">${options.map(o=>`<button class="ai-quick-btn" onclick="clickAIOption('${o.replace(/'/g,"\\'")}')">${o}</button>`).join('')}</div>`:'';
   msgs.innerHTML+=`<div class="msg msg-ai"><div class="msg-avatar">✦</div><div class="msg-bubble">${html.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')}${optHtml}</div></div>`;
   msgs.scrollTop=msgs.scrollHeight;
 }
-function addUserMessage(text) {
-  const msgs=document.getElementById('rp-messages');
+function addAIUserMsg(text){
+  const msgs=document.getElementById('ai-messages');
   msgs.innerHTML+=`<div class="msg msg-user"><div class="msg-avatar">A</div><div class="msg-bubble">${text}</div></div>`;
   msgs.scrollTop=msgs.scrollHeight;
 }
-let _typingEl=null;
-function showTyping() {
-  const msgs=document.getElementById('rp-messages');
-  _typingEl=document.createElement('div');
-  _typingEl.id='typing-ind'; _typingEl.className='msg msg-ai';
-  _typingEl.innerHTML='<div class="msg-avatar">✦</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>';
-  msgs.appendChild(_typingEl); msgs.scrollTop=msgs.scrollHeight;
+function clickAIOption(text){addAIUserMsg(text);if(intakeState.active)handleIntakeAnswer(text);else{showTyping();getAIResp(text).then(r=>{hideTyping();addAIMessage(r);});}}
+function aiQuick(text){document.getElementById('ai-input').value=text;sendAI();}
+function sendAI(){
+  const inp=document.getElementById('ai-input'),text=inp.value.trim();
+  if(!text)return;inp.value='';inp.style.height='';
+  addAIUserMsg(text);
+  if(intakeState.active){handleIntakeAnswer(text);return;}
+  showTyping();getAIResp(text).then(r=>{hideTyping();addAIMessage(r);});
 }
-function hideTyping() { document.getElementById('typing-ind')?.remove(); }
-function updateIntakeProgress(pct) {
-  document.getElementById('intake-fill').style.width=pct+'%';
-  document.getElementById('intake-pct-label').textContent=pct+'%';
+let _typEl=null;
+function showTyping(){const m=document.getElementById('ai-messages');_typEl=document.createElement('div');_typEl.id='typ';_typEl.className='msg msg-ai';_typEl.innerHTML='<div class="msg-avatar">✦</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>';m.appendChild(_typEl);m.scrollTop=m.scrollHeight;}
+function hideTyping(){document.getElementById('typ')?.remove();}
+async function getAIResp(msg){
+  try{
+    const ctx=currentClient?`Client: ${currentClient.full_name}, ${currentType}, ${currentClient.state}. Quotes: ${currentQuotes.filter(q=>q.quote_type===currentType).length} carriers. Best: $${currentQuotes.filter(q=>q.quote_type===currentType).sort((a,b)=>a.monthly_premium-b.monthly_premium)[0]?.monthly_premium||'?'}/mo.`:'No client selected.';
+    const r=await fetch('/api/extract-quote',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'chat',message:msg,context:ctx,clientText:''})});
+    const j=await r.json();return j.reply||fallback(msg);
+  }catch(e){return fallback(msg);}
 }
-function handleKey(e) { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendInput();} }
-function autoResize(el) { el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,100)+'px'; }
-function toast(msg,type='ok') {
-  const t=document.createElement('div');
-  t.className='toast '+(type==='ok'?'ok':'err'); t.textContent=msg;
-  document.getElementById('toasts').appendChild(t);
-  setTimeout(()=>t.remove(),3800);
+function fallback(msg){
+  const m=msg.toLowerCase();
+  if(m.includes('rate')||m.includes('carrier'))return '<strong>Rates factor in</strong>: state, age, driving record, credit score, and coverage level. We simulate accurately now — add carrier API credentials in Netlify to get live rates.';
+  if(m.includes('commission'))return 'Typical agency commissions: <strong>Auto/Home 10-15%</strong> of annual premium, <strong>Life 50-80%</strong> first year (then 5% renewal), <strong>Health 3-8%</strong>. Commission tracking shows in the Analytics tab.';
+  if(m.includes('renewal'))return 'Renewal tracking is automatic — clients show days-to-renewal in the sidebar. The Pipeline view groups 30/60/90 day renewals. I\'ll re-quote all carriers 45 days before renewal and notify you of any savings.';
+  if(m.includes('mvr'))return '<strong>MVR (Motor Vehicle Record)</strong> pulls violations, accidents, license status from LexisNexis. We run it automatically during intake — no need to ask the client. Add your LEXISNEXIS_API_KEY in Netlify to activate live data.';
+  if(m.includes('bind'))return 'Select a carrier in the Compare tab using the "Select" button, then click <strong>Bind policy</strong>. This marks the client as bound in your pipeline and tracks the commission.';
+  return 'I can help with carrier selection, underwriting flags, coverage recommendations, and commission tracking. What specifically do you need?';
 }
+
+// ─── UTILS ────────────────────────────────────────────────────────────────────
+function toast(msg,type='ok'){const t=document.createElement('div');t.className='toast '+(type==='ok'?'ok':'err');t.textContent=msg;document.getElementById('toasts').appendChild(t);setTimeout(()=>t.remove(),3800);}
 
 initAuth();
 </script>
